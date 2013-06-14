@@ -3,13 +3,13 @@
 
 The LifeGenes project for genetic cellular automaton adds genetic inheritance and various traits to the cells in [Conway's Game of Life](http://en.wikipedia.org/wiki/Conway's_Game_of_Life). This is accomplished through [golly](http://golly.sourceforge.net/)'s python scripting interface. 
 
-This is a highly collaborative project in progress ogiginating from [/r/collaboratecode](http://www.reddit.com/r/CollaborateCode/); please don't hesitate to contact us or to join in the fun! More information can be found in the tentative [project outline](https://docs.google.com/document/d/1J2VmziJeNyKQskGeW49x_LJf8Pt3dW5QQK-ghKpZ8bw/edit?usp=sharing).
+This is a highly collaborative project in progress originating from [/r/collaboratecode](http://www.reddit.com/r/CollaborateCode/); please don't hesitate to contact us or to join in the fun! More information can be found in the tentative [project outline](https://docs.google.com/document/d/1J2VmziJeNyKQskGeW49x_LJf8Pt3dW5QQK-ghKpZ8bw/edit?usp=sharing).
 
 ### Current Cell Traits ###
-* color - color is expressed using a 255 state layer using custom golly rule in 'constant.table'
+* color - expressed using a 256 state layer using custom golly rule 'constant.table'
 
 ### Planned Cell Traits ###
-* Neural-network based AI
+* Neural network based AI
 * mass/speed movement rules
 
 ## Getting Started ##
