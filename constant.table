@@ -1,0 +1,8 @@
+# State does not change in the rule. 256 states available. 
+# Useful for creating a constant color on the grid.
+#
+n_states:256
+neighborhood:vonNeumann
+symmetries:none
+
+
