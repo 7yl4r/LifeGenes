@@ -7,8 +7,8 @@
 from glife import rect
 import golly as g
 
-from LifeGenesGolly.lifegenes.cellList import cellList	#import LifeGenes cell definition
-from LifeGenesGolly.lifegenes.cell     import cell as LGcell
+from LifeGenes.lifegenes.cellList import cellList	#import LifeGenes cell definition
+from LifeGenes.lifegenes.cell     import cell as LGcell
 
 class run():
 	def __init__(self):
