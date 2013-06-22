@@ -54,9 +54,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2"
-     inkscape:cx="239.01953"
-     inkscape:cy="13.518641"
+     inkscape:zoom="0.70710678"
+     inkscape:cx="3336.3407"
+     inkscape:cy="-34.969689"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -87,7 +87,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1899,7 +1899,7 @@
          sodipodi:role="line"
          id="tspan7701"
          x="3794.5"
-         y="997.36224">this one is optional</tspan></text>
+         y="997.36224">this one is optional (state 0)</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:none;marker-end:url(#Arrow2Lend)"
        d="m 3880,1006.8622 -35,25"
@@ -1921,6 +1921,37 @@
          x="130"
          y="82"
          id="tspan8519">size: w=15*255=3825, h=15+7=22</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="479.4184"
+       y="-28.911688"
+       id="text3507"
+       sodipodi:linespacing="125%"
+       transform="translate(0,1030.3622)"><tspan
+         sodipodi:role="line"
+         id="tspan3509"
+         x="479.4184"
+         y="-28.911688">states 1 - 255 for normal colors</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="3500"
+       y="1092.3622"
+       id="text3511"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3513"
+         x="3500"
+         y="1092.3622">these are too similar to the complete opposite end...</tspan><tspan
+         sodipodi:role="line"
+         x="3500"
+         y="1114.8622"
+         id="tspan3515">maybe the range of cell.getColor should be adjusted </tspan><tspan
+         sodipodi:role="line"
+         x="3500"
+         y="1137.3622"
+         id="tspan3517">and these should be reserved for special states</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"

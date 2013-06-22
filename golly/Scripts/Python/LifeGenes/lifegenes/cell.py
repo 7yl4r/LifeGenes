@@ -15,9 +15,9 @@ class cell:
 	# return color value 1-255 generated from first 10 BP of DNA
 	def getColor(self):	
 		color = 128	#starting color in middle of range
-		maxColor = 255
+		maxColor = 200
 		minColor = 1
-		dc    = 20 	#delta color; amount of change when codon is detected
+		dc    = 15 	#delta color; amount of change when codon is detected
 		lightCodon = 'AB' #string which decreases color value
 		darkCodon  = 'BD' #string which increases color value
 		for i in range(len(self.DNA)-1):
