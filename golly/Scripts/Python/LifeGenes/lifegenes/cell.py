@@ -12,16 +12,21 @@ class cell:
 		self.x = X
 		self.y = Y
 
-	# return color value 0-255 generated from first 10 BP of DNA
+	# return color value 1-255 generated from first 10 BP of DNA
 	def getColor(self):	
-		color = 128
+		color = 128	#starting color in middle of range
+		maxColor = 255
+		minColor = 1
+		dc    = 20 	#delta color; amount of change when codon is detected
+		lightCodon = 'AB' #string which decreases color value
+		darkCodon  = 'BD' #string which increases color value
 		for i in range(len(self.DNA)-1):
-			if (str(self.DNA[i])+str(self.DNA[i+1])) == 'AB':
-				color+=50
-			if (str(self.DNA[i])+str(self.DNA[i+1])) == 'BA':
-				color-=50
-		if color > 255 : color = 255
-		if color < 1   : color = 1
+			if (str(self.DNA[i])+str(self.DNA[i+1])) == darkCodon:
+				color+=dc
+			if (str(self.DNA[i])+str(self.DNA[i+1])) == lightCodon:
+				color-=dc
+		if color > maxColor : color = maxColor
+		if color < minColor : color = minColor
 		return color
 
 	# generates a random DNA string using bases defined in BASES
