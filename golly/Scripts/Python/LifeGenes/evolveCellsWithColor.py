@@ -10,17 +10,44 @@ import golly as g
 from LifeGenes.lifegenes.cellList import cellList	#import LifeGenes cell definition
 from LifeGenes.lifegenes.cell     import cell as LGcell
 
+#BEGIN setup log file for this script:
+from os.path import expanduser
+home = expanduser("~")
+logDir = home+'/LifeGenes/__logs'
+from os import mkdir
+try:
+	mkdir(logDir)
+except OSError:
+	pass # probably the dir already exists...
+logName = logDir+'/evolveWithColor.log'
+import logging
+print str(logging.getLogger())
+logging.basicConfig(filename=logName,\
+	                level=logging.DEBUG,\
+	                format='%(asctime)s %(levelname)s:%(message)s',\
+                   filemode='w')
+#NOTE: this file only resets when golly is restarted, 
+#      otherwise the log object is retained and reused, 
+#      appending to the file as the script is run multiple times
+g.show('created .log at '+str(logName))
+#END log file setup
+
 class run():
 	def __init__(self):
+		logging.info('script started')
 		self.startUp()
 		self.drawColor()
-		while(True):	#until stopped by golly
-			g.step()
-			#g.update()
-			self.update()
-			self.drawColor()
-			g.update()
-			#TODO: save cell genomes to file
+		logging.info('setup complete; beginning evolution cycles')
+		try:
+			while(True):	#until stopped by golly
+				g.step()
+				#g.update()
+				self.update()
+				self.drawColor()
+				g.update()
+		finally:
+				logging.info('cycling halted from external source (probably golly)')
+				#TODO: save cell genomes to file
 
 	#removes genetic material from cell no longer in environment layer
 	def removeDeadCells(self):
@@ -94,7 +121,7 @@ class run():
 				# continue from where we left off
 				self.colorIndex = currindex
 				g.show('geneticColor layer already exists!')
-  				#TODO: read cell genes from a file and make self.cellList
+  				 #TODO: read cell genes from a file and make self.cellList
 				break
 			else: currindex+=1
 		if self.colorIndex == -1:	#if we didn't find existing colorLayer
@@ -103,7 +130,7 @@ class run():
 	
 			self.cellList = cellList(startpatt)
 
-			g.show(str(len(startpatt)/2)+' cells found, '+str(len(self.cellList.cells))+' trait objects created.')
+			logging.info(str(len(startpatt)/2)+' cells found, '+str(len(self.cellList.cells))+' trait objects created.')
 
 
 			# add color layer

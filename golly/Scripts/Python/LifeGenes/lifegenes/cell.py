@@ -56,4 +56,10 @@ class cell:
 			cellDNA.append(genes[inheritFrom][i])
 		self.DNA = cellDNA
 
+	#TODO: allows the cell to move in directions up,right,down,left (0,1,2,3)
+#	def move(self,direction,distance=1):
+		# set state=0 of old location in golly
+		# change cell object attributes
+		# set state=1 of new location in golly
+
 
