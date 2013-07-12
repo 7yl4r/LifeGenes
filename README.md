@@ -16,4 +16,6 @@ This is a highly collaborative project in progress originating from [/r/collabor
 1. *install golly* - These scripts must be run from within golly. Start out by installing and playing around with that a bit.
 2. *place scripts and rules where golly can find them* - find golly's install directory and then place the 'LifeGenesGolly' folder into /golly/scripts/python/. To use the cell color display, you must also place 'constant.table' into golly/rules/
 3. *Load the scripts in golly using the gui*
-4. *modify scripts* - [here](http://golly.sourceforge.net/Help/python.html) you can find golly's python scripting documentation. Also note that golly can get confused after experiencing a python bug and persistant errors while debugging can sometimes be fixed by restarting golly. Similarly, imported files will not get re-imported when re-running a script unless golly restarts.
+4. *Observe genetic evolution in action!*
+
+Advanced users may want to *modify scripts* - [here](http://golly.sourceforge.net/Help/python.html) you can find golly's python scripting documentation. Also note that golly can get confused after experiencing a python bug and persistant errors while debugging can sometimes be fixed by restarting golly. Similarly, imported files will not get re-imported when re-running a script unless golly restarts.
