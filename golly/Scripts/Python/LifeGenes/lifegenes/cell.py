@@ -5,8 +5,8 @@ from random import randrange
 import logging
 
 BASES = ['A','B','C','D']	#DNA Base Pairs (BP)
-DNA_MINLEN = 10			#min base pairs in a genome 
-DNA_MAXLEN = 100		#max base pairs in a genome
+DNA_MINLEN = 10		#min base pairs in a genome 
+DNA_MAXLEN = 1000		#max base pairs in a genome
 
 #strings which decrease value in neural network connection
 ANN_DN_CODONS = [['ABDD', 'CAAB', 'ABAD', 'CBBC'],\
@@ -50,8 +50,8 @@ ANN_UP_CODONS = [['CDCB', 'BABB', 'ACAC', 'ABCB'],\
 ['ADAC', 'BBBD', 'DBBD', 'DDAB'],\
 ['DAAB', 'ADBA', 'AAAD', 'CBBA']]
 
-DARK_CODON = 'BD'
-LIGHT_CODON = 'AB'
+DARK_CODON  = 'A'
+LIGHT_CODON = 'B'
 
 # TODO: genetically calculated values need only be calculated once and then stored for future reference. This will greatly improve efficiency.
 
@@ -66,9 +66,7 @@ class cell:
 		color = 110	#starting color in middle of range
 		maxColor = 220
 		minColor = 1
-		dc    = 5 	#delta color; amount of change when codon is detected
-		lightCodon = 'AB' #string which decreases color value
-		darkCodon  = 'BD' #string which increases color value
+		dc    = 1 	#delta color; amount of change when codon is detected
 		return self.getGeneticValue(color,maxColor,minColor,dc,DARK_CODON,LIGHT_CODON)
 
 	# generates a random DNA string using bases defined in BASES
@@ -147,27 +145,31 @@ class cell:
 		minV = -1000
 		delt = 1 	# amount of change when codon is detected
 		num_outs = 4
-		num_ins  = len(ANN_UP_CODONS)/4
+		num_ins  = len(ANN_UP_CODONS)
+		pass #logging.debug('weights should be '+str(num_ins)+'x'+str(num_outs))
 		weights = [ [startV]*num_outs ]*num_ins	# inputs x outputs list
-		logging.debug(str(num_ins)+'x'+str(num_outs)+' weights list created:\n'+str(weights))
+		pass # logging.debug('weights is '+str(len(weights))+' items in total')
+		pass # logging.debug(str(num_ins)+'x'+str(num_outs)+' weights list created:\n'+str(weights))
 		for i in range(num_ins):
 			for o in range(num_outs):
+				pass # logging.debug('looking for codon['+str(i)+']['+str(o)+']')
 				weights[i][o] = self.getGeneticValue(startV,maxV,minV,delt,ANN_UP_CODONS[i][o],ANN_DN_CODONS[i][o])
 		return weights
 
 	# moves the cell as determined by DNA-encoded neural network (see wiki for more info)
 	def move(self,stateSetter,stateGetter):
-		num_ins  = len(ANN_UP_CODONS)/4
+		num_ins  = len(ANN_UP_CODONS)
 		v = self.getVisualInput(stateGetter)
 		w = self.getNNweights()
 		output = [0]*4
 		for o in range(4):
 			for i in range(num_ins):
 				output[o] = v[i]*w[i][o]
-		direction = max(output) #cell moves in direction of greatest output
-		if direction < 1: #simple threshold
+		dirVal = max(output) #cell moves in direction of greatest output
+		if dirVal < 1: #simple threshold
 			return
 		else:
+			direction = output.index(dirVal)
 			if direction == 0:
 				d = 'up'
 			elif direction ==1:
@@ -211,7 +213,7 @@ class cell:
 	# allows the cell to move in directions up,right,down,left a given distance
 	def moveNum(self,direction,distance,stateSetter,stateGetter):
 		if distance == 0:
-			logging.debug('cell movement distance == 0')
+			logging.warn('cell movement distance == 0')
 			return
 		for x in range(distance):
 			self.moveOne(direction,stateSetter,stateGetter)
