@@ -93,7 +93,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
      inkscape:cx="347.75252"
-     inkscape:cy="795.87889"
+     inkscape:cy="755.47279"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -995,6 +995,50 @@
          sodipodi:role="line"
          id="tspan5738"
          x="610"
-         y="142.36218">3n connections</tspan></text>
+         y="142.36218">4n connections</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="579.82758"
+       y="238.17923"
+       id="text5740"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5742"
+         x="579.82758"
+         y="238.17923">0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="609.12201"
+       y="268.4838"
+       id="text5744"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5746"
+         x="609.12201"
+         y="268.4838">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="573.76666"
+       y="304.8493"
+       id="text5748"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5750"
+         x="573.76666"
+         y="304.8493">2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="542.4519"
+       y="271.51428"
+       id="text5752"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5754"
+         x="542.4519"
+         y="271.51428">3</tspan></text>
   </g>
 </svg>

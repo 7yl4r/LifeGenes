@@ -8,7 +8,7 @@
 from glife import rect
 import golly as g
 
-from LifeGenes.lifegenes.cell import cell	#import LifeGenes cell definition
+from LifeGenes.lifegenes_core.cell import cell	#import LifeGenes cell definition
 
 if g.empty(): g.exit("The pattern is empty.")
 

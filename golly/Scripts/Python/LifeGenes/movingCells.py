@@ -6,8 +6,8 @@
 from glife import rect
 import golly as g
 
-from LifeGenes.lifegenes.cellList import cellList	#import LifeGenes cell definition
-from LifeGenes.lifegenes.cell     import cell as LGcell
+from LifeGenes.lifegenes_core.cellList import cellList	#import LifeGenes cell definition
+from LifeGenes.lifegenes_core.cell     import cell as LGcell
 
 # import time	#for delays when debugging
 
