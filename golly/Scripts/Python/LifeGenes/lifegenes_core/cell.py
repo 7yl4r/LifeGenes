@@ -8,6 +8,11 @@ BASES = ['A','B','C','D']	#DNA Base Pairs (BP)
 DNA_MINLEN = 10		#min base pairs in a genome 
 DNA_MAXLEN = 1000		#max base pairs in a genome
 
+START_DIRECTION = 'random'	#starting movement direction, should be 'random' by default, debug option is 'left'
+
+MAX_COLOR = 220
+MIN_COLOR = 1
+
 #strings which decrease value in neural network connection
 ANN_DN_CODONS = [['ABDD', 'CAAB', 'ABAD', 'CBBC'],\
 ['DDDA', 'DBAB', 'AADD', 'ABAB'],\
@@ -118,10 +123,8 @@ class cell:
 			return self.color
 		except AttributeError:
 			color = 110	#starting color in middle of range
-			maxColor = 220
-			minColor = 1
-			dc    = 1 	#delta color; amount of change when codon is detected
-			self.color = self.getGeneticValue(color,maxColor,minColor,dc,DARK_CODON,LIGHT_CODON)
+			dc    = 2 	#delta color; amount of change when codon is detected
+			self.color = self.getGeneticValue(color,MAX_COLOR,MIN_COLOR,dc,DARK_CODON,LIGHT_CODON)
 			return self.color
 
 	# returns a numeric value determined from DNA; codons MUST be same length TODO: fix this codon length issue
@@ -163,8 +166,8 @@ class cell:
 					self.weights[i][o] = self.getGeneticValue(startV,maxV,minV,delt,ANN_UP_CODONS[i][o],ANN_DN_CODONS[i][o])
 			return self.weights
 
-	# moves the cell as determined by DNA-encoded neural network (see wiki for more info)
-	def move(self,stateSetter,stateGetter):
+	# returns the direction and magnitude of movement & [None,0] if no movement
+	def getMovement(self,stateGetter):
 		num_ins  = len(ANN_UP_CODONS)
 		v = self.getVisualInput(stateGetter)
 		w = self.getNNweights()
@@ -174,20 +177,48 @@ class cell:
 				output[o] = v[i]*w[i][o]
 		dirVal = max(output) #cell moves in direction of greatest output
 		if dirVal < 1: #simple threshold
-			return
+			return [None,0]
+		elif dirVal == min(output): #if all dir values are equal
+			return [None,0]
 		else:
+			# this next nasty looking code checks for duplicates of dirval and chooses randomly between them.
 			direction = output.index(dirVal)
+			output.pop(direction)
+			try:
+				dir2 = output.index(dirVal)
+				output.pop(dir2)
+				try: #there are 3 equal max directions
+					dir3 = output.indx(dirVal)
+					output.pop(dir3)
+					r = randrange(1,3)
+					if r == 1 :pass
+					elif r == 2: direction = dir2
+					elif r == 3: direction = dir3
+					else: logging.error('error choosing between 3 max cell directions')
+				except ValueError: #there are 2 equal max directions
+					r = randrange(1,2)
+					if r == 1: pass
+					elif r == 2: direction = dir2
+					else: logging.error('error choosing btwn 2 max cell directions')
+			except ValueError: #there is only 1 max direction
+				pass
+					
 			if direction == 0:
-				d = 'up'
+				return ['up',dirVal]
 			elif direction ==1:
-				d = 'right'
+				return ['right',dirVal]
 			elif direction == 2:
-				d = 'down'
+				return ['down',dirVal]
 			elif direction == 3:
-				d = 'left'
+				return ['left',dirVal]
 			else: 
 				logging.error('direction number "'+str(direction)+'" not recognized')
-				return
+				return [None,0]
+			
+	# moves the cell as determined by DNA-encoded neural network (see wiki for more info)
+	def move(self,stateSetter,stateGetter):
+		[d,mag] = self.getMovement(stateGetter)
+		if mag > 0:
 			self.moveOne(d,stateSetter,stateGetter)
 		
 	# allows the cell to move one space in given direction
