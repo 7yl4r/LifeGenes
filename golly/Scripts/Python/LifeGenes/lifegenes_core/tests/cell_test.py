@@ -34,7 +34,7 @@ def simpleCellDiagnostic(cell):
 	print '  color: '+str(cell.getColor())
 	print ' ================================================='
 	
-# generates n random cells and checks bell curve of color values histogram
+# checks for bell curve of color values in given cell list
 def checkColorHistogram(cellList):
 	print '\n === checking color histogram === '
 	checkValueSpread(cellList,5,MIN_COLOR,MAX_COLOR,'getColor()')
@@ -70,7 +70,7 @@ def checkValueSpread(cellList,nBins,min,max,cellValueGetterCallString):
 		else: print str(i)+'=?='+str(nBins/2)
 		assert histogram[i] > 0, 'values not spread well enough'
 	
-# generates n random cells, checks for flat direction histogram 
+# checks for flat direction histogram  in given cellList
 # TODO: also check for bell-curve of magnitudes
 def checkMovementHistogram(cellList):
 	print '\n === checking direction histogram === '
@@ -80,7 +80,7 @@ def checkMovementHistogram(cellList):
 	left = 0
 	right = 0
 	none = 0 
-	thresh = n/10 # ~10% variance between values allowed
+	thresh = n/100*10 # ~10% deviation from balance is allowed
 	def dummyStateGetter(x,y):
 		return 1
 	for c in cellList:
@@ -117,7 +117,7 @@ def timedRuns(test,n):	#TODO: add args parameter
 	print "tests complete. est avg time to complete:"+str((eTime-sTime)/n)+'s'
 	
 #Main:
-n = 500 #number of cells in histogram tests
+n = 5000 #number of cells in histogram tests
 cellList = list()
 for i in range(n):
 	cellList.append(cell(1,1))

@@ -129,7 +129,7 @@ class cell:
 			return self.color
 
 	# returns a numeric value determined from DNA; codons MUST be same length TODO: fix this codon length issue
-	#this is a depreciated function which I am keeping here b/c I don't quite trust the new one yet...
+	#NOTE: this is a depreciated function which I am keeping here b/c I don't quite trust the new one yet...
 	def getGeneticValue_alt(self,startVal,maxVal,minVal,delta,upCodon,downCodon):
 		genes = ''.join(self.DNA)	#convert from DNA char array to string (to use slicing)
 		v = startVal
