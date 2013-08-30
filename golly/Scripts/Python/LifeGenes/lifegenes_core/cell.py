@@ -1,7 +1,6 @@
 # LifeGenes cell genome definition 
 
 from random import randrange
-
 import logging
 
 BASES = ['A','B','C','D']	#DNA Base Pairs (BP)
@@ -10,12 +9,14 @@ DNA_MAXLEN = 1000		#max base pairs in a genome
 
 START_DIRECTION = 'random'	#starting movement direction, should be 'random' by default, debug option is 'left'
 
+#NOTE: do not change these two min/max values unless you have modified the constant.icons file as well
 MAX_COLOR = 220
 MIN_COLOR = 1
+DARK_CODON  = 'A'
+LIGHT_CODON = 'B'
 
 NN_MAX = 10
 NN_MIN = -10
-
 #strings which decrease value in neural network connection
 ANN_DN_CODONS = [['ABDD', 'CAAB', 'ABAD', 'CBBC'],\
 ['DDDA', 'DBAB', 'AADD', 'ABAB'],\
@@ -57,9 +58,6 @@ ANN_UP_CODONS = [['CDCB', 'BABB', 'ACAC', 'ABCB'],\
 ['CBDB', 'BABC', 'BCCB', 'ADDB'],\
 ['ADAC', 'BBBD', 'DBBD', 'DDAB'],\
 ['DAAB', 'ADBA', 'AAAD', 'CBBA']]
-
-DARK_CODON  = 'A'
-LIGHT_CODON = 'B'
 
 # TODO: genetically calculated values need only be calculated once and then stored for future reference. This will greatly improve efficiency.
 
