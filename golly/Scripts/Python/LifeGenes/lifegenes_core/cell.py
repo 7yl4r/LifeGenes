@@ -129,7 +129,8 @@ class cell:
 			return self.color
 
 	# returns a numeric value determined from DNA; codons MUST be same length TODO: fix this codon length issue
-	def getGeneticValue(self,startVal,maxVal,minVal,delta,upCodon,downCodon):
+	#this is a depreciated function which I am keeping here b/c I don't quite trust the new one yet...
+	def getGeneticValue_alt(self,startVal,maxVal,minVal,delta,upCodon,downCodon):
 		genes = ''.join(self.DNA)	#convert from DNA char array to string (to use slicing)
 		v = startVal
 		pass # logging.debug('looking for strings '+str(downCodon)+' and '+str(upCodon))
@@ -145,6 +146,28 @@ class cell:
 		if v > maxVal : v = maxVal
 		if v < minVal : v = minVal
 		return v
+	
+	# returns a numeric value determined from DNA;
+	def getGeneticValue(self,startVal,maxVal,minVal,delta,upCodon,downCodon):
+		string = ''.join(self.DNA)
+		v = startVal
+		
+		start = 0
+		while True:
+			start = string.find(upCodon, start) + 1
+			if start > 0:
+				v+=delta
+			else:
+				break
+		start = 0
+		while True:
+			start = string.find(downCodon,start) + 1
+			if start > 0:
+				v-=delta
+			else:
+				if v > maxVal : v = maxVal
+				if v < minVal : v = minVal
+				return v
 
 	# gets the weights for ANN connections (see wiki for more info)
 	def getNNweights(self):
