@@ -7,10 +7,11 @@ This is a highly collaborative project in progress originating from [/r/collabor
 
 ### Current Cell Traits ###
 * color - expressed using a 256 state layer using custom golly rule 'constant.table'
+* Neural network based AI which determines cell movement
 
 ### Planned Cell Traits ###
-* Neural network based AI
 * mass/speed movement rules
+* Neural network based AI which releases/recieves inter-cell communication signals (i.e. chemoreceptors)
 
 ## Getting Started ##
 1. *install golly & Python* - These scripts must be run from within golly (v2.5 tested) and you need python v2.7 (v3.3 has known compatibilty issues with golly) to run them. Start out by installing and playing around with those two a bit if you aren't already familiar.
