@@ -11,7 +11,8 @@ from LifeGenes.lifegenes_core.cellList import cellList	#import LifeGenes cell de
 from LifeGenes.lifegenes_core.cell     import cell as LGcell
 from LifeGenes.lifegenes_core.setupLog import setupLog
 
-setupLog('evolveWithColor.log')
+import logging
+setupLog('colorCells.log')
 
 class run():
 	def __init__(self):

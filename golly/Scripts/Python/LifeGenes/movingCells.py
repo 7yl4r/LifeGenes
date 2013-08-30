@@ -11,27 +11,11 @@ from LifeGenes.lifegenes_core.cell     import cell as LGcell
 
 # import time	#for delays when debugging
 
-#BEGIN setup log file for this script:
-from os.path import expanduser
-home = expanduser("~")
-logDir = home+'/LifeGenes/__logs'
-from os import mkdir
-try:
-	mkdir(logDir)
-except OSError:
-	pass # probably the dir already exists...
-logName = logDir+'/movingCells.log'
+from LifeGenes.lifegenes_core.setupLog import setupLog
+
 import logging
-print str(logging.getLogger())
-logging.basicConfig(filename=logName,\
-	                level=logging.DEBUG,\
-	                format='%(asctime)s %(levelname)s:%(message)s',\
-                   filemode='w')
-#NOTE: this file only resets when golly is restarted, 
-#      otherwise the log object is retained and reused, 
-#      appending to the file as the script is run multiple times
-g.show('created .log at '+str(logName))
-#END log file setup
+setupLog('movingCells.log')
+
 
 class run():
 	def __init__(self):
