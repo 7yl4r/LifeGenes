@@ -3,7 +3,7 @@
 
 The LifeGenes project for genetic cellular automaton adds genetic inheritance and various traits to the cells in [Conway's Game of Life](http://en.wikipedia.org/wiki/Conway's_Game_of_Life). This is accomplished through [golly](http://golly.sourceforge.net/)'s python scripting interface. 
 
-This is a highly collaborative project in progress originating from [/r/collaboratecode](http://www.reddit.com/r/CollaborateCode/); please don't hesitate to contact us or to join in the fun! For help and more information check out [the wiki](https://github.com/7yl4r/LifeGenes/wiki), our [google+ community](https://plus.google.com/communities/117413839180254151272), or the tentative [project outline](https://docs.google.com/document/d/1J2VmziJeNyKQskGeW49x_LJf8Pt3dW5QQK-ghKpZ8bw/edit?usp=sharing).
+This is a highly collaborative project in progress originating from [/r/collaboratecode](http://www.reddit.com/r/CollaborateCode/); please don't hesitate to fork, send pull requests, report issues, or ask questions! For help and more information check out [the wiki](https://github.com/7yl4r/LifeGenes/wiki), our [google+ community](https://plus.google.com/communities/117413839180254151272), or the tentative [project outline](https://docs.google.com/document/d/1J2VmziJeNyKQskGeW49x_LJf8Pt3dW5QQK-ghKpZ8bw/edit?usp=sharing).
 
 ### Current Cell Traits ###
 * color - expressed using a 256 state layer using custom golly rule 'constant.table'
