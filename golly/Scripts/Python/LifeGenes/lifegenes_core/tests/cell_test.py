@@ -27,55 +27,22 @@ def simpleCellTest():
 
 # prints out simple diagnostic info for cell to show traits
 def simpleCellDiagnostic(cell):
-	print ' === cell diagnostic ==='
+	print '\n === === === === cell diagnostic === === === ==='
 	print '    DNA: '+str(cell.DNA)
 	print ' DNAlen: '+str(len(cell.DNA))
 	print '    loc: ('+str(cell.x)+','+str(cell.y)+')'
 	print '  color: '+str(cell.getColor())
-	print ' ======================='
+	print ' ================================================='
 	
 # generates n random cells and checks bell curve of color values histogram
-def checkColorHistogram(n):
-	print ' === checking color histogram === '
-	nBins = 5
-	binSize = floor((MAX_COLOR - MIN_COLOR)/nBins)
-	histogram = [0]*nBins
-	binEdge = [0]*(nBins+1)
-	binEdge[0] = MIN_COLOR
-	for i in range(1,nBins+1):
-		binEdge[i] = binEdge[i-1] + binSize
-	binEdge[nBins] = MAX_COLOR
-	print 'binEdges='+str(binEdge)
-	for i in range(n):
-		c = cell(1,1)
-		v = c.getColor();
-		for i in range(nBins):
-			if v <= binEdge[i+1]:
-				histogram[i]+=1
-				break
-		
-	print 'colorVal histogram: '+str(histogram)
-	for i in range(1,nBins):
-		if i < nBins/2.0:
-			assert histogram[i]>=histogram[i-1], 'color values biased low'
-		elif i > nBins/2.0:
-			assert histogram[i]<=histogram[i-1], 'color values biased high'
-		else: print str(i)+'=?='+str(nBins/2)
-		assert histogram[i] > 0, 'color values not spread well enough'
+def checkColorHistogram(cellList):
+	print '\n === checking color histogram === '
+	checkValueSpread(cellList,5,MIN_COLOR,MAX_COLOR,'getColor()')
 	print ' ================================ '
-
-	# prints out simple diagnostic info for cell to show traits
-def simpleCellDiagnostic(cell):
-	print ' === cell diagnostic ==='
-	print '    DNA: '+str(cell.DNA)
-	print ' DNAlen: '+str(len(cell.DNA))
-	print '    loc: ('+str(cell.x)+','+str(cell.y)+')'
-	print '  color: '+str(cell.getColor())
-	print ' ======================='
 	
 # checks for bell-curve distribution of NN weights in given cell list
 def checkNNweights(cellList):
-	print ' === checking NN histogram === '
+	print '\n === checking NN histogram === '
 	checkValueSpread(cellList,5,NN_MIN,NN_MAX,'getNNweights()[0][0]')
 	print ' ================================ '
 	
@@ -97,16 +64,16 @@ def checkValueSpread(cellList,nBins,min,max,cellValueGetterCallString):
 	print 'histogram: '+str(histogram)
 	for i in range(1,nBins):
 		if i < nBins/2.0:
-			assert histogram[i]>=histogram[i-1], 'color values biased low'
+			assert histogram[i]>=histogram[i-1], 'values biased low'
 		elif i > nBins/2.0:
-			assert histogram[i]<=histogram[i-1], 'color values biased high'
+			assert histogram[i]<=histogram[i-1], 'values biased high'
 		else: print str(i)+'=?='+str(nBins/2)
-		assert histogram[i] > 0, 'color values not spread well enough'
+		assert histogram[i] > 0, 'values not spread well enough'
 	
 # generates n random cells, checks for flat direction histogram 
 # TODO: also check for bell-curve of magnitudes
-def checkMovementHistogram(n):
-	print ' === checking direction histogram === '
+def checkMovementHistogram(cellList):
+	print '\n === checking direction histogram === '
 	#counts for each case:
 	up = 0
 	down = 0 
@@ -116,8 +83,7 @@ def checkMovementHistogram(n):
 	thresh = n/10 # ~10% variance between values allowed
 	def dummyStateGetter(x,y):
 		return 1
-	for i in range(n):
-		c = cell(1,1)
+	for c in cellList:
 		[v,mag] = c.getMovement(dummyStateGetter);
 		if v =='up': up+=1
 		elif v=='down': down+=1
@@ -131,7 +97,7 @@ def checkMovementHistogram(n):
 	assert up+down+left+right+none == n, 'incorrect count!'
 	r = max([up,down,left,right])-min([up,down,left,right])
 	assert r<thresh,\
-		'direction spread is not equal. bias='+str(r/n)
+		'direction spread is not equal. bias='+str(float(r)/float(n))
 	#TODO: check for magnitude spread (i.e. the number of 'none's)
 	print ' ==================================== '
 
@@ -151,15 +117,15 @@ def timedRuns(test,n):	#TODO: add args parameter
 	print "tests complete. est avg time to complete:"+str((eTime-sTime)/n)+'s'
 	
 #Main:
-n = 1000 #number of cells in histogram tests
+n = 500 #number of cells in histogram tests
 cellList = list()
 for i in range(n):
 	cellList.append(cell(1,1))
 #timedRuns(cell,[123,345],100)
 simpleCellDiagnostic(simpleCellTest())
-checkColorHistogram(100)
+checkColorHistogram(cellList)
 checkNNweights(cellList)
-checkMovementHistogram(100)
+checkMovementHistogram(cellList)
 
 #endMain
 
