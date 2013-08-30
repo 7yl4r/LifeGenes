@@ -1,6 +1,6 @@
 # this set of unit tests is meant to be run from a command line to test aspects of the LifeGenes outside of golly.
 
-from ..cell import cell, DNA_MINLEN, DNA_MAXLEN, MAX_COLOR, MIN_COLOR
+from ..cell import cell,DNA_MINLEN,DNA_MAXLEN,MAX_COLOR,MIN_COLOR,NN_MIN,NN_MAX,BASES
 from random import randrange
 from time import time
 from math import floor
@@ -16,6 +16,10 @@ def simpleCellTest():
 	
 	assert len(c.DNA) >= DNA_MINLEN, 'cell DNA too small'
 	assert len(c.DNA) <= DNA_MAXLEN, 'cell DNA too large'
+	
+	for base in BASES:
+		try: c.DNA.index(base)
+		except: assert False, str(c.DNA)+'\nDNA string does not have each base'+str(BASES)
 	
 	# TODO: check for other value errors
 	
@@ -69,6 +73,36 @@ def simpleCellDiagnostic(cell):
 	print '  color: '+str(cell.getColor())
 	print ' ======================='
 	
+# checks for bell-curve distribution of NN weights in given cell list
+def checkNNweights(cellList):
+	print ' === checking NN histogram === '
+	checkValueSpread(cellList,5,NN_MIN,NN_MAX,'getNNweights()[0][0]')
+	print ' ================================ '
+	
+def checkValueSpread(cellList,nBins,min,max,cellValueGetterCallString):
+	binSize = floor((max - min)/nBins)
+	histogram = [0]*nBins
+	binEdge = [0]*(nBins+1)
+	binEdge[0] = min
+	for i in range(1,nBins+1):
+		binEdge[i] = binEdge[i-1] + binSize
+	binEdge[nBins] = max
+	print 'binEdges='+str(binEdge)
+	for c in cellList:
+		v = eval('c.'+cellValueGetterCallString);
+		for i in range(nBins):
+			if v <= binEdge[i+1]:
+				histogram[i]+=1
+				break
+	print 'histogram: '+str(histogram)
+	for i in range(1,nBins):
+		if i < nBins/2.0:
+			assert histogram[i]>=histogram[i-1], 'color values biased low'
+		elif i > nBins/2.0:
+			assert histogram[i]<=histogram[i-1], 'color values biased high'
+		else: print str(i)+'=?='+str(nBins/2)
+		assert histogram[i] > 0, 'color values not spread well enough'
+	
 # generates n random cells, checks for flat direction histogram 
 # TODO: also check for bell-curve of magnitudes
 def checkMovementHistogram(n):
@@ -115,12 +149,16 @@ def timedRuns(test,n):	#TODO: add args parameter
 	for ttt in t:
 		print '|'*int(round(ttt*scale))
 	print "tests complete. est avg time to complete:"+str((eTime-sTime)/n)+'s'
-
+	
 #Main:
 n = 100 #number of cells in histogram tests
+cellList = list()
+for i in range(n):
+	cellList.append(cell(1,1))
 #timedRuns(cell,[123,345],100)
 simpleCellDiagnostic(simpleCellTest())
 checkColorHistogram(100)
+checkNNweights(cellList)
 checkMovementHistogram(100)
 
 #endMain

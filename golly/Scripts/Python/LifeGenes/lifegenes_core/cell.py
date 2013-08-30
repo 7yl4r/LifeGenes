@@ -13,6 +13,9 @@ START_DIRECTION = 'random'	#starting movement direction, should be 'random' by d
 MAX_COLOR = 220
 MIN_COLOR = 1
 
+NN_MAX = 10
+NN_MIN = -10
+
 #strings which decrease value in neural network connection
 ANN_DN_CODONS = [['ABDD', 'CAAB', 'ABAD', 'CBBC'],\
 ['DDDA', 'DBAB', 'AADD', 'ABAB'],\
@@ -151,8 +154,6 @@ class cell:
 			return self.weights
 		except AttributeError:
 			startV = 0	#starting value in middle of range
-			maxV = 1000
-			minV = -1000
 			delt = 1 	# amount of change when codon is detected
 			num_outs = 4
 			num_ins  = len(ANN_UP_CODONS)
@@ -163,7 +164,7 @@ class cell:
 			for i in range(num_ins):
 				for o in range(num_outs):
 					pass # logging.debug('looking for codon['+str(i)+']['+str(o)+']')
-					self.weights[i][o] = self.getGeneticValue(startV,maxV,minV,delt,ANN_UP_CODONS[i][o],ANN_DN_CODONS[i][o])
+					self.weights[i][o] = self.getGeneticValue(startV,NN_MAX,NN_MIN,delt,ANN_UP_CODONS[i][o],ANN_DN_CODONS[i][o])
 			return self.weights
 
 	# returns the direction and magnitude of movement & [None,0] if no movement
