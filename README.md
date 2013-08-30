@@ -15,7 +15,7 @@ This is a highly collaborative project in progress originating from [/r/collabor
 
 ## Getting Started ##
 1. *install golly & Python* - These scripts must be run from within golly (v2.5 tested) and you need python v2.7 (v3.3 has known compatibilty issues with golly) to run them. Start out by installing and playing around with those two a bit if you aren't already familiar.
-2. *place scripts and rules where golly can find them* - find golly's install directory and then merge our 'golly' folder with the install directory (called 'golly' by default). The file structure should be properly set up to make sure all scripts, rules, and patterns end up in their right place.
+2. *place scripts and rules where golly can find them* - find golly's install directory and then merge our 'golly' folder with the install directory (called 'golly' by default). HINT: golly's home directory will be something like '/usr/share/golly' for ubuntu or 'C:\Program Files\golly\' for windows. The file structure should be properly set up to make sure all scripts, rules, and patterns end up in their right place.
 3. *Load the scripts in golly* - [from golly's python instructions](http://golly.sourceforge.net/Help/python.html): To run one of these scripts, tick the Show Scripts item in the File menu and then simply click on the script's name. You can also select one of the Run items in the File menu.
 4. *Observe genetic evolution in action!*
 
