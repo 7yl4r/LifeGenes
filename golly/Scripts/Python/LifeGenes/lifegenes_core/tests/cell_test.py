@@ -151,7 +151,7 @@ def timedRuns(test,n):	#TODO: add args parameter
 	print "tests complete. est avg time to complete:"+str((eTime-sTime)/n)+'s'
 	
 #Main:
-n = 100 #number of cells in histogram tests
+n = 1000 #number of cells in histogram tests
 cellList = list()
 for i in range(n):
 	cellList.append(cell(1,1))

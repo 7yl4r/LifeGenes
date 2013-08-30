@@ -75,7 +75,7 @@ class cell:
 		DNAlen = randrange(DNA_MINLEN,DNA_MAXLEN)
 		self.DNA = list()
 		for i in range(DNAlen):
-			self.DNA.append(BASES[randrange(0,len(BASES)-1)])
+			self.DNA.append(BASES[randrange(0,len(BASES))])
 
 	# generates DNA string from given parent cells
 	def inheritDNA(self,parents):
@@ -189,7 +189,7 @@ class cell:
 				dir2 = output.index(dirVal)
 				output.pop(dir2)
 				try: #there are 3 equal max directions
-					dir3 = output.indx(dirVal)
+					dir3 = output.index(dirVal)
 					output.pop(dir3)
 					r = randrange(1,3)
 					if r == 1 :pass
