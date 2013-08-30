@@ -61,14 +61,6 @@ class cell:
 		self.x = X
 		self.y = Y
 
-	# return color value 1-255 generated from first 10 BP of DNA
-	def getColor(self):	
-		color = 110	#starting color in middle of range
-		maxColor = 220
-		minColor = 1
-		dc    = 1 	#delta color; amount of change when codon is detected
-		return self.getGeneticValue(color,maxColor,minColor,dc,DARK_CODON,LIGHT_CODON)
-
 	# generates a random DNA string using bases defined in BASES
 	def randomizeDNA(self):
 		global BASES
@@ -120,7 +112,20 @@ class cell:
 		        stateGetter(self.x  ,self.y+2),\
 		        stateGetter(self.x+1,self.y+2)]
 
-	# returns a numeric value determined from DNA; codons MUST be same length TODO: fix this
+	# return color value 1-255 generated from first 10 BP of DNA
+	def getColor(self):	
+		try:
+			return self.color
+		except AttributeError:
+			color = 110	#starting color in middle of range
+			maxColor = 220
+			minColor = 1
+			dc    = 1 	#delta color; amount of change when codon is detected
+			self.color = self.getGeneticValue(color,maxColor,minColor,dc,DARK_CODON,LIGHT_CODON)
+			return self.color
+
+				
+	# returns a numeric value determined from DNA; codons MUST be same length TODO: fix this codon length issue
 	def getGeneticValue(self,startVal,maxVal,minVal,delta,upCodon,downCodon):
 		genes = ''.join(self.DNA)	#convert from DNA char array to string (to use slicing)
 		v = startVal
@@ -140,21 +145,24 @@ class cell:
 
 	# gets the weights for ANN connections (see wiki for more info)
 	def getNNweights(self):
-		startV = 0	#starting color in middle of range
-		maxV = 1000
-		minV = -1000
-		delt = 1 	# amount of change when codon is detected
-		num_outs = 4
-		num_ins  = len(ANN_UP_CODONS)
-		pass #logging.debug('weights should be '+str(num_ins)+'x'+str(num_outs))
-		weights = [ [startV]*num_outs ]*num_ins	# inputs x outputs list
-		pass # logging.debug('weights is '+str(len(weights))+' items in total')
-		pass # logging.debug(str(num_ins)+'x'+str(num_outs)+' weights list created:\n'+str(weights))
-		for i in range(num_ins):
-			for o in range(num_outs):
-				pass # logging.debug('looking for codon['+str(i)+']['+str(o)+']')
-				weights[i][o] = self.getGeneticValue(startV,maxV,minV,delt,ANN_UP_CODONS[i][o],ANN_DN_CODONS[i][o])
-		return weights
+		try:
+			return self.weights
+		except AttributeError:
+			startV = 0	#starting value in middle of range
+			maxV = 1000
+			minV = -1000
+			delt = 1 	# amount of change when codon is detected
+			num_outs = 4
+			num_ins  = len(ANN_UP_CODONS)
+			pass #logging.debug('weights should be '+str(num_ins)+'x'+str(num_outs))
+			self.weights = [ [startV]*num_outs ]*num_ins	# inputs x outputs list
+			pass # logging.debug('weights is '+str(len(weights))+' items in total')
+			pass # logging.debug(str(num_ins)+'x'+str(num_outs)+' weights list created:\n'+str(weights))
+			for i in range(num_ins):
+				for o in range(num_outs):
+					pass # logging.debug('looking for codon['+str(i)+']['+str(o)+']')
+					self.weights[i][o] = self.getGeneticValue(startV,maxV,minV,delt,ANN_UP_CODONS[i][o],ANN_DN_CODONS[i][o])
+			return self.weights
 
 	# moves the cell as determined by DNA-encoded neural network (see wiki for more info)
 	def move(self,stateSetter,stateGetter):
