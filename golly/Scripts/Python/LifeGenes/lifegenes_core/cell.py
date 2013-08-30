@@ -124,7 +124,6 @@ class cell:
 			self.color = self.getGeneticValue(color,maxColor,minColor,dc,DARK_CODON,LIGHT_CODON)
 			return self.color
 
-				
 	# returns a numeric value determined from DNA; codons MUST be same length TODO: fix this codon length issue
 	def getGeneticValue(self,startVal,maxVal,minVal,delta,upCodon,downCodon):
 		genes = ''.join(self.DNA)	#convert from DNA char array to string (to use slicing)
@@ -132,12 +131,12 @@ class cell:
 		pass # logging.debug('looking for strings '+str(downCodon)+' and '+str(upCodon))
 		L = len(downCodon) # == len(upCodon)
 		for i in range( len(self.DNA)-L ):
-			s_dn = genes[i:(i+len(downCodon))]
-			s_up = genes[i:(i+len(upCodon))]
-			pass # logging.debug('checking strings '+str(s_dn)+' and '+str(s_up))
-			if s_dn == downCodon:
+			#s_dn = genes[i:(i+len(downCodon))]
+			#s_up = genes[i:(i+len(upCodon))]
+			#logging.debug('checking strings '+str(s_dn)+' and '+str(s_up))
+			if genes[i:(i+len(downCodon))] == downCodon:
 				v-=delta
-			if s_up == upCodon:
+			if genes[i:(i+len(upCodon))] == upCodon:
 				v+=delta
 		if v > maxVal : v = maxVal
 		if v < minVal : v = minVal

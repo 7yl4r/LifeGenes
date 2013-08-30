@@ -25,18 +25,29 @@ class run():
 		logging.info('setup complete; beginning evolution cycles')
 		try:
 			while(True):	#until stopped by golly
-				for i in range(3): # 5 rounds of cell movement				
+				g.show('cells moving')
+				for i in range(20): # rounds of cell movement
+					#logging.debug('movement round '+str(i))
 					self.cellMotions()
+					#logging.debug('cells moved')
 					self.drawColor()
+					#logging.debug('cells recolored')
 					g.update()
+					#logging.debug('golly updated')
 					#time.sleep(1)
 
+				g.show('cells evolving')
 				# one round of evolution:
+				#logging.debug('evolution round started')
 				g.step()
 				#g.update()
+				#logging.debug('golly evolution complete')
 				self.update()
+				#logging.debug('cellList updated')
 				self.drawColor()
+				#logging.debug('cells recolored')
 				g.update()
+				#logging.debug('golly updated')
 				#time.sleep(1)
 		finally:
 				logging.info('cycling halted from external source (probably golly)')
@@ -47,10 +58,7 @@ class run():
 	#     layer must be on the original layer, NOT the color layer.
 	def cellMotions(self):
 		for cell in self.cellList.cells:
-			direc = 'right' #cell.getMovementDirection()	
-			dist  = 1 #cell.getSpeed()
 			cell.move(g.setcell,g.getcell)
-			#cell.moveNum(direc,dist,g.setcell,g.getcell)
 
 	#removes genetic material from cell no longer in environment layer
 	def removeDeadCells(self):
