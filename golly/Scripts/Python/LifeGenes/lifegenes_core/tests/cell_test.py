@@ -1,24 +1,35 @@
 # this set of unit tests is meant to be run from a command line to test aspects of the LifeGenes outside of golly.
 
-from LifeGenesGolly.lifegenes.cell import cell
+from ..cell import cell, DNA_MINLEN, DNA_MAXLEN
 from random import randrange
 from time import time
 
 # test the cell class
-def cellTest():
+def simpleCellTest():
 	x = randrange(10000)
 	y = randrange(10000)
 	print '=== cell('+str(x)+','+str(y)+') result ==='
 	c = cell(x,y)
+	
+	assert cell.X == x, 'cell x location incorrect'
+	assert cell.Y == y, 'cell y location incorrect'
+	
+	assert len(cell.DNA) >= DNA_MINLEN, 'cell DNA too small'
+	assert len(cell.DNA) <= DNA_MAXLEN, 'cell DNA too large'
+	
 	cellDiagnostic(c)
 	# TODO: check for any value errors (but I don't see any and that's good enough for me right now)
 
-# prints out diagnostic info for cell to show traits
-def cellDiagnostic(cell):
-	print '   DNA: '+str(cell.DNA)
-	print 'DNAlen: '+str(len(cell.DNA))
-	print '   loc: ('+str(cell.x)+','+str(cell.y)+')'
-	print ' color: '+str(cell.getColor())
+# prints out simple diagnostic info for cell to show traits
+def simpleCellDiagnostic(cell):
+	print '    DNA: '+str(cell.DNA)
+	print ' DNAlen: '+str(len(cell.DNA))
+	print '    loc: ('+str(cell.x)+','+str(cell.y)+')'
+	print '  color: '+str(cell.getColor())
+	
+# generates random cells and outputs histogram data of color values
+def cellColorHistogram():
+	print [0,0,0,0,0,0]
 
 # runs a given test n times and makes a simple display
 def timedRuns(test,n):
@@ -37,6 +48,6 @@ def timedRuns(test,n):
 
 #Main:
 n = 10	#number of runs
-timedRuns(cellTest,n)
+timedRuns(cell(123,345),n)
 #endMain
 
