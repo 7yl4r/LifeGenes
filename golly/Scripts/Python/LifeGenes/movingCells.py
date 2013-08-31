@@ -26,7 +26,7 @@ class run():
 		try:
 			while(True):	#until stopped by golly
 				g.show('cells moving')
-				for i in range(20): # rounds of cell movement
+				for i in range(5): # rounds of cell movement
 					#logging.debug('movement round '+str(i))
 					self.cellMotions()
 					#logging.debug('cells moved')
