@@ -7,8 +7,6 @@ BASES = ['A','B','C','D']	#DNA Base Pairs (BP)
 DNA_MINLEN = 10		#min base pairs in a genome 
 DNA_MAXLEN = 1000		#max base pairs in a genome
 
-START_DIRECTION = 'random'	#starting movement direction, should be 'random' by default, debug option is 'left'
-
 #NOTE: do not change these two min/max values unless you have modified the constant.icons file as well
 MAX_COLOR = 220
 MIN_COLOR = 1
