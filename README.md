@@ -20,3 +20,7 @@ This is a highly collaborative project in progress originating from [/r/collabor
 4. *Observe genetic evolution in action!*
 
 Advanced users may want to *modify scripts* - [golly's python instructions](http://golly.sourceforge.net/Help/python.html) contain golly's python scripting documentation. Note that (on Linux) golly can get confused after experiencing a python bug and persistant errors while debugging can sometimes be fixed by restarting golly. Similarly, imported files will not get re-imported when re-running a script unless golly restarts.
+
+## Acknowledgements & Dependencies##
+All module dependencies are packaged into the LifeGenes.lifegenes_core.__util directory and no setup or worry about them is needed, but they help make this work possible and merit mention here:
+* [appdirs](https://pypi.python.org/pypi/appdirs/1.2.0) - "A small Python module for determining appropriate platform-specific dirs". Used under permission of the [MIT License](http://opensource.org/licenses/MIT).
