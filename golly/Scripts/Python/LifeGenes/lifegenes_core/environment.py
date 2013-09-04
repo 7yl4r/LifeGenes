@@ -1,9 +1,11 @@
-import golly
+try: import golly
+except: 
+	print 'could not load golly, using folly instead'
+	from tests.folly import folly as golly
 import logging
 
 from LifeGenes.lifegenes_core.cellList import cellList	#import LifeGenes cell definition
 from LifeGenes.lifegenes_core.cell     import cell as LGcell
-from glife import rect
 
 class environment:
 	# prepares the needed data structures

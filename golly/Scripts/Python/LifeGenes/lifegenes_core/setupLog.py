@@ -1,7 +1,6 @@
 		#NOTE: this file only resets when golly is restarted, 
 		#      otherwise the log object is retained and reused, 
 		#      appending to the file as the script is run multiple times
-import golly as g
 from os.path import expanduser,join
 from os import makedirs
 import logging
@@ -37,5 +36,8 @@ def setupLog(logName='noName.txt'):
 #							level=logging.DEBUG,\
 #							format='%(asctime)s %(levelname)s:%(message)s',\
 #							filemode='w')
-
-	g.show('created .log at '+str(logPath))
+	try:
+		import golly as g
+		g.show('created .log at '+str(logPath))
+	except:
+		print 'created .log at '+str(logPath)
