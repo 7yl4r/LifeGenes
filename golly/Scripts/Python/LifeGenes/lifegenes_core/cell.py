@@ -76,8 +76,7 @@ class cell:
 	# generates DNA string from given parent cells
 	def inheritDNA(self,parents):
 		if len(parents) != 3:
-			print 'ERR: cell needs 3 parents!'
-			self.DNA = [[BASES[0]*BASES[1]]*DNA_MINLEN]
+			exit('ERR: cell needs 3 parents!')
 			return
 		genes = [parents[0].DNA,parents[1].DNA,parents[2].DNA] #total genetic material to choose from
 		#implied else

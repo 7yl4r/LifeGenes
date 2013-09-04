@@ -22,20 +22,34 @@ def wait():
 		
 # MAIN
 logging.info('script started')
-nruns = 100
+nruns = 10
 
 print 'testing environment...'
 from LifeGenes.lifegenes_core.environment import environment as lifegenes_environment
 lg_envmt = lifegenes_environment()
-print 'testing drawColor'
-timedRuns(lg_envmt.drawColor,nruns)
-wait()
-print 'testing update()'
-timedRuns(lg_envmt.update,nruns)
-wait()
-print 'testing cellMotions()'
-timedRuns(lg_envmt.cellMotions,nruns)
+testNames = list()
+testTimes = list()
 
-wait()
+g.getcellsconfig = 'const growing'
+g.generation = 0
+print 'testing drawColor for constantly growing cell list'
+testNames.append('drawColor')
+testTimes.append( timedRuns(lg_envmt.drawColor,nruns,lambda:[g.step(),lg_envmt.update()]) )
+#wait()
 
+g.getcellsconfig = 'const growing'
+g.generation = 0 
+print 'testing update() for constantly growing cell list'
+testNames.append('update()')
+testTimes.append( timedRuns(lg_envmt.update,nruns,g.step) )
+#wait()
 
+g.getcellsconfig = 'const growing'
+g.generation = 0 
+print 'testing cellMotions() for constantly growing cell list'
+testNames.append('cellMotions()')
+testTimes.append( timedRuns(lg_envmt.cellMotions,nruns,lambda:[g.step(),lg_envmt.update()]) )
+#wait()
+
+slowest = max(testTimes)
+print '\n'+testNames[testTimes.index(slowest)]+' had worst performance of '+str(slowest)+'s'

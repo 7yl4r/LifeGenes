@@ -11,6 +11,8 @@ class follyInstance:
 		self.layerRules   = ['life']
 		self.nLayers      = 1
 		self.maxLayers    = 10
+		self.generation   = 0
+		self.getcellsconfig= 'const growing'#'const change 1k' #'no change 1k' #'no change few'
 		
 	# golly behavior:
 	#Add a new, empty layer immediately after the current layer and return the new layer's index, 
@@ -51,20 +53,35 @@ class follyInstance:
 	# The given list can be empty (in which case the cell list is empty) 
 	# or it must represent a valid rectangle of the form [x,y,width,height].
 	def getcells(self,boundingRect):
-	#	# return a couple of cells:
-	#	return [0  ,1,\
-	#	        1  ,1,\
-	#			1  ,0,\
-	#			100,121]
-				
-		# return many cells:
-		cellList = list()
-		for cellN in range(1000):
-			cellList.append(cellN)   #x loc
-			cellList.append(0)       #y loc
-		return cellList
-			
-			
+		if self.getcellsconfig == 'no change few':
+			# return a couple of cells:
+			return [0  ,1,\
+					1  ,1,\
+					1  ,0,\
+					0  ,0]
+		elif self.getcellsconfig == 'no change 1k':
+			# return the same many cells every time:
+			cellList = list()
+			for cellN in range(1000):
+				cellList.append(cellN)   #x loc
+				cellList.append(0)       #y loc
+			return cellList
+		elif self.getcellsconfig == 'const change 1k':
+			# return different 1k cells every time, i.e. all cells in last generation die and are replaced
+			cellList = list()
+			for cellN in range(1000):
+				cellList.append(cellN)
+				cellList.append(self.generation)
+			return cellList
+		elif self.getcellsconfig == 'const growing':
+			# return a list of cells which grows a const amount each generation and no cells ever die
+			cellList = list()
+			for cellN in range( (self.generation+1)*100):
+				cellList.append(cellN)
+				cellList.append(0)
+			return cellList
+		else:
+			self.exit('ERR: unrecognized getcellsconfig string')
 		
 	# matches golly behavior: 
 	# Return the index of the current layer, an integer from 0 to numlayers() - 1.
@@ -111,6 +128,7 @@ class follyInstance:
 		return
 		
 	def step(self):
+		self.generation+=1
 		return
 		
 	def update(self):
