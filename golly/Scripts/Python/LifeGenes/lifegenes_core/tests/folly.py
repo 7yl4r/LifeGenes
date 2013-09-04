@@ -51,11 +51,20 @@ class follyInstance:
 	# The given list can be empty (in which case the cell list is empty) 
 	# or it must represent a valid rectangle of the form [x,y,width,height].
 	def getcells(self,boundingRect):
-		# return a couple of cells:
-		return [0  ,1,\
-		        1  ,1,\
-				1  ,0,\
-				100,121]
+	#	# return a couple of cells:
+	#	return [0  ,1,\
+	#	        1  ,1,\
+	#			1  ,0,\
+	#			100,121]
+				
+		# return many cells:
+		cellList = list()
+		for cellN in range(1000):
+			cellList.append(cellN)   #x loc
+			cellList.append(0)       #y loc
+		return cellList
+			
+			
 		
 	# matches golly behavior: 
 	# Return the index of the current layer, an integer from 0 to numlayers() - 1.

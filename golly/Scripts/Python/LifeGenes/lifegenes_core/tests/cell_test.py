@@ -2,7 +2,6 @@
 
 from ..cell import cell,DNA_MINLEN,DNA_MAXLEN,MAX_COLOR,MIN_COLOR,NN_MIN,NN_MAX,BASES
 from random import randrange
-from time import time
 from math import floor
 
 # test the cell class
@@ -100,21 +99,6 @@ def checkMovementHistogram(cellList):
 		'direction spread is not equal. bias='+str(float(r)/float(n))
 	#TODO: check for magnitude spread (i.e. the number of 'none's)
 	print ' ==================================== '
-
-# runs a given test n times and makes a simple display
-def timedRuns(test,n):	#TODO: add args parameter
-	t = list()
-	sTime = time()
-	for i in range(n):
-		startTime = time()
-		test()
-		endTime = time()
-		t.append(endTime-startTime)
-	eTime = time()
-	scale = 40/max(t)
-	for ttt in t:
-		print '|'*int(round(ttt*scale))
-	print "tests complete. est avg time to complete:"+str((eTime-sTime)/n)+'s'
 	
 #Main:
 n = 5000 #number of cells in histogram tests

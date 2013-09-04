@@ -49,33 +49,10 @@ class environment:
 	def cellMotions(self, g=golly):
 		for cell in self.cellList.cells:
 			cell.move(g.setcell,g.getcell)
-
-	#removes genetic material from cell no longer in environment layer
-	def removeDeadCells(self, g=golly):
-		originL = g.getlayer() #starting layer
-		newPattern = g.getcells(g.getrect())
-		#g.note('newPattern='+str(newPattern))
-		g.setlayer(self.colorIndex) #switch to color layer
-		cellsToKill=list() #must keep this list to do at end or loops get fudged
-		for oldCell in self.cellList.cells:
-			for newCellIndex in range(len(newPattern)/2):
-				xi = newPattern[newCellIndex*2] #newCell location
-				yi = newPattern[newCellIndex*2+1]
-				if oldCell.x==xi and oldCell.y==yi:
-					#g.note('cell at '+str(xi)+','+str(yi)+' found.')
-					break #cell found in new pattern; move on
-			else: #if cell not found in new pattern; cell has died.
-				#g.note('cell at '+str(oldCell.x)+','+str(oldCell.y)+' not found.')
-				g.setcell(oldCell.x,oldCell.y,0)
-				cellsToKill.append([oldCell.x,oldCell.y])
-		for c in cellsToKill:
-			self.cellList.killCellAt(c[0],c[1])
-		g.setlayer(originL)
-
+			
 	#uses g.update() and fixes self.cellList to match
 	def update(self, g=golly):
 		#g.autoupdate(True)#while debugging
-
 		newPattern = g.getcells(g.getrect())
 		# generate DNA for new cells
 		cellsToAppend = list() #save this & add at end to not muck up the list
@@ -109,7 +86,6 @@ class environment:
 		# remove dead cells
 		self.removeDeadCells()
 
-
 	#draws colors onto custom color layer
 	def drawColor(self, g=golly):
 		originL = g.getlayer() #starting layer
@@ -127,3 +103,28 @@ class environment:
 		for c in self.cellList.cells:
 			g.setcell(c.x,c.y,c.getColor())
 		g.setlayer(originL) # set layer back to original layer
+
+# ========================== PRIVATE METHODS =======================================
+
+	#removes genetic material from cell no longer in environment layer
+	def removeDeadCells(self, g=golly):
+		originL = g.getlayer() #starting layer
+		newPattern = g.getcells(g.getrect())
+		#g.note('newPattern='+str(newPattern))
+		g.setlayer(self.colorIndex) #switch to color layer
+		cellsToKill=list() #must keep this list to do at end or loops get fudged
+		for oldCell in self.cellList.cells:
+			for newCellIndex in range(len(newPattern)/2):
+				xi = newPattern[newCellIndex*2] #newCell location
+				yi = newPattern[newCellIndex*2+1]
+				if oldCell.x==xi and oldCell.y==yi:
+					#g.note('cell at '+str(xi)+','+str(yi)+' found.')
+					break #cell found in new pattern; move on
+			else: #if cell not found in new pattern; cell has died.
+				#g.note('cell at '+str(oldCell.x)+','+str(oldCell.y)+' not found.')
+				g.setcell(oldCell.x,oldCell.y,0)
+				cellsToKill.append([oldCell.x,oldCell.y])
+		for c in cellsToKill:
+			self.cellList.killCellAt(c[0],c[1])
+		g.setlayer(originL)
+
