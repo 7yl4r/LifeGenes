@@ -50,8 +50,41 @@ class environment:
 		for cell in self.cellList.cells:
 			cell.move(g.setcell,g.getcell)
 			
-	#uses g.update() and fixes self.cellList to match
 	def update(self, g=golly):
+		newPattern = g.getcells(g.getrect())
+		# generate DNA for new cells
+		newList = list() #save this & add at end to not muck up the list
+		for newCellIndex in range(len(newPattern)/2): #for all cells in newCellIndex
+			#add the cell if it does not already exist
+			xi = newPattern[newCellIndex*2] #newCell location
+			yi = newPattern[newCellIndex*2+1]
+			existingCell = self.cellList.findCell(xi,yi)
+			if existingCell==None:
+				parents = list()
+				newCell = LGcell(xi,yi)
+				neighbors = [[newCell.x-1,newCell.y+1],\
+						 [newCell.x  ,newCell.y+1],\
+						 [newCell.x+1,newCell.y+1],\
+						 [newCell.x+1,newCell.y  ],\
+						 [newCell.x+1,newCell.y-1],\
+						 [newCell.x  ,newCell.y-1],\
+						 [newCell.x-1,newCell.y-1],\
+						 [newCell.x-1,newCell.y  ]]
+				for n in neighbors:
+					if self.cellList.findCell(n[0],n[1])!=None: #add neighbor as parent if exists
+						parents.append(self.cellList.findCell(n[0],n[1]))
+					#if len(parents)==3: #this *might* improve efficiency, but only a little
+					#	break
+				#g.note(str(newCell.x)+','+str(newCell.y)+' parents are: '+str(parents))
+				newCell.inheritDNA(parents)
+				newList.append(newCell)
+			else: #keep old cell info;
+				newList.append(existingCell)
+		self.cellList.cells = newList
+			
+	#uses g.update() and fixes self.cellList to match
+	# depreciated version kept around (temporarily) for testing
+	def update_depreciated(self, g=golly):
 		#g.autoupdate(True)#while debugging
 		newPattern = g.getcells(g.getrect())
 		# generate DNA for new cells
