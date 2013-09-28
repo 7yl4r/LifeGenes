@@ -31,6 +31,7 @@ def simpleCellDiagnostic(cell):
 	print ' DNAlen: '+str(len(cell.DNA))
 	print '    loc: ('+str(cell.x)+','+str(cell.y)+')'
 	print '  color: '+str(cell.getColor())
+	print '...does that look about right to you?'
 	print ' ================================================='
 	
 # checks for bell curve of color values in given cell list
@@ -68,6 +69,7 @@ def checkValueSpread(cellList,nBins,min,max,cellValueGetterCallString):
 			assert histogram[i]<=histogram[i-1], 'values biased high'
 		else: print str(i)+'=?='+str(nBins/2)
 		assert histogram[i] > 0, 'values not spread well enough'
+	print '...these are not the problems you are looking for. move along.'
 	
 # checks for flat direction histogram  in given cellList
 # TODO: also check for bell-curve of magnitudes
@@ -98,6 +100,7 @@ def checkMovementHistogram(cellList):
 	assert r<thresh,\
 		'direction spread is not equal. bias='+str(float(r)/float(n))
 	#TODO: check for magnitude spread (i.e. the number of 'none's)
+	print "...s'good"
 	print ' ==================================== '
 	
 #Main:
