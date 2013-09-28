@@ -139,6 +139,7 @@ class environment:
 
 # ========================== PRIVATE METHODS =======================================
 
+	#NOTE: this method is depreciated and no longer used
 	#removes genetic material from cell no longer in environment layer
 	def removeDeadCells(self, g=golly):
 		originL = g.getlayer() #starting layer

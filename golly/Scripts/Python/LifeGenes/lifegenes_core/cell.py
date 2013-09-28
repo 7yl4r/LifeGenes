@@ -7,6 +7,9 @@ BASES = ['A','B','C','D']	#DNA Base Pairs (BP)
 DNA_MINLEN = 10		#min base pairs in a genome 
 DNA_MAXLEN = 1000		#max base pairs in a genome
 
+# risk of mutation is 1 in MUTATION_RISK
+MUTATION_RISK = 1000	#risk denomenator 
+
 #NOTE: do not change these two min/max values unless you have modified the constant.icons file as well
 MAX_COLOR = 220
 MIN_COLOR = 1
@@ -88,8 +91,16 @@ class cell:
 		cellDNA = list()
 		for i in range(DNAlen): #figure out child cell's DNA
 			inheritFrom = randrange(0,2)
-			cellDNA.append(genes[inheritFrom][i])
+			cellDNA.append(self.riskMutation(genes[inheritFrom][i]))
 		self.DNA = cellDNA
+		
+	# return the given base unless mutation is triggered by random chance, then return a random base
+	def riskMutation(self,base):
+		if randrange(0,MUTATION_RISK) > 0:
+			return base
+		else: # mutate! (return random base)
+			return BASES[randrange(0,len(BASES))]
+		
 
 	# get visual information about the cells nearby
 	def getVisualInput(self,stateGetter):
