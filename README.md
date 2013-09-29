@@ -19,7 +19,10 @@ This is a highly collaborative project in progress originating from [/r/collabor
 3. *Load the scripts in golly* - [from golly's python instructions](http://golly.sourceforge.net/Help/python.html): To run one of these scripts, tick the Show Scripts item in the File menu and then simply click on the script's name. You can also select one of the Run items in the File menu.
 4. *Observe genetic evolution in action!*
 
-Advanced users may want to *modify scripts* - [golly's python instructions](http://golly.sourceforge.net/Help/python.html) contain golly's python scripting documentation. Note that (on Linux) golly can get confused after experiencing a python bug and persistant errors while debugging can sometimes be fixed by restarting golly. Similarly, imported files will not get re-imported when re-running a script unless golly restarts.
+## Want to Contribute? ##
+Please do! You may want to check out [my python style explanation](https://gist.github.com/7yl4r/6756413) for details on how/why this project deviates from PEP8.
+
+You can start by *modifying scripts* - [golly's python instructions](http://golly.sourceforge.net/Help/python.html) contain golly's python scripting documentation. Note that golly can get confused after experiencing a python bug and persistant errors while debugging can sometimes be fixed by restarting golly. Similarly, imported files will not get re-imported when re-running a script unless golly restarts.
 
 ## Acknowledgements & Dependencies##
 All module dependencies are packaged into the LifeGenes.lifegenes_core.__util directory and no setup or worry about them is needed, but they help make this work possible and merit mention here:
