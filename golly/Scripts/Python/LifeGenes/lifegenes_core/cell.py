@@ -78,9 +78,11 @@ class cell:
 
 	# generates DNA string from given parent cells
 	def inheritDNA(self,parents):
-		if len(parents) != 3:
-			exit('ERR: cell.inheritDNA needs 3 parents!')
-			return
+		while len(parents) < 3:
+			logging.warning("n_parents="+len(parents)+" less than 3, using random dna for missing parents")
+			parents.append(cell(0,0))
+        #if len(parents) > 3:
+            # no problem, just use the first 3
 		genes = [parents[0].DNA,parents[1].DNA,parents[2].DNA] #total genetic material to choose from
 		#implied else
 		DNAlen = int((len(genes[0])+len(genes[1])+len(genes[2]))/3)
