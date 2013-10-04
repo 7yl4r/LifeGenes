@@ -49,6 +49,8 @@ class run():
 				#time.sleep(1)
 		finally:
 				logging.info('cycling halted from external source (probably golly)')
+				g.show('closing gracefully, hold on just a sec...')
+				lg_envmt.teardown()
 				#TODO: save cell genomes to file
 
 

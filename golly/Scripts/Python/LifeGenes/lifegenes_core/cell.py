@@ -79,7 +79,7 @@ class cell:
 	# generates DNA string from given parent cells
 	def inheritDNA(self,parents):
 		while len(parents) < 3:
-			logging.warning("n_parents="+len(parents)+" less than 3, using random dna for missing parents")
+			logging.warning("n_parents="+str(len(parents))+" less than 3, using random dna for missing parents")
 			parents.append(cell(0,0))
         #if len(parents) > 3:
             # no problem, just use the first 3

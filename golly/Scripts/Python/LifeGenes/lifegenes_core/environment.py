@@ -7,13 +7,24 @@ import logging
 from LifeGenes.lifegenes_core.cellList import cellList	#import LifeGenes cell definition
 from LifeGenes.lifegenes_core.cell     import cell as LGcell
 
+from LifeGenes.lifegenes_core.__util.appdirs import user_data_dir
+from os.path import join
+from os import makedirs
+
+
 class environment:
 	# prepares the needed data structures
 	def __init__(self, g=golly):
-		originL = g.getlayer() #starting layer
+		saveDir = user_data_dir('LifeGenes','7yl4r-ware')
+		try:
+			makedirs(saveDir)
+		except OSError:
+			pass # probably the dir already exists... 
+		self.CELL_LIST_FILENAME = join(saveDir,'lifeGenes_cellList.pk')
+
+		self.originL = g.getlayer() #starting layer
 		if g.empty(): g.exit("The pattern is empty.")
 		# check for existing geneticColor layer
-		originL = g.getlayer() #starting layer
 		currindex = 0
 		self.colorIndex = -1
 		while currindex < g.numlayers():
@@ -21,7 +32,9 @@ class environment:
 				# continue from where we left off
 				self.colorIndex = currindex
 				g.show('geneticColor layer already exists!')
-				 #TODO: read cell genes from a file and make self.cellList
+				 # read cell genes from a file and make self.cellList
+				self.cellList = cellList([0,0])
+				self.cellList.load(self.CELL_LIST_FILENAME)
 				break
 			else: currindex+=1
 		if self.colorIndex == -1:	#if we didn't find existing colorLayer
@@ -41,7 +54,15 @@ class environment:
 			g.setname('geneticColor')
 			g.setrule('constant')	#use custom constant rule
 			g.setcolors([0,255,0, 0,0,255]) #live states vary from green to blue
-		g.setlayer(originL) # set layer back to original layer
+		g.setlayer(self.originL) # set layer back to original layer
+		
+	# close down the environment
+	def teardown(self,g=golly):
+		g.setlayer(self.originL)	#ensure we are on the right layer
+		self.update(g)		#ensure there are no half-built arrays
+		self.drawColor(g)	#one last draw
+		g.update()			#one last display update
+		self.cellList.save(self.CELL_LIST_FILENAME)
 
 	# cellMotions allows cells to move around in their environment while no evolution takes place
 	#     motion is based on values calculated from the cell's neural network
@@ -50,6 +71,7 @@ class environment:
 		for cell in self.cellList.cells:
 			cell.move(g.setcell,g.getcell)
 			
+	# update the environment to match the changes in the given cell environment g
 	def update(self, g=golly):
 		newPattern = g.getcells(g.getrect())
 		# generate DNA for new cells
