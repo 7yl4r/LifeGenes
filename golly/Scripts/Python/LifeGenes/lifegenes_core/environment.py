@@ -14,6 +14,8 @@ from os import makedirs
 
 class environment:
 	# prepares the needed data structures
+	# parameters:
+	#	g        : GoL-like environment api handle
 	def __init__(self, g=golly):
 		saveDir = user_data_dir('LifeGenes','7yl4r-ware')
 		try:
@@ -31,14 +33,14 @@ class environment:
 			if g.getname(currindex) == 'geneticColor':
 				# continue from where we left off
 				self.colorIndex = currindex
-				g.show('geneticColor layer already exists!')
-				 # read cell genes from a file and make self.cellList
+				logging.info('geneticColor layer already exists, loading from file '+self.CELL_LIST_FILENAME)				 
+				# read cell genes from a file and make self.cellList
 				self.cellList = cellList([0,0])
 				self.cellList.load(self.CELL_LIST_FILENAME)
 				break
 			else: currindex+=1
 		if self.colorIndex == -1:	#if we didn't find existing colorLayer
-			#set up new colorLayer
+			logging.info('color layer not found. creating new environment')
 			startpatt = g.getcells(g.getrect()) # get starting pattern array [x1,y1,x2,y2,...]
 
 			self.cellList = cellList(startpatt)

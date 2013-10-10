@@ -2,7 +2,17 @@
 
 from .cell import cell
 import pickle
+import logging
 
+# a generalized list of cells
+# FIELDS:
+#	cells - a list of cell objects
+# PUBLIC METHODS:
+#	findCell - locate a cell by x,y coords
+#	killCellAt - remove a cell by x,y coords
+#	save - save cellList to file
+#	load - load cellList from file
+#	set - make this list into a copy of given list
 class cellList:
 	def __init__(self,pattern):
 		self.cells = list()
@@ -33,4 +43,17 @@ class cellList:
 	# loads the cell list from the given file name
 	def load(self,fname):
 		with open(fname,'rb') as f:
-			self = pickle.load(f)
+			newList = pickle.load(f)
+		try:
+			check = newList.cells[0]
+		except AttributeError:
+			logging.error('loaded list seems to have no cells!')
+			raise 
+		#implied else
+		self.set(newList)
+		logging.info(str(len(self.cells))+' cells loaded from file')
+		#except: logging.error('cellList load appears to have failed. dir(cellList)='+str(dir(self)))
+			
+	# makes the cell list a copy of the given cellList
+	def set(self,cList):
+		self.cells = cList.cells
