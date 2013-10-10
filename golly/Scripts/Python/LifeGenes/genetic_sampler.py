@@ -19,6 +19,7 @@ def collect_dna():
 	env = environment()
 
 	# ask user to select cell of interest
+	g.setcursor("Pick")
 	g.show('select cell to sample')
 	event = g.getevent(True) #turn on golly event script access
 	while not event.startswith("click"):
@@ -37,6 +38,8 @@ def collect_dna():
 		logging.error('cell not found. len(cellList)='+str(len(cellList.cells)))
 		env.teardown()
 		return
+
+	# TODO: prompt user for name 
 	
 	# save DNA to list of saved 
 	with open(DNA_COLLECTION_FILE,'wb') as f:
