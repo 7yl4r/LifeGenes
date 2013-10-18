@@ -63,8 +63,11 @@ ANN_UP_CODONS = [['CDCB', 'BABB', 'ACAC', 'ABCB'],\
 # TODO: genetically calculated values need only be calculated once and then stored for future reference. This will greatly improve efficiency.
 
 class cell:
-	def __init__(self,X,Y):	#TODO: add DNA= at end
-		self.randomizeDNA()
+	def __init__(self,X,Y,dna=None):
+		if dna == None: 
+			self.randomizeDNA()
+		else: 
+			self.DNA = dna
 		self.x = X
 		self.y = Y
 

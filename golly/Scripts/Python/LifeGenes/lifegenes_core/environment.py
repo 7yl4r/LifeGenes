@@ -25,10 +25,10 @@ class environment:
 		self.CELL_LIST_FILENAME = join(saveDir,'lifeGenes_cellList.pk')
 
 		self.originL = g.getlayer() #starting layer
-		if g.empty(): g.exit("The pattern is empty.")
+
 		# check for existing geneticColor layer
 		currindex = 0
-		self.colorIndex = -1
+		self.colorIndex = None
 		while currindex < g.numlayers():
 			if g.getname(currindex) == 'geneticColor':
 				# continue from where we left off
@@ -39,24 +39,30 @@ class environment:
 				self.cellList.load(self.CELL_LIST_FILENAME)
 				break
 			else: currindex+=1
-		if self.colorIndex == -1:	#if we didn't find existing colorLayer
+		if self.colorIndex == None:	#if we didn't find existing colorLayer
 			logging.info('color layer not found. creating new environment')
-			startpatt = g.getcells(g.getrect()) # get starting pattern array [x1,y1,x2,y2,...]
-
-			self.cellList = cellList(startpatt)
-
-			logging.info(str(len(startpatt)/2)+' cells found, '+str(len(self.cellList.cells))+' trait objects created.')
-
+			if g.empty(): 
+				self.cellList = cellList([])
+			else:
+				# detect existing cells
+				startpatt = g.getcells(g.getrect()) # get starting pattern array [x1,y1,x2,y2,...]
+				self.cellList = cellList(startpatt)
+				logging.info(str(len(startpatt)/2)+' cells found, '+str(len(self.cellList.cells))+' trait objects created.')
 
 			# add color layer
 			if g.numlayers() + 1 > g.maxlayers():
 				g.exit("You need to delete a layer.")
 
-			self.colorIndex = g.addlayer()     # create layer for colors
+			# create layer for colors
+			self.colorIndex = g.addlayer()    
 			g.setname('geneticColor')
 			g.setrule('constant')	#use custom constant rule
 			g.setcolors([0,255,0, 0,0,255]) #live states vary from green to blue
 		g.setlayer(self.originL) # set layer back to original layer
+		assert(self.cellList != None)
+		
+	def __del__(self):
+		self.teardown()
 		
 	# close down the environment
 	def teardown(self,g=golly):

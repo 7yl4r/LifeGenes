@@ -20,28 +20,40 @@ class cellList:
 		for cellIndex in range(len(pattern)/2):
 			self.cells.append(cell(pattern[cellIndex*2],pattern[cellIndex*2+1]))
 			cellIndex+=1
+			
+	def setCell(self,x,y,dna=None,cell=None):
+		if cell != None:
+			killCellAt(x,y) #remove old cell if exists
+			self.cells.append(cell) #add new cell
+		elif dna != None:
+			KillCellAt(x,y)
+			self.cells.append(cell(x,y,dna))
+		else:
+			raise ValueError("setCell requires dna or cell object be specified")
 
-	# retuns cell object with given coords
 	def findCell(self,x,y):
+	# retuns cell object with given coords
 		for c in self.cells:
 			if c.x==x and c.y==y:
 				return c
 		#implied else
 		return None
 
-	# deletes cell at given loc
 	def killCellAt(self,x,y):
+	# deletes cell at given loc. Returns True for sucessful deletion, False for cell not found.
 		for c in self.cells:
 			if c.x==x and c.y==y:
 				self.cells.remove(c)
+				return True
+		else: return False
 				
-	# saves the cell list to the given file name
 	def save(self,fname):
+	# saves the cell list to the given file name
 		with open(fname,'wb') as f:
 			pickle.dump(self, f, pickle.HIGHEST_PROTOCOL)
 
-	# loads the cell list from the given file name
 	def load(self,fname):
+	# loads the cell list from the given file name
 		with open(fname,'rb') as f:
 			newList = pickle.load(f)
 		try:
@@ -54,6 +66,6 @@ class cellList:
 		logging.info(str(len(self.cells))+' cells loaded from file')
 		#except: logging.error('cellList load appears to have failed. dir(cellList)='+str(dir(self)))
 			
-	# makes the cell list a copy of the given cellList
 	def set(self,cList):
+	# makes the cell list a copy of the given cellList
 		self.cells = cList.cells

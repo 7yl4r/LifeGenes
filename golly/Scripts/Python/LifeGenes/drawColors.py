@@ -5,11 +5,11 @@
 # Please see the [LifeGenes project for genetic cellular automaton](https://github.com/7yl4r/LifeGenes) for more info.
 
 from LifeGenes.lifegenes_core.environment import environment as lifegenes_environment
-
-import golly as g
-
+from LifeGenes.lifegenes_core.setupLog import setupLog
 import logging
 setupLog('drawColors.log')
+
+import golly as g
 
 lg_envmt = lifegenes_environment()
 lg_envmt.drawColor()
