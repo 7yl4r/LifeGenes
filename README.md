@@ -27,5 +27,6 @@ You can start by *modifying scripts* - [golly's python instructions](http://goll
 ## Acknowledgements & Dependencies##
 The following dependencies are required for running some scripts in the package, and you must install them if you wish to use those scripts.
 * [PIL](http://www.pythonware.com/products/pil/) - Python imaging library is for using images with Tkinter to create GUI elements such as the genetic cell painter pallate. Win32 binaries and source for linux can be found on the linked project page. Additional binaries (including 64bit) can be found [here](http://www.lfd.uci.edu/~gohlke/pythonlibs/#pil), and alternative source can be found in the [Pillow repo](https://github.com/python-imaging/Pillow).
+
 The following dependencies are packaged into the LifeGenes.lifegenes_core.__util directory and no setup or worry about them is needed, but they help make this work possible and merit mention here:
 * [appdirs](https://pypi.python.org/pypi/appdirs/1.2.0) - "A small Python module for determining appropriate platform-specific dirs". Used under permission of the [MIT License](http://opensource.org/licenses/MIT).
