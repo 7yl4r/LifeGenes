@@ -1,5 +1,8 @@
-# log files which may also be in here (probably just for me)
-__logs*
+# I use this as a convenience link to log file dir
+__logs
+
+# convenience link to cell collection
+__appData
 
 # Ubuntu backups
 *~
