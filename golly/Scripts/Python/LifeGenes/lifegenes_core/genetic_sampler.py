@@ -5,6 +5,9 @@ import golly as g
 from LifeGenes.lifegenes_core.cellList import cellList
 from LifeGenes.lifegenes_core.environment import environment 
 from LifeGenes.lifegenes_core.cellPallate import CELL_COLLECTION_DIR
+from os import makedirs
+from os.path import join
+import errno
 
 import logging
 
@@ -60,14 +63,20 @@ def collect_dna():
 			
 		def submitEntry(self):
 			# save the cell
-			from os.path import join
 			saveFile = join(CELL_COLLECTION_DIR,self.entry.get())+'.pk'
-			print 'saving ' + self.entry.get() + ' to ' + saveFile 
-			with open(saveFile,'wb') as f:
-				pickle.dump(self.cell, f, pickle.HIGHEST_PROTOCOL)
-			
-			self.frame.quit() # close dialog
-			
+			print 'saving ' + self.entry.get() + ' to ' + saveFile #TODO: this doesn't print anywhere
+			try:
+				with open(saveFile,'wb') as f:
+					pickle.dump(self.cell, f, pickle.HIGHEST_PROTOCOL)
+			except IOError as e:
+   				if e.errno != errno.ENOENT: raise e
+				else:
+					# dir doesn't exist
+					makedirs(CELL_COLLECTION_DIR)
+					self.submitEntry()
+					return
+
+			self.frame.quit() # close dialog			
 			g.show('DNA sample saved to collection')
 
 	app = selectorDisplay(root,selectedCell)
