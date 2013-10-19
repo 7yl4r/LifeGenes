@@ -2,8 +2,9 @@ import pickle
 import logging
 
 from LifeGenes.lifegenes_core.__util.appdirs import user_data_dir
+import errno
 from os.path import join
-from os import getcwd, chdir
+from os import getcwd, chdir, makedirs
 from glob import glob
 saveDir = user_data_dir('LifeGenes','7yl4r-ware')
 DNA_COLLECTION_FILE= join(saveDir,'dna_collection.pk')
@@ -23,7 +24,7 @@ class cellPallate:
 		self.selected= None
 		
 	def __del__(self):
-		self.save()
+		pass #self.save()
 		
 	def load(self):
 	# loads all dna from file and puts it in the pallate
@@ -37,13 +38,46 @@ class cellPallate:
 					except EOFError:
 						logging.info(str(len(self.pallate)) + ' DNA strings loaded into pallate')
 						return
+
+	def __saveCellObj(self,cellObj,saveFile):
+	# saves given cell object to given file
+		with open(saveFile,'wb') as f:
+			pickle.dump(cellObj, f, pickle.HIGHEST_PROTOCOL)
+		logging.info('cell object saved to collection')
+
+	def __saveCellImage(self,cellObj,saveFile):
+	# creates and saves given cell genome image to given file
+		import Image, ImageDraw
+		#TODO: generate something nice looking here
+		im = Image.new("RGB", (512,512), "black")
+		draw = ImageDraw.Draw(im)
+		draw.line((0, 0) + im.size, fill=128)
+		draw.line((0, im.size[1], im.size[0], 0), fill=128)
+		del draw 
+
+		# write to stdout
+		im.save(saveFile, "PNG")
+
+		logging.info('cell image generated')
 	
-	def save(self):
-	# saves all dna in pallate to file
-		with open(DNA_COLLECTION_FILE,'wb') as f:
-			for dnaStr in self.pallate:
-				pickle.dump(dnaStr, f, pickle.HIGHEST_PROTOCOL)
-		logging.info('DNA pallate saved to collection')
+	def saveCell(self,cellObj,name):
+	# public interface for saving given cell with given name.
+	# saves the cell object and generates needed genome image.
+		cellDir = join(CELL_COLLECTION_DIR,name)
+		try:
+			makedirs(cellDir)
+		except: #cell already exists
+			raise IOError('cell with name "'+name+'" already exists')
+
+		objectFile = join(cellDir,'cell.pk')
+		self.__saveCellObj(cellObj,objectFile)
+
+		imageFile = join(cellDir,'cell.png')
+		self.__saveCellImage(cellObj,imageFile)
+
+
+		
+
 		
 	def display(self):
 	# creates a tkinter display which shows the pallate and allows for selection

@@ -1,13 +1,9 @@
 #this script prompts the user to take a genetic sample from the displayed cells and then saves it for later examination or use.
 
-import pickle
 import golly as g
 from LifeGenes.lifegenes_core.cellList import cellList
 from LifeGenes.lifegenes_core.environment import environment 
-from LifeGenes.lifegenes_core.cellPallate import CELL_COLLECTION_DIR
-from os import makedirs
-from os.path import join
-import errno
+from LifeGenes.lifegenes_core.cellPallate import CELL_COLLECTION_DIR, cellPallate
 
 import logging
 
@@ -41,6 +37,8 @@ def collect_dna():
 	root = tk.Tk()
 	class selectorDisplay:
 		def __init__(self, master, selectedCell):
+			self.pallate = cellPallate() # cell pallate instance for saving cell info
+
 			self.frame = tk.Frame(master)
 			self.frame.pack()
 			self.cell = selectedCell
@@ -63,18 +61,10 @@ def collect_dna():
 			
 		def submitEntry(self):
 			# save the cell
-			saveFile = join(CELL_COLLECTION_DIR,self.entry.get())+'.pk'
-			print 'saving ' + self.entry.get() + ' to ' + saveFile #TODO: this doesn't print anywhere
-			try:
-				with open(saveFile,'wb') as f:
-					pickle.dump(self.cell, f, pickle.HIGHEST_PROTOCOL)
-			except IOError as e:
-   				if e.errno != errno.ENOENT: raise e
-				else:
-					# dir doesn't exist
-					makedirs(CELL_COLLECTION_DIR)
-					self.submitEntry()
-					return
+			name = self.entry.get()
+
+			g.show('saving ' + name + ' to ' + CELL_COLLECTION_DIR)
+			self.pallate.saveCell(self.cell,name)
 
 			self.frame.quit() # close dialog			
 			g.show('DNA sample saved to collection')
