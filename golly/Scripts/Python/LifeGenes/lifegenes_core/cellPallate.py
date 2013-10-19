@@ -6,6 +6,14 @@ import errno
 from os.path import join
 from os import getcwd, chdir, makedirs
 from glob import glob
+import Tkinter as tk
+try:
+	from PIL import Image, ImageTk
+except ImportError:
+	raise ImportError("this function requires the Python Imaging Library (PIL). "
+		+"See http://www.pythonware.com/products/pil/ "
+		+"or https://github.com/python-imaging/Pillow for more.")
+
 saveDir = user_data_dir('LifeGenes','7yl4r-ware')
 DNA_COLLECTION_FILE= join(saveDir,'dna_collection.pk')
 CELL_COLLECTION_DIR= join(saveDir,'cellCollection')
@@ -13,7 +21,9 @@ CELL_COLLECTION_DIR= join(saveDir,'cellCollection')
 class cellPallate:
 # defines a pallate of saved DNA sequences
 # ATTRIBUTES:
-#	pallate = list of dna strings in the pallate
+#	pallate = list of cell objects in the pallate
+#	pallateImages = a list of image files for each cell in pallate
+#	cellNames = a list of cell object names
 #	selected= number representing currently selected dna sequence in pallate
 # PUBLIC METHODS:
 #	load = loads dna strings from file into pallate
@@ -21,6 +31,8 @@ class cellPallate:
 #	display = 
 	def __init__(self):
 		self.pallate = list()
+		self.pallateImages = list()
+		self.cellNames = list()
 		self.selected= None
 		
 	def __del__(self):
@@ -30,14 +42,13 @@ class cellPallate:
 	# loads all dna from file and puts it in the pallate
 		startingDir = getcwd()
 		chdir(CELL_COLLECTION_DIR)
-		for file_ in glob("*.pk"):
-			with open(file_,'rb') as f:
-				while True:
-					try:
+		for file_ in glob("*"):
+			with open(join(CELL_COLLECTION_DIR,file_,'cell.pk'),'rb') as f:
 						self.pallate.append(pickle.load(f))
-					except EOFError:
-						logging.info(str(len(self.pallate)) + ' DNA strings loaded into pallate')
-						return
+			self.pallateImages.append(join(CELL_COLLECTION_DIR,file_,'cell.png'))
+			self.cellNames.append(file_)
+		logging.info(str(len(self.pallate)) + ' DNA strings loaded into pallate')
+		chdir(startingDir)
 
 	def __saveCellObj(self,cellObj,saveFile):
 	# saves given cell object to given file
@@ -49,7 +60,7 @@ class cellPallate:
 	# creates and saves given cell genome image to given file
 		import Image, ImageDraw
 		#TODO: generate something nice looking here
-		im = Image.new("RGB", (512,512), "black")
+		im = Image.new("RGB", (50,50), "black")
 		draw = ImageDraw.Draw(im)
 		draw.line((0, 0) + im.size, fill=128)
 		draw.line((0, im.size[1], im.size[0], 0), fill=128)
@@ -75,55 +86,81 @@ class cellPallate:
 		imageFile = join(cellDir,'cell.png')
 		self.__saveCellImage(cellObj,imageFile)
 
-
-		
-
-		
-	def display(self):
+		cellNames
+	def getUserChoice(self):
 	# creates a tkinter display which shows the pallate and allows for selection
-		import Tkinter as tk
 		root = tk.Tk()
 		class selectorDisplay:
-			def __init__(self, master):
-				frame = tk.Frame(master)
-				frame.pack()
-				
-				try:
-					from PIL import Image, ImageTk
-				except ImportError:
-					raise ImportError("this function requires the Python Imaging Library (PIL). See http://www.pythonware.com/products/pil/ or https://github.com/python-imaging/Pillow for more.")
-				imageFile = join(saveDir,'images','test_image.png')
-				image = Image.open(imageFile)
+			def __init__(self, master, cellPallate):
+				self.cellPallate = cellPallate
+				self.selected = None
+				self.frame = tk.Frame(master)
+				self.frame.pack()
+
+				self.imageButtons = list()
+
+				for img in self.cellPallate.pallateImages:
+					self.insertButton(img,str(img))
+
+				select_butt = tk.Button(self.frame, text="Clone this cell.", command=self.submit)
+				select_butt.pack()
+
+			def insertButton(self,img,text):
+			# insert cell button
+				image = Image.open(img)
 				cellImage = ImageTk.PhotoImage(image)
-				
-				def select1():
-					print "button 1 selected"
-					self.button1.config(relief=SUNKEN)
-				
-				self.button1 = tk.Button(frame, text=imageFile, image=cellImage, command=select1)
-				self.button1.image = cellImage # keep a reference
-				self.button1.pack()
 
-				hi_there = tk.Button(frame, text="Hello", command=self.say_hi)
-				hi_there.pack()
+				i = len(self.imageButtons) # i = index of new button
+				self.imageButtons.append(tk.Button(self.frame, 
+					text=str(text), 
+					image=cellImage, 
+					command=(lambda i=i:(self.raiseButtons(),
+						self.imageButtons[i].config(relief=tk.SUNKEN),
+						self.setSelection(i),
+						tk.Label(self.frame, text='cell strain "'+self.cellPallate.cellNames[i]+'" selected').pack(),
+						#self.frame.mainloop()
+					))
+				))
+				self.imageButtons[i].image = cellImage # keep a reference
+				self.imageButtons[i].pack(side=tk.LEFT)
 
-			def say_hi(self):
-				print "hi there, everyone!"
-				w = tk.Label(root, text="Hello, world!")
-				w.pack()
-				root.mainloop()
-		app = selectorDisplay(root)
+			def raiseButtons(self):
+			# raise all buttons
+				for but in self.imageButtons: 
+					but.config(relief=tk.RAISED)
+
+			def setSelection(self,choice):
+			# sets the pallate selection
+				self.selected = choice
+
+			def submit(self):
+				self.frame.quit() # close dialog
+				self.cellPallate.select(self.selected)		
+
+		app = selectorDisplay(root,self)
 		root.mainloop()
+
 		import _tkinter
 		try:
 			root.destroy() # optional...ish
 		except _tkinter.TclError:
 			pass # ignore failed destroy due to already being destroyed.
-		
-	def getSelectedCell(self):
+
+		return self.getSelectedCellObj()
+
+	def getSelectedCellObj(self):
 	# returns cell object currently selected
-		return self.selected
+		return self.pallate[self.selected]
+		
+	def getSelectedCellName(self):
+	# returns name of currently selected cell
+		return self.cellNames[self.selected]
+
+	def getSelectedCellImg(self):
+	# returns image of currently selected cell
+		return self.pallateImages[self.selected]
 	
 	def select(self,selection):
-	# moves selection and updates display
+	# moves selection
 		self.selected = selection
+		logging.info(self.cellNames[self.selected]+' selected')

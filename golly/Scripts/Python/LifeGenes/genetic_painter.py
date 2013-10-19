@@ -16,7 +16,9 @@ def draw_dna():
 	pallate.load()
 	
 	# === let user select DNA 
-	pallate.display()
+	chosenCell = pallate.getUserChoice()
+	chosenName = pallate.getSelectedCellName()
+	g.show('now drawing with DNA from '+chosenName)
 	
 	# === let user draw
 	g.setcursor("Draw")
@@ -31,7 +33,7 @@ def draw_dna():
 				x = int(xstr)
 				y = int(ystr)
 				env.cellList.setCell(x,y,cell=pallate.getSelectedCell())
-				logging.info('cell ('+xstr+','+ystr+') painted with "'+str(pallate.selected)+'"')		
+				logging.info('cell ('+xstr+','+ystr+') painted with "'+chosenName+'"')	
 	finally:		
 		g.getevent(False) # return event handling to golly
 		# === teardown
