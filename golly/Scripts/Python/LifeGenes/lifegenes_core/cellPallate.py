@@ -3,6 +3,8 @@ import logging
 
 from LifeGenes.lifegenes_core.__util.appdirs import user_data_dir
 from os.path import join
+from os import getcwd, chdir
+from glob import glob
 saveDir = user_data_dir('LifeGenes','7yl4r-ware')
 DNA_COLLECTION_FILE= join(saveDir,'dna_collection.pk')
 CELL_COLLECTION_DIR= join(saveDir,'cellCollection')
@@ -25,13 +27,16 @@ class cellPallate:
 		
 	def load(self):
 	# loads all dna from file and puts it in the pallate
-		with open(DNA_COLLECTION_FILE,'rb') as f:
-			while True:
-				try:
-					self.pallate.append(pickle.load(f))
-				except EOFError:
-					logging.info(str(len(self.pallate)) + ' DNA strings loaded into pallate')
-					return
+		startingDir = getcwd()
+		chdir(CELL_COLLECTION_DIR)
+		for file_ in glob("*.pk"):
+			with open(file_,'rb') as f:
+				while True:
+					try:
+						self.pallate.append(pickle.load(f))
+					except EOFError:
+						logging.info(str(len(self.pallate)) + ' DNA strings loaded into pallate')
+						return
 	
 	def save(self):
 	# saves all dna in pallate to file
