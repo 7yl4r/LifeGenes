@@ -24,6 +24,8 @@ Please do! You may want to check out [my python style explanation](https://gist.
 
 You can start by *modifying scripts* - [golly's python instructions](http://golly.sourceforge.net/Help/python.html) contain golly's python scripting documentation. Note that golly can get confused after experiencing a python bug and persistant errors while debugging can sometimes be fixed by restarting golly. Similarly, imported files will not get re-imported when re-running a script unless golly restarts.
 
+Then check our [github issue tracker](https://github.com/7yl4r/LifeGenes/issues?state=open) for bugs or enhancements which need fixing.
+
 ## Acknowledgements & Dependencies##
 The following dependencies are required for running some scripts in the package, and you must install them if you wish to use those scripts.
 * [PIL](http://www.pythonware.com/products/pil/) - Python imaging library is for using images with Tkinter to create GUI elements such as the genetic cell painter pallate. Win32 binaries and source for linux can be found on the linked project page. Additional binaries (including 64bit) can be found [here](http://www.lfd.uci.edu/~gohlke/pythonlibs/#pil), and alternative source can be found in the [Pillow repo](https://github.com/python-imaging/Pillow).
