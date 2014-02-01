@@ -19,23 +19,40 @@ def draw_dna():
 	chosenCell = pallate.getUserChoice()
 	chosenName = pallate.getSelectedCellName()
 	g.show('now drawing with DNA from '+chosenName)
+	logging.debug('now drawing with DNA from '+chosenName+'='+str(dict(chosenCell)))
 	
-	# === let user draw
-	g.setcursor("Draw")
 	# prepare environment
 	env = environment()
 	event = g.getevent(True) #turn on golly event script access
-	try:
+	# === let user draw
+	g.setcursor("Draw")
+	try:	#this try statement is just to ensure the 'finally' block is run
 		while True:	# loop until stop button is pressed
 			event = g.getevent() # event is a string like "click 10 20 left none"
-			evt, xstr, ystr, butt, mods = event.split()
-			if evt=="click" and butt=="left" and mods=="none": # left click
-				x = int(xstr)
-				y = int(ystr)
-				env.cellList.setCell(x,y,cell=pallate.getSelectedCell())
-				logging.info('cell ('+xstr+','+ystr+') painted with "'+chosenName+'"')	
+			if len(event) < 1: # do not try to split empty string
+				continue
+			else:
+				logging.debug('event recieved: "'+event+'"')	
+				evt, xstr, ystr, butt, mods = event.split()
+				if evt=="click" and butt=="left" and mods=="none": # left click
+#					logging.debug('left click detected at '+xstr+','+ystr)
+					x = int(xstr)
+					y = int(ystr)
+					env.cellList.setCell(x,y,cell=chosenCell)	#add cell to list
+					g.setcell(x,y,1)	#fill in functional cell
+					env.drawColor()	#update color layer to match
+					g.update()		#update golly display
+					logging.info('cell ('+xstr+','+ystr+') painted with "'+chosenName+'"')	
+					g.show('cell painted. press "Esc" to stop drawing')
+				else:
+					logging.info('event "'+event+'" not recognized')
+	except:	# re-raise any errors encountered
+		logging.error('unexpected error: '+sys.exc_info()[0])
+		raise
 	finally:		
 		g.getevent(False) # return event handling to golly
+		g.show('done drawing '+chosenName+' cells.')
+		logging.debug('done drawing '+chosenName+' cells.')
 		# === teardown
 		env.teardown()
 		return

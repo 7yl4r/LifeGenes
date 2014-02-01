@@ -1,5 +1,5 @@
 try: import golly
-except: 
+except ImportError: 
 	print 'could not load golly, using folly instead'
 	from tests.folly import folly as golly
 import logging
@@ -155,12 +155,13 @@ class environment:
 		g.setlayer(self.colorIndex)
 
 		# clear the layer
-		try:
+#		try:
+		if g.getrect() == []:
+			logging.debug('skipping attempt to clear empty layer')
+		else:
 			g.select(g.getrect())
 			g.clear(0)  
-		except: 		
-			logging.warn('cannot clear empty layer')
-		g.select([])
+			g.select([])
 
 		# show the colors of each cell
 		for c in self.cellList.cells:

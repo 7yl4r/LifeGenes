@@ -23,10 +23,10 @@ class cellList:
 			
 	def setCell(self,x,y,dna=None,cell=None):
 		if cell != None:
-			killCellAt(x,y) #remove old cell if exists
+			self.killCellAt(x,y) #remove old cell if exists
 			self.cells.append(cell) #add new cell
 		elif dna != None:
-			KillCellAt(x,y)
+			self.KillCellAt(x,y)
 			self.cells.append(cell(x,y,dna))
 		else:
 			raise ValueError("setCell requires dna or cell object be specified")

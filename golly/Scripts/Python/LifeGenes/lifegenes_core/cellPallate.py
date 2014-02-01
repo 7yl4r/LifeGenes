@@ -86,7 +86,8 @@ class cellPallate:
 		imageFile = join(cellDir,'cell.png')
 		self.__saveCellImage(cellObj,imageFile)
 
-		cellNames
+		#cellNames
+
 	def getUserChoice(self):
 	# creates a tkinter display which shows the pallate and allows for selection
 		root = tk.Tk()
@@ -144,6 +145,7 @@ class cellPallate:
 		try:
 			root.destroy() # optional...ish
 		except _tkinter.TclError:
+			logging.debug('ignore failed tkinter destroy due to already being destroyed.')
 			pass # ignore failed destroy due to already being destroyed.
 
 		return self.getSelectedCellObj()

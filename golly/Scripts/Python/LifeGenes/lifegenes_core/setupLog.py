@@ -39,5 +39,5 @@ def setupLog(logName='noName.txt'):
 	try:
 		import golly as g
 		g.show('created .log at '+str(logPath))
-	except:
+	except ImportError:
 		print 'created .log at '+str(logPath)
