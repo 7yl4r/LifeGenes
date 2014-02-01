@@ -1,5 +1,7 @@
 # this set of unit tests is meant to be run from a command line to test aspects of the LifeGenes outside of golly.
 
+import logging
+
 from LifeGenes.lifegenes_core.cell import cell,DNA_MINLEN,DNA_MAXLEN,MAX_COLOR,MIN_COLOR,NN_MIN,NN_MAX,BASES
 from random import randrange
 from math import floor
@@ -26,25 +28,25 @@ def simpleCellTest():
 
 # prints out simple diagnostic info for cell to show traits
 def simpleCellDiagnostic(cell):
-	print '\n === === === === cell diagnostic === === === ==='
-	print '    DNA: '+str(cell.DNA)
-	print ' DNAlen: '+str(len(cell.DNA))
-	print '    loc: ('+str(cell.x)+','+str(cell.y)+')'
-	print '  color: '+str(cell.getColor())
-	print '...does that look about right to you?'
-	print ' ================================================='
+	logging.info('\n === === === === cell diagnostic === === === ==='
+	+'\n    DNA: '+str(cell.DNA)
+	+'\n DNAlen: '+str(len(cell.DNA))
+	+'\n    loc: ('+str(cell.x)+','+str(cell.y)+')'
+	+'\n  color: '+str(cell.getColor())
+	+'\n...does that look about right to you?'
+	+'\n =================================================')
 	
 # checks for bell curve of color values in given cell list
 def checkColorHistogram(cellList):
-	print '\n === checking color histogram === '
+	logging.info('\n === checking color histogram === ')
 	checkValueSpread(cellList,5,MIN_COLOR,MAX_COLOR,'getColor()')
-	print ' ================================ '
+	logging.info(' ================================ ')
 	
 # checks for bell-curve distribution of NN weights in given cell list
 def checkNNweights(cellList):
-	print '\n === checking NN histogram === '
+	logging.info('\n === checking NN histogram === ')
 	checkValueSpread(cellList,5,NN_MIN,NN_MAX,'getNNweights()[0][0]')
-	print ' ================================ '
+	logging.info(' ================================ ')
 	
 def checkValueSpread(cellList,nBins,min,max,cellValueGetterCallString):
 	# checks the spread of values in given cell list using given callString, nBins
@@ -55,26 +57,26 @@ def checkValueSpread(cellList,nBins,min,max,cellValueGetterCallString):
 	for i in range(1,nBins+1):
 		binEdge[i] = binEdge[i-1] + binSize
 	binEdge[nBins] = max
-	print 'binEdges='+str(binEdge)
+	logging.info('binEdges='+str(binEdge))
 	for c in cellList:
 		v = eval('c.'+cellValueGetterCallString);
 		for i in range(nBins):
 			if v <= binEdge[i+1]:
 				histogram[i]+=1
 				break
-	print 'histogram: '+str(histogram)
+	logging.info('histogram: '+str(histogram))
 	for i in range(1,nBins):
 		if i < nBins/2.0:
 			assert histogram[i]>=histogram[i-1], 'values biased low'
 		elif i > nBins/2.0:
 			assert histogram[i]<=histogram[i-1], 'values biased high'
-		else: print str(i)+'=?='+str(nBins/2)
+		else: logging.info(str(i)+'=?='+str(nBins/2))
 		assert histogram[i] > 0, 'values not spread well enough'
-	print '...these are not the problems you are looking for. move along.'
+	logging.info('...these are not the problems you are looking for. move along.')
 	
 # checks for flat direction histogram  in given cellList, balance of moving/camping cells, and shows bell-curve of magnitudes
 def checkMovementHistogram(cellList):
-	print '\n === checking direction histogram === '
+	logging.info('\n === checking direction histogram === ')
 	#counts for each case:
 	up = 0
 	down = 0 
@@ -100,8 +102,8 @@ def checkMovementHistogram(cellList):
 		elif v=='right': right+=1
 		elif v==None: none+=1
 		else: assert False, 'unknown direction value:'+v
-	print 'up\tdown\tleft\tright\tnone'
-	print str(up)+'\t'+str(down)+'\t'+str(left)+'\t'+str(right)+'\t'+str(none)
+	logging.info( 'up\tdown\tleft\tright\tnone\n' 
+	    +str(up)+'\t'+str(down)+'\t'+str(left)+'\t'+str(right)+'\t'+str(none) )
 	
 	assert up+down+left+right+none == n, 'incorrect count!'
 	r = max([up,down,left,right])-min([up,down,left,right])
@@ -111,7 +113,7 @@ def checkMovementHistogram(cellList):
 	mobileVsImmobile = (up+down+left+right) - none
 	assert mobileVsImmobile > 0, 'too many cells spawn camping! Upper codons need boost?'
 
-	print 'movement magnitude histogram: '+str(histogram)
+	logging.info( 'movement magnitude histogram: '+str(histogram) )
 #	for i in range(1,nBins):
 #		if i < nBins/2.0:
 #			assert histogram[i]>=histogram[i-1], 'values biased low'
@@ -120,8 +122,7 @@ def checkMovementHistogram(cellList):
 #		else: print str(i)+'=?='+str(nBins/2)
 #		assert histogram[i] > 0, 'values not spread well enough'
 
-	print "...s'good"
-	print ' ==================================== '
+	logging.info( ' ==================================== ' )
 	
 #Main:
 n = 5000 #number of cells in histogram tests

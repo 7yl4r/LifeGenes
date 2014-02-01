@@ -2,8 +2,10 @@
 # then displays the genetic 'color' of each cell.
 # The script then begins cycling between rounds of cell movement and cell evolution.
 # Please see the [LifeGenes project for genetic cellular automaton](https://github.com/7yl4r/LifeGenes) for more info.
-
-import golly as g
+try:
+	import golly as g
+except ImportError:
+	from LifeGenes.lifegenes_core.tests.folly import folly as g
 
 from LifeGenes.lifegenes_core.environment import environment as lifegenes_environment
 

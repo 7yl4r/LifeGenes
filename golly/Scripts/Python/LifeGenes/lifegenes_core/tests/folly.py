@@ -1,9 +1,12 @@
 # this module defines a fake golly-like environment. This is useful for testing and debugging.
 # to use simply put 'from LifeGenes.lifegenes_core.tests.folly import folly as g' in place of 'import golly as g'
 
+import logging
+
 class follyInstance:
 	def __init__(self):
 		# change these values to test different start-cases:
+		logging.warn('using mock-GoL "folly"')
 		self.currentLayer = 0
 		self.curLayerEmpty= False
 		self.layerColors  = [[0,255]]
@@ -14,6 +17,11 @@ class follyInstance:
 		self.generation   = 0
 		self.getcellsconfig= 'const growing'#'const change 1k' #'no change 1k' #'no change few'
 		
+	def show(self,s):
+		#prints a string somewhere (to the console in this case)
+		print s
+		return
+
 	# golly behavior:
 	#Add a new, empty layer immediately after the current layer and return the new layer's index, 
 	# an integer from 0 to numlayers() - 1. 
@@ -31,8 +39,15 @@ class follyInstance:
 			self.nLayers+=1
 			return self.currentLayer
 			
-	def clear(self):
-		return
+	def clear(self,where=0):
+		if where==0:
+			#clear inside
+			return
+		elif where==1:
+			#clear outside
+			return
+		else:
+			raise ValueError('clear() expects 1 or 0 only')
 
 	# golly behavior:
 	# Return True if the universe is empty or False if there is at least one live cell.
@@ -40,6 +55,10 @@ class follyInstance:
 	def empty(self):
 		return self.curLayerEmpty
 		
+	def randfill(self,int):
+		# fills the current selection with given percentage density
+		return
+
 	def exit(self,msg):
 		print 'requested exit via exit() method with message:'
 		print msg
