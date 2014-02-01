@@ -71,6 +71,9 @@ class cell:
 		self.x = X
 		self.y = Y
 
+	def __str__(self):
+		return str(self.__class__) + 'instance. Loc=('+str(self.x)+','+str(self.y)+'). DNA hash='+str(hash(str(self.DNA)))
+
 	# generates a random DNA string using bases defined in BASES
 	def randomizeDNA(self):
 		global BASES

@@ -3,6 +3,7 @@
 import golly as g
 from LifeGenes.lifegenes_core.cellList import cellList
 from LifeGenes.lifegenes_core.environment import environment 
+from LifeGenes.lifegenes_core.cell import cell
 
 import logging
 from LifeGenes.lifegenes_core.setupLog import setupLog
@@ -19,7 +20,7 @@ def draw_dna():
 	chosenCell = pallate.getUserChoice()
 	chosenName = pallate.getSelectedCellName()
 	g.show('now drawing with DNA from '+chosenName)
-	logging.debug('now drawing with DNA from '+chosenName+'='+str(dict(chosenCell)))
+	logging.debug('now drawing with DNA from '+chosenName+'='+str(chosenCell))
 	
 	# prepare environment
 	env = environment()
@@ -38,7 +39,7 @@ def draw_dna():
 #					logging.debug('left click detected at '+xstr+','+ystr)
 					x = int(xstr)
 					y = int(ystr)
-					env.cellList.setCell(x,y,cell=chosenCell)	#add cell to list
+					env.cellList.setCell(x,y,cell=cell(x,y,chosenCell.DNA))	#add cell to list
 					g.setcell(x,y,1)	#fill in functional cell
 					env.drawColor()	#update color layer to match
 					g.update()		#update golly display
