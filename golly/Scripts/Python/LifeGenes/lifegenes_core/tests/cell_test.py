@@ -1,6 +1,6 @@
 # this set of unit tests is meant to be run from a command line to test aspects of the LifeGenes outside of golly.
 
-from ..cell import cell,DNA_MINLEN,DNA_MAXLEN,MAX_COLOR,MIN_COLOR,NN_MIN,NN_MAX,BASES
+from LifeGenes.lifegenes_core.cell import cell,DNA_MINLEN,DNA_MAXLEN,MAX_COLOR,MIN_COLOR,NN_MIN,NN_MAX,BASES
 from random import randrange
 from math import floor
 
@@ -20,7 +20,7 @@ def simpleCellTest():
 		try: c.DNA.index(base)
 		except: assert False, str(c.DNA)+'\nDNA string does not have each base'+str(BASES)
 	
-	# TODO: check for other value errors
+	# TODO: any other value errors?
 	
 	return c
 
@@ -47,6 +47,7 @@ def checkNNweights(cellList):
 	print ' ================================ '
 	
 def checkValueSpread(cellList,nBins,min,max,cellValueGetterCallString):
+	# checks the spread of values in given cell list using given callString, nBins
 	binSize = floor((max - min)/nBins)
 	histogram = [0]*nBins
 	binEdge = [0]*(nBins+1)
@@ -71,8 +72,7 @@ def checkValueSpread(cellList,nBins,min,max,cellValueGetterCallString):
 		assert histogram[i] > 0, 'values not spread well enough'
 	print '...these are not the problems you are looking for. move along.'
 	
-# checks for flat direction histogram  in given cellList
-# TODO: also check for bell-curve of magnitudes
+# checks for flat direction histogram  in given cellList, balance of moving/camping cells, and shows bell-curve of magnitudes
 def checkMovementHistogram(cellList):
 	print '\n === checking direction histogram === '
 	#counts for each case:
@@ -84,8 +84,16 @@ def checkMovementHistogram(cellList):
 	thresh = n/100*10 # ~10% deviation from balance is allowed
 	def dummyStateGetter(x,y):
 		return 1
+	nBins = 10
+	histogram = [0]*nBins	#histogram of magnitudes
+	binEdge = [0]*(nBins+1)
+	binEdge[0] = min
 	for c in cellList:
 		[v,mag] = c.getMovement(dummyStateGetter);
+		for i in range(nBins):
+			if v <= binEdge[i+1]:
+				histogram[i]+=1
+				break
 		if v =='up': up+=1
 		elif v=='down': down+=1
 		elif v=='left': left+=1
@@ -99,7 +107,19 @@ def checkMovementHistogram(cellList):
 	r = max([up,down,left,right])-min([up,down,left,right])
 	assert r<thresh,\
 		'direction spread is not equal. bias='+str(float(r)/float(n))
-	#TODO: check for magnitude spread (i.e. the number of 'none's)
+
+	mobileVsImmobile = (up+down+left+right) - none
+	assert mobileVsImmobile > 0, 'too many cells spawn camping! Upper codons need boost?'
+
+	print 'movement magnitude histogram: '+str(histogram)
+#	for i in range(1,nBins):
+#		if i < nBins/2.0:
+#			assert histogram[i]>=histogram[i-1], 'values biased low'
+#		elif i > nBins/2.0:
+#			assert histogram[i]<=histogram[i-1], 'values biased high'
+#		else: print str(i)+'=?='+str(nBins/2)
+#		assert histogram[i] > 0, 'values not spread well enough'
+
 	print "...s'good"
 	print ' ==================================== '
 	
