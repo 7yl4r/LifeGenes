@@ -74,6 +74,41 @@ class cell:
 	def __str__(self):
 		return str(self.__class__) + 'instance. Loc=('+str(self.x)+','+str(self.y)+'). DNA hash='+str(hash(str(self.DNA)))
 
+	def getGenomeIcon(self):
+		# returns a pretty image icon generated from the cell DNA
+		try:
+			from PIL import Image, ImageTk
+		except ImportError:
+			raise ImportError("this function requires the Python Imaging Library (PIL). "
+				+"See http://www.pythonware.com/products/pil/ "
+				+"or https://github.com/python-imaging/Pillow for more.")
+
+		import Image, ImageDraw
+
+		im = Image.new("RGB", (50,50), "black")
+		draw = ImageDraw.Draw(im)
+
+		actualPixels = 50*50 # 2500
+		pixelSize = int(actualPixels/len(self.DNA))
+		x = y = pixelSize
+
+		for base in self.DNA:
+			saturation = int( float(BASES.index(base))/float((len(BASES)-1)) * 360)
+			color = "hsl("+str(saturation)+",100%,50%)"
+			logging.debug(str(base)+'='+color)
+			if x+pixelSize > 50:
+				y += pixelSize
+				x = pixelSize
+			else:
+				x += pixelSize
+
+			draw.rectangle([(x-pixelSize,y-pixelSize),(x,y)],fill=color)
+
+#		draw.line((0, 0) + im.size, fill=128)
+#		draw.line((0, im.size[1], im.size[0], 0), fill=128)
+		del draw
+		return im
+
 	# generates a random DNA string using bases defined in BASES
 	def randomizeDNA(self):
 		global BASES
