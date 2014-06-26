@@ -1,3 +1,6 @@
+# The webUI branch is a massive refactoring designed to move away from golly as the primary UI and towards a web-app.#
+Things right now are probably broken, outdated, and undocumented. Hang tight while the awesome is brewing.
+
 ![LifeGenes inherited coloration](http://i.imgur.com/Kx7DHmP.png)
 ==================================================================
 
