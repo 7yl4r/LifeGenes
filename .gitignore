@@ -4,6 +4,10 @@ __logs
 # convenience link to cell collection
 __appData
 
+# PyCharm
+.idea/
+pycharm
+
 # Ubuntu backups
 *~
 
