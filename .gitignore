@@ -8,6 +8,21 @@ __appData
 .idea/
 pycharm
 
+# Eclipse
+.classpath
+.project
+.settings/
+
+# KDevelop
+.kdev4/
+
+# Gradle
+*.gradle
+gradle/
+gradle.*
+gradle*
+build/
+
 # Ubuntu backups
 *~
 
