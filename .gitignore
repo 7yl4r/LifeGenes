@@ -17,10 +17,7 @@ pycharm
 .kdev4/
 
 # Gradle
-*.gradle
-gradle/
-gradle.*
-gradle*
+.gradle
 build/
 
 # Ubuntu backups
