@@ -1,5 +1,8 @@
 from __future__ import print_function
 
+from Action import Action, ChangeCellColor, Message, MoveCell, RemoveCell, NewCell
+from Cell import Cell
+
 # this handler will be run for each incoming connection in a dedicated greenlet
 class Handler():
 	def __init__(self, socket, address):
@@ -27,29 +30,63 @@ class Handler():
 
 			fileobj.flush()
 
-	def parseInbound(self, line):
+	def parseInbound(self, line, delim='~'):
 		"""
 		Parse socket information
-		:param line: readline coming from socket
+		:param line: readline coming from socket stream
+		:param delim: delimiter to separate values in the string
 		"""
-		# TODO: Create better communication methods (the one in GameManager looks great)
-		strs = line.strip().split(sep=':')
-		key = strs[0]
-		value = strs[1]
-		if key is 'quit':
-			print("client quit")
-		elif key is 'msg':
-			print(value)
+		payload = line.strip().split(delim)
 
-	def parseOutbound(self, data):
+		newCell = None
+		msg = None
+		rmCellID = None
+		cellID = None
+		x = None
+		y = None
+		color = None
+
+		ID = payload[0]
+		if ID is Message.getID():
+			msg = payload[1]
+		elif ID is NewCell.getID():
+			newCell = Cell.decompress(payload[1])
+		elif ID is RemoveCell.getID():
+			rmCellID = payload[1]
+		elif ID is MoveCell.getID():
+			cellID = payload[1]
+			x = payload[2]
+			x = payload[3]
+		elif ID is ChangeCellColor.getID():
+			cellID = payload[1]
+			color = payload[2]
+
+		# TODO: Do something with this information
+		return
+
+	def parseOutbound(self, action=Action(), delim='~', data=None):
 		"""
-		Parse socket information
-		:param data:
-		:return: string full of params
+
+		:param delim: delimiter to separate values in the string
+		:param action: possible actions: ChangeCellColor, Message, MoveCell, RemoveCell, NewCell
+		:param data: extra data as a dict, if any
+		:return: payload as a string
 		"""
-		# TODO: Create better communication methods (the one in GameManager looks great)
-		if isinstance(data, dict):
-			return data
-		elif isinstance(data, basestring):
-			package = 'msg:'+data
-		return package
+		# Parse actions
+		payload = ''
+		if isinstance(action, Action):
+			ID = action.getID()
+			payload += str(ID)
+
+		if isinstance(action, Message):
+			payload = payload + delim + action.getMsg()
+		elif isinstance(action, NewCell):
+			payload = payload + delim + action.getCell().compress()
+		elif isinstance(action, RemoveCell):
+			payload = payload + delim + action.getCellID()
+		elif isinstance(action, MoveCell):
+			payload = payload + delim + action.getCellID() + delim + action.getX() + delim + action.getY()
+		elif isinstance(action, ChangeCellColor):
+			payload = payload + delim + action.getCellID() + delim + action.getColor()
+
+		return payload

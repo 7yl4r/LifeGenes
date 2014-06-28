@@ -1,8 +1,10 @@
 # LifeGenes cell genome definition 
 
-from random import randrange
+from random import randrange, getrandbits
+import random
 import logging
 
+ID = getrandbits(64)
 BASES = ['A', 'B', 'C', 'D']  # DNA Base Pairs (BP)
 DNA_MINLEN = 10  # min base pairs in a genome
 DNA_MAXLEN = 1000  # max base pairs in a genome
@@ -119,24 +121,25 @@ class Cell:
 			self.DNA.append(BASES[randrange(0, len(BASES))])
 
 	# generates DNA string from given parent cells
-	def inheritDNA(self, parents):
+	def inheritDNA(self, parents, BASES, MUTATION_RISK, cell_id):
 		while len(parents) < 3:
-			logging.warning("n_parents=" + str(len(parents)) + " less than 3, using random dna for missing parents")
 			parents.append(Cell(0, 0))
-		# if len(parents) > 3:
-		# no problem, just use the first 3
 		genes = [parents[0].DNA, parents[1].DNA, parents[2].DNA]  # total genetic material to choose from
-		# implied else
 		DNAlen = int((len(genes[0]) + len(genes[1]) + len(genes[2])) / 3)
-		for i in range(DNAlen):  # add random DNA if one parent's genome is too short
+		for i in range(DNAlen): # add random DNA if one parent's genome is too short
 			for p in range(0, 2):
 				if i > len(genes[p]) - 1:
-					genes[p].append(BASES[randrange(0, len(BASES) - 1)])
-		cellDNA = list()
-		for i in range(DNAlen):  # figure out child cell's DNA
-			inheritFrom = randrange(0, 2)
-			cellDNA.append(self.riskMutation(genes[inheritFrom][i]))
-		self.DNA = cellDNA
+					genes[p].append(BASES[random.randrange(0, len(BASES) - 1)])
+
+		cellDNA = [None] * DNAlen # preallocate list
+		for i in range(DNAlen): # figure out child cell's DNA
+			inheritFrom = random.randrange(0, 2)
+			if random.randrange(0, MUTATION_RISK) > 0:
+				cellDNA[i] = genes[inheritFrom][i]
+			else: # mutate! (return random base)
+				cellDNA[i] = BASES[random.randrange(0, len(BASES))]
+
+		return {'DNA': cellDNA, 'ID': cell_id}
 
 	# return the given base unless mutation is triggered by random chance, then return a random base
 	def riskMutation(self, base):
@@ -341,6 +344,46 @@ class Cell:
 	def getPos(self):
 		return {'x': self.x, 'y': self.y}
 
+	def compress(self, delim='&'):
+		"""
+		Compresses cell for transfer over the network
+		:param delim: delimiter to separate the different values in a string
+		:return: string for sending over the network
+		"""
 
+		s = str(self.x) + delim \
+			+ str(self.y) + delim \
+			+ str(self.DNA).strip('[,]') + delim \
+			+ str(self.color) + delim
+			#+ str(self.weights) + delim
+
+		return s
+
+	@staticmethod
+	def decompress(string, delim='&'):
+		"""
+		Decompresses cell for use
+		:param string: compressed string
+		:param delim: delimiter used to compress the string
+		:return: a shiny new cell
+		"""
+
+		values = string.strip().split(delim)
+		assert(len(values), 5)
+
+		for i in range(4):
+			values[i] = values[i].strip()
+
+		x = int(values[0])
+		y = int(values[1])
+		DNA = values[2].split()
+		color = int(values[3])
+		#weights = values[4]
+
+		newCell = Cell(x, y, dna=DNA)
+		newCell.color = color
+		#newCell.weights = weights
+
+		return newCell
 
 
