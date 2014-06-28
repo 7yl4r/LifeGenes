@@ -1,27 +1,38 @@
 from threading import Timer
-from Folly import FollyInstance as Universe
+
+from SocketHandler import Handler
+import gevent
+from gevent import socket
+from gevent.server import StreamServer
 
 DELTA_T = 0.1  # seconds between updates
 
 
 class GameManager(object):
-	def __init__(self):
+	def __init__(self, follyInstance=None, userNum=256, ipAddress=('127.0.0.1', 7070)):
+		"""
+		Creates a new game manager
+		:param userNum: Max number of users allowed to connect at any time
+		:param ipAddress: (ipAddressString, portAsInt)
+		"""
+
 		self.sockets = list()  # list of all websocket connections open
-		self.universe = Universe()
+		self.universe = follyInstance
 		self.update_handle = Timer(DELTA_T, self.__update)
 		self.update_handle.start()
 		self.pauseTime = 0  # amount of time to stay paused
+		self.server = StreamServer(listener=ipAddress, handle=Handler, backlog=userNum)
+		self.server.serve_forever()
 
-
-	def __update(self):
+	def update(self):
 		# updates the universe
 		self.universe.update(self)
 		self.update_handle = Timer(DELTA_T + self.pauseTime, self.__update)
 		self.pauseTime = 0
 		self.update_handle.start()
 
-
-	def sendAll(self, m, originator=None, supress=False):
+	# DEPRECIATED(ish) by gevent
+	def __sendAll(self, m, originator=None, supress=False):
 		# sends message to all open websocket connections except for the originator websocket
 		for sock in self.sockets:
 			if sock != originator:
@@ -29,7 +40,8 @@ class GameManager(object):
 		if supress is False:
 			print 'broadcast message: ', m, ' from ...'  # TODO: get originator client ID
 
-	def parseMessage(self, m, webSock):
+	# DEPRECIATED(ish) by gevent
+	def __parseMessage(self, m, webSock):
 		# takes action according to the following message structure:
 		# AAA BBB CCC DDD
 		# where:
