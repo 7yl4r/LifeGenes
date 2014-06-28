@@ -1,11 +1,9 @@
 # LifeGenes cell genome definition 
 
-import random
+from random import randrange
 import logging
 
-ID = random.getrandbits(64)
 BASES = ['A', 'B', 'C', 'D']  # DNA Base Pairs (BP)
-BASE_LEN = len(BASES)
 DNA_MINLEN = 10  # min base pairs in a genome
 DNA_MAXLEN = 1000  # max base pairs in a genome
 
@@ -20,7 +18,7 @@ LIGHT_CODON = 'B'
 
 NN_MAX = 10
 NN_MIN = -10
-#strings which decrease value in neural network connection
+# strings which decrease value in neural network connection
 ANN_DN_CODONS = [['ABDD', 'CAAB', 'ABAD', 'CBBC'],
                  ['DDDA', 'DBAB', 'AADD', 'ABAB'],
                  ['CDDC', 'DCDD', 'ACBD', 'BADC'],
@@ -41,7 +39,7 @@ ANN_DN_CODONS = [['ABDD', 'CAAB', 'ABAD', 'CBBC'],
                  ['CABC', 'CCDD', 'ACCD', 'ACBC'],
                  ['CCCB', 'CACB', 'ACCA', 'DDCB']]
 
-#strings which increase value in neural network connection
+# strings which increase value in neural network connection
 ANN_UP_CODONS = [['CDCB', 'BABB', 'ACAC', 'ABCB'],
                  ['CCDB', 'CDAB', 'DDDB', 'DACC'],
                  ['BBCC', 'ACDB', 'CADB', 'BDCB'],
@@ -64,9 +62,8 @@ ANN_UP_CODONS = [['CDCB', 'BABB', 'ACAC', 'ABCB'],
 
 # TODO: genetically calculated values need only be calculated once and then stored for future reference. This will greatly improve efficiency.
 
-class cell:
+class Cell:
 	def __init__(self, X, Y, dna=None):
-		global BASES, BASE_LEN
 		if dna is None:
 			self.randomizeDNA()
 		else:
@@ -77,15 +74,6 @@ class cell:
 	def __str__(self):
 		return str(self.__class__) + 'instance. Loc=(' + str(self.x) + ',' + str(self.y) + '). DNA hash=' + str(
 			hash(str(self.DNA)))
-
-	def getID(self):
-		return ID
-
-	def getMutationRisk(self):
-		return MUTATION_RISK
-
-	def getBases(self):
-		return BASES
 
 	def getGenomeIcon(self):
 		# returns a pretty image icon generated from the cell DNA
@@ -106,7 +94,7 @@ class cell:
 		x = y = pixelSize
 
 		for base in self.DNA:
-			saturation = int(float(BASES.index(base)) / float((BASE_LEN - 1)) * 360)
+			saturation = int(float(BASES.index(base)) / float((len(BASES) - 1)) * 360)
 			color = "hsl(" + str(saturation) + ",100%,50%)"
 			logging.debug(str(base) + '=' + color)
 			if x + pixelSize > 50:
@@ -117,54 +105,50 @@ class cell:
 
 			draw.rectangle([(x - pixelSize, y - pixelSize), (x, y)], fill=color)
 
-		#		draw.line((0, 0) + im.size, fill=128)
-		#		draw.line((0, im.size[1], im.size[0], 0), fill=128)
+		# draw.line((0, 0) + im.size, fill=128)
+		# draw.line((0, im.size[1], im.size[0], 0), fill=128)
 		del draw
 		return im
 
 	# generates a random DNA string using bases defined in BASES
 	def randomizeDNA(self):
-		DNAlen = random.random.randrange(DNA_MINLEN, DNA_MAXLEN)
-		self.DNA = [None] * DNAlen
+		global BASES
+		DNAlen = randrange(DNA_MINLEN, DNA_MAXLEN)
+		self.DNA = list()
 		for i in range(DNAlen):
-			self.DNA[i] = BASES[random.random.randrange(0, BASE_LEN)]
+			self.DNA.append(BASES[randrange(0, len(BASES))])
 
 	# generates DNA string from given parent cells
-	def inheritDNA(self, parents, BASES, MUTATION_RISK, cell_id):
+	def inheritDNA(self, parents):
 		while len(parents) < 3:
-			#logging.warning("n_parents=" + str(len(parents)) + " less than 3, using random dna for missing parents")
-			parents.append(cell(0, 0))
-		#if len(parents) > 3:
+			logging.warning("n_parents=" + str(len(parents)) + " less than 3, using random dna for missing parents")
+			parents.append(Cell(0, 0))
+		# if len(parents) > 3:
 		# no problem, just use the first 3
-		genes = [parents[0].DNA, parents[1].DNA, parents[2].DNA]  #total genetic material to choose from
-		#implied else
+		genes = [parents[0].DNA, parents[1].DNA, parents[2].DNA]  # total genetic material to choose from
+		# implied else
 		DNAlen = int((len(genes[0]) + len(genes[1]) + len(genes[2])) / 3)
-		for i in range(DNAlen):  #add random DNA if one parent's genome is too short
+		for i in range(DNAlen):  # add random DNA if one parent's genome is too short
 			for p in range(0, 2):
 				if i > len(genes[p]) - 1:
-					genes[p].append(BASES[random.randrange(0, BASE_LEN - 1)])
-
-		cellDNA = [None] * DNAlen  # preallocate list
-		for i in range(DNAlen):  #figure out child cell's DNA
-			inheritFrom = random.randrange(0, 2)
-			if random.randrange(0, MUTATION_RISK) > 0:
-				cellDNA[i] = genes[inheritFrom][i]
-			else:  # mutate! (return random base)
-				cellDNA[i] = BASES[random.randrange(0, BASE_LEN)]
-
-		return {'DNA': cellDNA, 'ID': cell_id}
+					genes[p].append(BASES[randrange(0, len(BASES) - 1)])
+		cellDNA = list()
+		for i in range(DNAlen):  # figure out child cell's DNA
+			inheritFrom = randrange(0, 2)
+			cellDNA.append(self.riskMutation(genes[inheritFrom][i]))
+		self.DNA = cellDNA
 
 	# return the given base unless mutation is triggered by random chance, then return a random base
 	def riskMutation(self, base):
-		if random.randrange(0, MUTATION_RISK) > 0:
+		if randrange(0, MUTATION_RISK) > 0:
 			return base
 		else:  # mutate! (return random base)
-			return BASES[random.randrange(0, BASE_LEN)]
+			return BASES[randrange(0, len(BASES))]
 
 
 	# get visual information about the cells nearby
 	def getVisualInput(self, stateGetter):
-		#setup visual input 
+		# setup visual input
 		return [stateGetter(self.x - 1, self.y - 2),
 		        stateGetter(self.x, self.y - 2),
 		        stateGetter(self.x + 1, self.y - 2),
@@ -191,22 +175,22 @@ class cell:
 		try:
 			return self.color
 		except AttributeError:
-			color = 110  #starting color in middle of range
-			dc = 2  #delta color; amount of change when codon is detected
+			color = 110  # starting color in middle of range
+			dc = 2  # delta color; amount of change when codon is detected
 			self.color = self.getGeneticValue(color, MAX_COLOR, MIN_COLOR, dc, DARK_CODON, LIGHT_CODON)
 			return self.color
 
 	# returns a numeric value determined from DNA; codons MUST be same length TODO: fix this codon length issue
-	#NOTE: this is a depreciated function which I am keeping here b/c I don't quite trust the new one yet...
+	# NOTE: this is a depreciated function which I am keeping here b/c I don't quite trust the new one yet...
 	def getGeneticValue_alt(self, startVal, maxVal, minVal, delta, upCodon, downCodon):
-		genes = ''.join(self.DNA)  #convert from DNA char array to string (to use slicing)
+		genes = ''.join(self.DNA)  # convert from DNA char array to string (to use slicing)
 		v = startVal
 		pass  # logging.debug('looking for strings '+str(downCodon)+' and '+str(upCodon))
 		L = len(downCodon)  # == len(upCodon)
 		for i in range(len(self.DNA) - L):
-			#s_dn = genes[i:(i+len(downCodon))]
-			#s_up = genes[i:(i+len(upCodon))]
-			#logging.debug('checking strings '+str(s_dn)+' and '+str(s_up))
+			# s_dn = genes[i:(i+len(downCodon))]
+			# s_up = genes[i:(i+len(upCodon))]
+			# logging.debug('checking strings '+str(s_dn)+' and '+str(s_up))
 			if genes[i:(i + len(downCodon))] == downCodon:
 				v -= delta
 			if genes[i:(i + len(upCodon))] == upCodon:
@@ -242,11 +226,11 @@ class cell:
 		try:
 			return self.weights
 		except AttributeError:
-			startV = 0  #starting value in middle of range
+			startV = 0  # starting value in middle of range
 			delt = 1  # amount of change when codon is detected
 			num_outs = 4
 			num_ins = len(ANN_UP_CODONS)
-			pass  #logging.debug('weights should be '+str(num_ins)+'x'+str(num_outs))
+			pass  # logging.debug('weights should be '+str(num_ins)+'x'+str(num_outs))
 			self.weights = [[startV] * num_outs] * num_ins  # inputs x outputs list
 			pass  # logging.debug('weights is '+str(len(weights))+' items in total')
 			pass  # logging.debug(str(num_ins)+'x'+str(num_outs)+' weights list created:\n'+str(weights))
@@ -266,10 +250,10 @@ class cell:
 		for o in range(4):
 			for i in range(num_ins):
 				output[o] = v[i] * w[i][o]
-		dirVal = max(output)  #cell moves in direction of greatest output
-		if dirVal < 1:  #simple threshold
+		dirVal = max(output)  # cell moves in direction of greatest output
+		if dirVal < 1:  # simple threshold
 			return [None, 0]
-		elif dirVal == min(output):  #if all dir values are equal
+		elif dirVal == min(output):  # if all dir values are equal
 			return [None, 0]
 		else:
 			# this next nasty looking code checks for duplicates of dirval and chooses randomly between them.
@@ -278,10 +262,10 @@ class cell:
 			try:
 				dir2 = output.index(dirVal)
 				output.pop(dir2)
-				try:  #there are 3 equal max directions
+				try:  # there are 3 equal max directions
 					dir3 = output.index(dirVal)
 					output.pop(dir3)
-					r = random.randrange(1, 3)
+					r = randrange(1, 3)
 					if r == 1:
 						pass
 					elif r == 2:
@@ -290,15 +274,15 @@ class cell:
 						direction = dir3
 					else:
 						logging.error('error choosing between 3 max cell directions')
-				except ValueError:  #there are 2 equal max directions
-					r = random.randrange(1, 2)
+				except ValueError:  # there are 2 equal max directions
+					r = randrange(1, 2)
 					if r == 1:
 						pass
 					elif r == 2:
 						direction = dir2
 					else:
 						logging.error('error choosing btwn 2 max cell directions')
-			except ValueError:  #there is only 1 max direction
+			except ValueError:  # there is only 1 max direction
 				pass
 
 			if direction == 0:
@@ -337,7 +321,7 @@ class cell:
 		else:
 			logging.warn('direction "' + str(direction) + '" not recognized by cell')
 			return
-		#check for occupied space
+		# check for occupied space
 		if stateGetter(newX, newY) == 1:  # another cell is already there
 			pass  # TODO: try to push cell?
 		else:  # space is clear; move into it
@@ -354,6 +338,8 @@ class cell:
 		for x in range(distance):
 			self.moveOne(direction, stateSetter, stateGetter)
 
+	def getPos(self):
+		return {'x': self.x, 'y': self.y}
 
 
 

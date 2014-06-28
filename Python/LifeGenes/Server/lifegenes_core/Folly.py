@@ -1,10 +1,10 @@
 # this module defines a fake golly-like environment. This is useful for testing and debugging.
 # to use simply put 'from LifeGenes.lifegenes_core.tests.folly import folly as g' in place of 'import golly as g'
 
-import logging
 from time import time
-from random import choice
-import LifeGenes.lifegenes_core.cellList as cellList
+
+from LifeGenes.Server.lifegenes_core.CellList import CellList
+
 
 DELTA_T = 1  # s between updates
 N_COLS = 30
@@ -12,10 +12,9 @@ N_ROWS = 10
 CELL_GRID = [[N_COLS], [N_ROWS]]
 
 
-class follyInstance:
+class FollyInstance:
 	def __init__(self):
 		# change these values to test different start-cases:
-		logging.warn('using mock-GoL "folly"')
 		self.currentLayer = 0
 		self.curLayerEmpty = False
 		self.layerColors = [[0, 255]]
@@ -27,6 +26,8 @@ class follyInstance:
 		self.getcellsconfig = 'const growing'  # 'const change 1k' #'no change 1k' #'no change few'
 
 		self.sched_update = time() + DELTA_T
+		self.cellList = CellList(None)
+		self.cell_list = self.cellList.cells
 
 	def show(self, s):
 		# prints a string somewhere (to the console in this case)
@@ -77,7 +78,7 @@ class follyInstance:
 
 	def getcell(self, x, y):
 		# returns value of cell at given xy position
-		return cellList.findCell(x, y)
+		return self.cellList.findCell(x, y)
 
 	# goly behavior:
 	# Return any live cells in the specified rectangle as a cell list.
@@ -130,7 +131,7 @@ class follyInstance:
 		return [0, 0, 101, 121]
 
 	def maxlayers(self):
-		return self.maxlayers;
+		return self.maxlayers
 
 	def numlayers(self):
 		return self.nLayers
@@ -139,8 +140,11 @@ class follyInstance:
 		return
 
 	def setcell(self, x, y, val):
-		#yeah... whatever...
+		# yeah... whatever...
 		return
+
+	def getCells(self):
+		return self.cellList.cells
 
 	def setcolors(self, colors):
 		self.layerColors[self.getlayer()] = colors
@@ -154,10 +158,6 @@ class follyInstance:
 	def setrule(self, rule):
 		self.layerRules[self.getlayer()] = rule
 
-	def show(self, msg):
-		print msg
-		return
-
 	def step(self):
 		self.generation += 1
 		return
@@ -168,7 +168,7 @@ class follyInstance:
 		for rown in range(len(self.cell_list)):
 			for coln in range(len(self.cell_list[0])):
 				num = self.getNeighbors(rown, coln)
-				if num < 2:  # death by lonliness
+				if num < 2:  # death by loneliness
 					if self.cell_list[rown][coln] == 1:
 						self.cell_list[rown][coln] = 0
 					game_man.sendAll('update ' + str(rown) + ' ' + str(coln) + ' 0', supress=True)
@@ -184,5 +184,11 @@ class follyInstance:
 				else:
 					continue
 
+	def setcursor(self, param):
+		pass
 
-folly = follyInstance()
+	def getevent(self, True):
+		pass
+
+	def getNeighbors(self, rown, coln):
+		return 0

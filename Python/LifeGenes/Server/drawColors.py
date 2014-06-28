@@ -4,12 +4,11 @@
 # unchanging states (and thus a nice range of colors).
 # Please see the [LifeGenes project for genetic cellular automaton](https://github.com/7yl4r/LifeGenes) for more info.
 
-from LifeGenes.lifegenes_core.environment import environment as lifegenes_environment
-from LifeGenes.lifegenes_core.setupLog import setupLog
-import logging
-setupLog('drawColors.log')
+from LifeGenes.Server.lifegenes_core.environment import environment as lifegenes_environment
+from LifeGenes.Server.lifegenes_core.setupLog import setupLog
 
-import golly as g
+
+setupLog('drawColors.log')
 
 lg_envmt = lifegenes_environment()
 lg_envmt.drawColor()
