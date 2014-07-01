@@ -11,7 +11,7 @@ N_COLS = 30
 N_ROWS = 10
 CELL_GRID = [[N_COLS], [N_ROWS]]
 
-
+# TODO: Create a fully-functional cell emulator... Things are broken and unimplemented right now
 class FollyInstance:
 	def __init__(self):
 		# change these values to test different start-cases:
@@ -67,10 +67,12 @@ class FollyInstance:
 	def empty(self):
 		return self.curLayerEmpty
 
+	# TODO
 	def randfill(self, int):
 		# fills the current selection with given percentage density
 		return
 
+	# TODO: Depreciated as of now. Is this needed?
 	def exit(self, msg):
 		print 'requested exit via exit() method with message:'
 		print msg
@@ -127,6 +129,7 @@ class FollyInstance:
 	# Return the current pattern's bounding box as a list.
 	# If there is no pattern then the list is empty ([]), 
 	# otherwise the list is of the form [x,y,width,height].
+	# TODO: This might need fixing
 	def getrect(self):
 		return [0, 0, 101, 121]
 
@@ -136,9 +139,11 @@ class FollyInstance:
 	def numlayers(self):
 		return self.nLayers
 
+	# TODO
 	def select(self, list):
 		return
 
+	# TODO
 	def setcell(self, x, y, val):
 		# yeah... whatever...
 		return
@@ -158,6 +163,7 @@ class FollyInstance:
 	def setrule(self, rule):
 		self.layerRules[self.getlayer()] = rule
 
+	# TODO: Can this go in update to ease the call cycle?
 	def step(self):
 		self.generation += 1
 		return
@@ -184,11 +190,14 @@ class FollyInstance:
 				else:
 					continue
 
+	# TODO
 	def setcursor(self, param):
 		pass
 
+	# TODO
 	def getevent(self, True):
 		pass
 
+	# TODO
 	def getNeighbors(self, rown, coln):
 		return 0

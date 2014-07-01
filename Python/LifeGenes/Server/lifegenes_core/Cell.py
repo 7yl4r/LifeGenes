@@ -4,7 +4,6 @@ from random import randrange, getrandbits
 import random
 import logging
 
-ID = getrandbits(64)
 BASES = ['A', 'B', 'C', 'D']  # DNA Base Pairs (BP)
 DNA_MINLEN = 10  # min base pairs in a genome
 DNA_MAXLEN = 1000  # max base pairs in a genome
@@ -66,6 +65,8 @@ ANN_UP_CODONS = [['CDCB', 'BABB', 'ACAC', 'ABCB'],
 
 class Cell:
 	def __init__(self, X, Y, dna=None):
+		self._ID = getrandbits(64)
+		self.color = 255
 		if dna is None:
 			self.randomizeDNA()
 		else:
@@ -174,6 +175,7 @@ class Cell:
 		        stateGetter(self.x + 1, self.y + 2)]
 
 	# return color value 1-255 generated from first 10 BP of DNA
+	# TODO: generate cell color on cell creation. Good idea or no?
 	def getColor(self):
 		try:
 			return self.color
@@ -385,5 +387,14 @@ class Cell:
 		# newCell.weights = weights
 
 		return newCell
+
+	def getBases(self):
+		return BASES
+
+	def getMutationRisk(self):
+		return MUTATION_RISK
+
+	def getID(self):
+		return self._ID
 
 

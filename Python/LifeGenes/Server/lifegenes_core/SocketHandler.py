@@ -1,92 +1,75 @@
 from __future__ import print_function
 
-from Action import Action, ChangeCellColor, Message, MoveCell, RemoveCell, NewCell
+import ClientAction
 from Cell import Cell
 
 # this handler will be run for each incoming connection in a dedicated greenlet
 class Handler():
-	def __init__(self, socket, address):
-		self.socket = socket
-		self.address = address
+	def __init__(self):
+		self.clients = []
 
-		print('New connection from %s:%s' % address)
-		socket.sendto(self.parseOutbound('Connected to LifeGenes server\r\n'), address)
+	def __call__(self, socket, address):
+		self.clients.append((socket, address))
 
-		self.main()
+		print('New connection from %s' % address)
+		#socket.sendto(parseOutbound(Action.Message('Connected to LifeGenes server\r\n')), address)
 
-	def main(self):
-		# using a makefile because we want to use readline()
-		fileobj = self.socket.makefile()
-		while True:
-			self.socket.wait_read(fileobj, timeout=5)
-			line = fileobj.readline()
-			iter = 0
-			while line is not '':
-				self.parseInbound(line)
-				iter += 1
 
-			if iter is 0:
-				print("client %s disconnected" % self.address)
-
-			fileobj.flush()
-
-	def parseInbound(self, line, delim='~'):
+def parseInbound(line, delim='~'):
 		"""
 		Parse socket information
 		:param line: readline coming from socket stream
 		:param delim: delimiter to separate values in the string
+		:return Action: returns action full of data for use
 		"""
 		payload = line.strip().split(delim)
 
-		newCell = None
-		msg = None
-		rmCellID = None
-		cellID = None
-		x = None
-		y = None
-		color = None
-
 		ID = payload[0]
-		if ID is Message.getID():
-			msg = payload[1]
-		elif ID is NewCell.getID():
-			newCell = Cell.decompress(payload[1])
-		elif ID is RemoveCell.getID():
-			rmCellID = payload[1]
-		elif ID is MoveCell.getID():
-			cellID = payload[1]
-			x = payload[2]
-			x = payload[3]
-		elif ID is ChangeCellColor.getID():
-			cellID = payload[1]
-			color = payload[2]
+		action = ClientAction.getClientAction(ID)
 
-		# TODO: Do something with this information
-		return
+		# Compile actions
+		if isinstance(action, ClientAction.Message):
+			action(payload[1])
+		elif isinstance(action, ClientAction.NewCell):
+			action(Cell.decompress(payload[1]))
+		elif isinstance(action, ClientAction.RemoveCell):
+			action(payload[1])
+		elif isinstance(action, ClientAction.MoveCell):
+			action(payload[2], payload[3], payload[1])
+		elif isinstance(action, ClientAction.ChangeCellColor):
+			action(payload[1], payload[2])
+		else:
+			raise Exception("Inbound parsing failed: Unknown action acquired")
 
-	def parseOutbound(self, action=Action(), delim='~', data=None):
-		"""
+		return action
 
-		:param delim: delimiter to separate values in the string
-		:param action: possible actions: ChangeCellColor, Message, MoveCell, RemoveCell, NewCell
-		:param data: extra data as a dict, if any
-		:return: payload as a string
-		"""
-		# Parse actions
-		payload = ''
-		if isinstance(action, Action):
-			ID = action.getID()
-			payload += str(ID)
+#  DEPRECIATED: Needs to be in client code, not server... Oops. TODO
+def parseOutbound(action, delim='~', data=None):
+	"""
 
-		if isinstance(action, Message):
-			payload = payload + delim + action.getMsg()
-		elif isinstance(action, NewCell):
-			payload = payload + delim + action.getCell().compress()
-		elif isinstance(action, RemoveCell):
-			payload = payload + delim + action.getCellID()
-		elif isinstance(action, MoveCell):
-			payload = payload + delim + action.getCellID() + delim + action.getX() + delim + action.getY()
-		elif isinstance(action, ChangeCellColor):
-			payload = payload + delim + action.getCellID() + delim + action.getColor()
+	:param delim: delimiter to separate values in the string
+	:param action: possible actions: ChangeCellColor, Message, MoveCell, RemoveCell, NewCell
+	:param data: extra data as a dict, if any
+	:return: payload as a string
+	"""
+	# Parse actions
+	payload = ''
+	if isinstance(action, ClientAction):
+		ID = action.getID()
+		payload = payload + str(ID)
+		raise Warning("Sending abstract action to client")
 
-		return payload
+	if isinstance(action, ClientAction.Message):
+		payload = payload + delim + action.getMsg()
+	elif isinstance(action, ClientAction.NewCell):
+		payload = payload + delim + action.getCell().compress()
+	elif isinstance(action, ClientAction.RemoveCell):
+		payload = payload + delim + action.getCellID()
+	elif isinstance(action, ClientAction.MoveCell):
+		payload = payload + delim + action.getCellID() + delim + action.getX() + delim + action.getY()
+	elif isinstance(action, ClientAction.ChangeCellColor):
+		payload = payload + delim + action.getCellID() + delim + action.getColor()
+	else:
+		raise Exception("Outbound parsing failed: unknown action passed to method")
+
+	return payload

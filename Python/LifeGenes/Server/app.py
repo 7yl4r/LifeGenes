@@ -7,9 +7,10 @@ connection_info = ('127.0.0.1', 7070)
 number_of_users = 256
 close = False
 
+instance = FollyInstance()
+gm = GameManager(follyInstance=instance, ipAddress=connection_info, userNum=number_of_users)
+
 try:
-	instance = FollyInstance()
-	gm = GameManager(follyInstance=instance, ipAddress=connection_info, userNum=number_of_users)
 	while close is False:
 		gm.update()
 
