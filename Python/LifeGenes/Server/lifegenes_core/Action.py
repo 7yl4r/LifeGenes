@@ -1,24 +1,25 @@
 import abc
 
+
 class Action(object):
 	_ID = None
 
-	@abc.abstractmethod
 	def getID(self):
 		if self._ID is None:
 			raise Exception
 		else:
 			return self._ID
 
+
 class CellAction(Action):
 	_cellID = None
 
-	@abc.abstractmethod
 	def getCellID(self):
 		if self._cellID is None:
 			raise Exception
 		else:
 			return self._cellID
+
 
 class NewCell(Action):
 	def __init__(self, cell):
@@ -29,11 +30,13 @@ class NewCell(Action):
 	def getCell(self):
 		return self._cell
 
+
 class RemoveCell(CellAction):
 	def __init__(self, cellID):
 		super(RemoveCell, self).__init__()
 		self._ID = 1
 		self._cellID = cellID
+
 
 class MoveCell(CellAction):
 	def __init__(self, x, y, cellID):
@@ -49,6 +52,7 @@ class MoveCell(CellAction):
 	def getY(self):
 		return self._y
 
+
 class ChangeCellColor(CellAction):
 	def __init__(self, color, cellID):
 		super(ChangeCellColor, self).__init__()
@@ -58,6 +62,7 @@ class ChangeCellColor(CellAction):
 
 	def getColor(self):
 		return self._color
+
 
 class Message(Action):
 	def __init__(self, msg):

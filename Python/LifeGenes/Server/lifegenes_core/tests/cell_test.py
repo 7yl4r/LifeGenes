@@ -7,6 +7,8 @@ from math import floor
 from LifeGenes.Server.lifegenes_core.Cell import Cell, DNA_MINLEN, DNA_MAXLEN, MAX_COLOR, MIN_COLOR, NN_MIN, NN_MAX, \
 	BASES
 
+
+
 # test the cell class
 def simpleCellTest():
 	x = randrange(-10000, 10000)

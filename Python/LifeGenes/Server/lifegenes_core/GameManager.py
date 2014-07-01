@@ -1,7 +1,10 @@
 from threading import Timer
 
-from SocketHandler import Handler
 from gevent.server import StreamServer
+
+from SocketHandler import Handler
+
+from environment import environment as env
 
 DELTA_T = 0.1  # seconds between updates
 
@@ -25,7 +28,12 @@ class GameManager(object):
 	def update(self):
 		# updates the universe
 		self.universe.update(self)
+		env.drawColor(self.universe)
+		env.cellMotions(self.universe)  # Position in update not sure
 		# TODO: Send clients the changes
 		self.update_handle = Timer(DELTA_T + self.pauseTime, self.update)
 		self.pauseTime = 0
 		self.update_handle.start()
+
+	def getServer(self):
+		return self.server

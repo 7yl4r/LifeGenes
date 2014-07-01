@@ -126,17 +126,17 @@ class Cell:
 			parents.append(Cell(0, 0))
 		genes = [parents[0].DNA, parents[1].DNA, parents[2].DNA]  # total genetic material to choose from
 		DNAlen = int((len(genes[0]) + len(genes[1]) + len(genes[2])) / 3)
-		for i in range(DNAlen): # add random DNA if one parent's genome is too short
+		for i in range(DNAlen):  # add random DNA if one parent's genome is too short
 			for p in range(0, 2):
 				if i > len(genes[p]) - 1:
 					genes[p].append(BASES[random.randrange(0, len(BASES) - 1)])
 
-		cellDNA = [None] * DNAlen # preallocate list
-		for i in range(DNAlen): # figure out child cell's DNA
+		cellDNA = [None] * DNAlen  # preallocate list
+		for i in range(DNAlen):  # figure out child cell's DNA
 			inheritFrom = random.randrange(0, 2)
 			if random.randrange(0, MUTATION_RISK) > 0:
 				cellDNA[i] = genes[inheritFrom][i]
-			else: # mutate! (return random base)
+			else:  # mutate! (return random base)
 				cellDNA[i] = BASES[random.randrange(0, len(BASES))]
 
 		return {'DNA': cellDNA, 'ID': cell_id}
@@ -352,10 +352,10 @@ class Cell:
 		"""
 
 		s = str(self.x) + delim \
-			+ str(self.y) + delim \
-			+ str(self.DNA).strip('[,]') + delim \
-			+ str(self.color) + delim
-			#+ str(self.weights) + delim
+		    + str(self.y) + delim \
+		    + str(self.DNA).strip('[,]') + delim \
+		    + str(self.color) + delim
+		# + str(self.weights) + delim
 
 		return s
 
@@ -369,7 +369,7 @@ class Cell:
 		"""
 
 		values = string.strip().split(delim)
-		assert(len(values), 5)
+		assert (len(values), 5)
 
 		for i in range(4):
 			values[i] = values[i].strip()
@@ -378,11 +378,11 @@ class Cell:
 		y = int(values[1])
 		DNA = values[2].split()
 		color = int(values[3])
-		#weights = values[4]
+		# weights = values[4]
 
 		newCell = Cell(x, y, dna=DNA)
 		newCell.color = color
-		#newCell.weights = weights
+		# newCell.weights = weights
 
 		return newCell
 

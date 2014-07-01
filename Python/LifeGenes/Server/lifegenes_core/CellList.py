@@ -4,6 +4,8 @@ import logging
 
 from LifeGenes.Server.lifegenes_core import Cell
 
+
+
 # a generalized list of cells
 # FIELDS:
 # cells - a list of cell objects
@@ -12,7 +14,7 @@ from LifeGenes.Server.lifegenes_core import Cell
 # killCellAt - remove a cell by x,y coords
 # save - save cellList to file
 # load - load cellList from file
-#	set - make this list into a copy of given list
+# set - make this list into a copy of given list
 class CellList:
 	def __init__(self, pattern):
 		self.cells = list()
@@ -39,7 +41,7 @@ class CellList:
 		for c in self.cells:
 			if c.x is x and c.y is y:
 				return c
-		#implied else
+		# implied else
 		return None
 
 	def killCellAt(self, x, y):
@@ -65,11 +67,11 @@ class CellList:
 		except AttributeError:
 			logging.error('loaded list seems to have no cells!')
 			raise
-		#implied else
+		# implied else
 		self.set(newList)
 		logging.info(str(len(self.cells)) + ' cells loaded from file')
 
-	#except: logging.error('cellList load appears to have failed. dir(cellList)='+str(dir(self)))
+	# except: logging.error('cellList load appears to have failed. dir(cellList)='+str(dir(self)))
 
 	def set(self, cList):
 		# makes the cell list a copy of the given cellList

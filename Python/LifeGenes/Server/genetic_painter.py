@@ -2,17 +2,19 @@
 # TODO: Broke
 
 import logging
+import sys
 
 from LifeGenes.Server.lifegenes_core.Folly import FollyInstance
 from LifeGenes.Server.lifegenes_core.environment import environment
 from LifeGenes.Server.lifegenes_core.Cell import Cell
 from LifeGenes.Server.lifegenes_core.setupLog import setupLog
 from LifeGenes.Server.lifegenes_core.cellPallate import cellPallate
-import sys
+
 
 setupLog('genetic_filler.log')
 
 g = FollyInstance()
+
 
 def draw_dna():
 	# === load DNA pallate

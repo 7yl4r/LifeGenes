@@ -29,9 +29,9 @@ def setupLog(logName='noName.txt'):
 # try:
 # mkdir(logDir)
 # except OSError:
-#			pass # probably the dir already exists...
+# pass # probably the dir already exists...
 #
-#		logPath = logDir+'/'+logName
+# logPath = logDir+'/'+logName
 #		print str(logging.getLogger())
 #		logging.basicConfig(filename=logPath,\
 #							level=logging.DEBUG,\

@@ -7,12 +7,13 @@ import Tkinter as tk
 
 from LifeGenes.Server.lifegenes_core.__util.appdirs import user_data_dir
 
+
 try:
 	from PIL import Image, ImageTk
 except ImportError:
 	raise ImportError("this function requires the Python Imaging Library (PIL).",
-						"See http://www.pythonware.com/products/pil/ ",
-						"or https://github.com/python-imaging/Pillow for more.")
+	                  "See http://www.pythonware.com/products/pil/ ",
+	                  "or https://github.com/python-imaging/Pillow for more.")
 
 saveDir = user_data_dir('LifeGenes', '7yl4r-ware')
 DNA_COLLECTION_FILE = join(saveDir, 'dna_collection.pk')
@@ -23,6 +24,7 @@ CELL_COLLECTION_DIR = join(saveDir, dirName)
 if not exists(CELL_COLLECTION_DIR):
 	mkdir(CELL_COLLECTION_DIR)
 
+# TODO: Broke
 
 class cellPallate:
 	# defines a pallate of saved DNA sequences
@@ -126,7 +128,8 @@ class cellPallate:
 				                                                         self.imageButtons[i].config(relief=tk.SUNKEN),
 				                                                         self.setSelection(i),
 				                                                         tk.Label(self.frame, text='cell strain "' +
-				                                                         self.cellPallate.cellNames[i] + '" selected').pack(),
+				                                                                                   self.cellPallate.cellNames[
+					                                                                                   i] + '" selected').pack(),
 				                                                         # self.frame.mainloop()
 				                                   ))
 				))

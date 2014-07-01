@@ -256,9 +256,9 @@ def _get_win_folder_from_registry(csidl_name):
 	import _winreg
 
 	shell_folder_name = {
-		"CSIDL_APPDATA": "AppData",
-		"CSIDL_COMMON_APPDATA": "Common AppData",
-		"CSIDL_LOCAL_APPDATA": "Local AppData",
+	"CSIDL_APPDATA": "AppData",
+	"CSIDL_COMMON_APPDATA": "Common AppData",
+	"CSIDL_LOCAL_APPDATA": "Local AppData",
 	}[csidl_name]
 
 	key = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER,
@@ -300,9 +300,9 @@ def _get_win_folder_with_ctypes(csidl_name):
 	import ctypes
 
 	csidl_const = {
-		"CSIDL_APPDATA": 26,
-		"CSIDL_COMMON_APPDATA": 35,
-		"CSIDL_LOCAL_APPDATA": 28,
+	"CSIDL_APPDATA": 26,
+	"CSIDL_COMMON_APPDATA": 35,
+	"CSIDL_LOCAL_APPDATA": 28,
 	}[csidl_name]
 
 	buf = ctypes.create_unicode_buffer(1024)

@@ -1,12 +1,12 @@
-from LifeGenes.Server.lifegenes_core import CellList
-from LifeGenes.Server.lifegenes_core.Cell import Cell
-
 import logging
-
-from LifeGenes.Server.lifegenes_core.__util.appdirs import user_data_dir
 from os.path import join
 from os import makedirs
 from multiprocessing import Pool, cpu_count
+
+from LifeGenes.Server.lifegenes_core import CellList
+from LifeGenes.Server.lifegenes_core.Cell import Cell
+from LifeGenes.Server.lifegenes_core.__util.appdirs import user_data_dir
+
 
 pool = Pool(processes=cpu_count())
 
@@ -70,8 +70,8 @@ class environment:
 	# close down the environment
 	def teardown(self):
 		self.g.setlayer(self.originL)  # ensure we are on the right layer
-		self.update(self.g)  # ensure there are no half-built arrays
-		self.drawColor(self.g)  # one last draw
+		self.update()  # ensure there are no half-built arrays
+		self.drawColor()  # one last draw
 		self.g.update()  # one last display update
 		self.cellList.save(self.CELL_LIST_FILENAME)
 
