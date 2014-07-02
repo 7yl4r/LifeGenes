@@ -43,7 +43,7 @@ def parseInbound(line, delim='~'):
 
 		return action
 
-#  DEPRECIATED: Needs to be in client code, not server... Oops. TODO
+#  TODO
 def parseOutbound(action, delim='~', data=None):
 	"""
 
@@ -54,22 +54,5 @@ def parseOutbound(action, delim='~', data=None):
 	"""
 	# Parse actions
 	payload = ''
-	if isinstance(action, ClientAction):
-		ID = action.getID()
-		payload = payload + str(ID)
-		raise Warning("Sending abstract action to client")
-
-	if isinstance(action, ClientAction.Message):
-		payload = payload + delim + action.getMsg()
-	elif isinstance(action, ClientAction.NewCell):
-		payload = payload + delim + action.getCell().compress()
-	elif isinstance(action, ClientAction.RemoveCell):
-		payload = payload + delim + action.getCellID()
-	elif isinstance(action, ClientAction.MoveCell):
-		payload = payload + delim + action.getCellID() + delim + action.getX() + delim + action.getY()
-	elif isinstance(action, ClientAction.ChangeCellColor):
-		payload = payload + delim + action.getCellID() + delim + action.getColor()
-	else:
-		raise Exception("Outbound parsing failed: unknown action passed to method")
 
 	return payload

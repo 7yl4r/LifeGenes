@@ -1,5 +1,7 @@
 package com.github.lifegenes;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -19,10 +21,24 @@ public class Main extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
+		String host = "127.0.0.1";
+		int port = 7070;
+		
+		Client client = null;
+		Thread cThread = null;
+		
+		try {
+			client = new Client(host, port);
+			cThread = new Thread(client);
+			cThread.start();
+		} catch (UnknownHostException e) {e.printStackTrace();
+		} catch (IOException e) {e.printStackTrace();}
+		
+		
 		renderer = new ShapeRenderer();
 		cells = new ArrayList<Cell>();
 		
-		// TODO: Import info from python websockets and parse
+		// TODO: Import info from sockets somehow
 		
 		
 		// new camera for view projections (20 cells wide, 20 cells tall)
