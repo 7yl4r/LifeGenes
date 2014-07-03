@@ -36,12 +36,12 @@ public class Client implements Runnable {
 		// TODO: Implement a safe shutdown procedure initiated by user
 		while (true) {
 			try {
-				GameState gameState = this.recieve();
+				GameState gameState = this.receive();
 			} catch (IOException e) {e.printStackTrace();}
 		}
 	}
 
-	public GameState recieve() throws IOException {
+	public GameState receive() throws IOException {
 		// TODO: return data in a thread-safe way
 		if (socket.isConnected()) {
 			if (buffIn.ready()) {
@@ -52,9 +52,9 @@ public class Client implements Runnable {
 		return null;
 	}
 	
-	public void send(Action action) throws IOException {
+	public void send(Action action) throws IOException, NativeException {
 		if (socket.isConnected()) {
-			byte[] data = this.parseOutbound(action);
+			byte[] data = this.parseOutbound(action, "~");
 			outStream.write(data);
 			outStream.flush(); // Flush is needed to send data immediately
 		}
@@ -67,36 +67,41 @@ public class Client implements Runnable {
 		return null;
 	}
 	
-	private byte[] parseOutbound(Action action) {
+	private byte[] parseOutbound(Action action, String delim) throws NativeException {
 		// TODO: Convert from python to Java
-		
-		/*
-		 * # Parse actions
-		payload = ''
-		if isinstance(action, ClientAction):
-			ID = action.getID()
-			payload = payload + str(ID)
-			raise Warning("Sending abstract action to client")
-	
-		if isinstance(action, ClientAction.Message):
-			payload = payload + delim + action.getMsg()
-		elif isinstance(action, ClientAction.NewCell):
-			payload = payload + delim + action.getCell().compress()
-		elif isinstance(action, ClientAction.RemoveCell):
-			payload = payload + delim + action.getCellID()
-		elif isinstance(action, ClientAction.MoveCell):
-			payload = payload + delim + action.getCellID() + delim + action.getX() + delim + action.getY()
-		elif isinstance(action, ClientAction.ChangeCellColor):
-			payload = payload + delim + action.getCellID() + delim + action.getColor()
-		else:
-			raise Exception("Outbound parsing failed: unknown action passed to method")
-	
-		return payload
-		 */
-		
-		
-		
-		return null;
-	}
+		// Parse Actions
+		String payload = "";
 
+		if (action.getID() == -1) {
+			int ID = action.getID();
+			payload = payload + ID;
+			throw new NativeException("Sending abstract action to client");
+	    }
+        else if (action instanceof Message) {
+            Message act = (Message) action;
+			payload = payload + delim + act.getMessage();
+        }
+        else if (action instanceof NewCell) {
+            NewCell act = (NewCell) action;
+            // TODO: Create compress method in Cell class synonymous to Python's Cell compress
+			//payload = payload + delim + act.getCell().compress();
+        }
+        else if (action instanceof RemoveCell) {
+            RemoveCell act = (RemoveCell) action;
+			payload = payload + delim + act.getCellID();
+        }
+        else if (action instanceof MoveCell) {
+            MoveCell act = (MoveCell) action;
+			payload = payload + delim + act.getCellID() + delim + act.getPos().x + delim + act.getPos().y;
+        }
+        else if (action instanceof ChangeCellColor) {
+            ChangeCellColor act = (ChangeCellColor) action;
+			payload = payload + delim + act.getCellID() + delim + act.getColor();
+        }
+		else {
+            throw new NativeException("Outbound parsing failed: unknown action passed to method");
+        }
+
+		return payload.getBytes();
+	}
 }

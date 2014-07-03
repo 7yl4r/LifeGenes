@@ -66,7 +66,6 @@ class RemoveCell(CellAction):
 		self._ID = ACTION_IDS.get('RemoveCell')
 		self._cellID = cellID
 
-
 class MoveCell(CellAction):
 	def __init__(self):
 		super(MoveCell, self).__init__()

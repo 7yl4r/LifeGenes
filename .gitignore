@@ -7,6 +7,7 @@ __appData
 # PyCharm
 .idea/
 pycharm
+*.iml
 
 # Eclipse
 .classpath
