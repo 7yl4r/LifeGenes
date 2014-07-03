@@ -1,7 +1,6 @@
 package com.github.lifegenes;
 
 import com.badlogic.gdx.math.Vector2;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 
 import java.util.Collections;
 import java.util.HashMap;

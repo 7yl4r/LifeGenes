@@ -38,7 +38,7 @@ public class Main extends ApplicationAdapter {
 		renderer = new ShapeRenderer();
 		cells = new ArrayList<Cell>();
 		
-		// TODO: Import info from sockets somehow
+		// TODO: Import gamestate from sockets somehow
 		
 		
 		// new camera for view projections (20 cells wide, 20 cells tall)

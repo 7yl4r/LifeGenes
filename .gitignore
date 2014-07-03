@@ -23,7 +23,6 @@ build/
 
 # Ubuntu backups
 *~
-
 *.py[cod]
 
 # C extensions

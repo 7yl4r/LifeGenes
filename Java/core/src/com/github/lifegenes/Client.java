@@ -68,7 +68,6 @@ public class Client implements Runnable {
 	}
 	
 	private byte[] parseOutbound(Action action, String delim) throws NativeException {
-		// TODO: Convert from python to Java
 		// Parse Actions
 		String payload = "";
 

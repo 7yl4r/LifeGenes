@@ -361,32 +361,7 @@ class Cell:
 
 		return s
 
-	@staticmethod
-	def decompress(string, delim='&'):
-		"""
-		Decompresses cell for use
-		:param string: compressed string
-		:param delim: delimiter used to compress the string
-		:return: a shiny new cell
-		"""
 
-		values = string.strip().split(delim)
-		assert (len(values), 5)
-
-		for i in range(4):
-			values[i] = values[i].strip()
-
-		x = int(values[0])
-		y = int(values[1])
-		DNA = values[2].split()
-		color = int(values[3])
-		# weights = values[4]
-
-		newCell = Cell(x, y, dna=DNA)
-		newCell.color = color
-		# newCell.weights = weights
-
-		return newCell
 
 	def getBases(self):
 		return BASES
@@ -398,3 +373,28 @@ class Cell:
 		return self._ID
 
 
+def decompress(string, delim='&'):
+    """
+    Decompresses cell for use
+    :param string: compressed string
+    :param delim: delimiter used to compress the string
+    :return: a shiny new cell
+    """
+
+    values = string.strip().split(delim)
+    assert (len(values), 5)
+
+    for i in range(4):
+        values[i] = values[i].strip()
+
+    x = int(values[0])
+    y = int(values[1])
+    DNA = values[2].split()
+    color = int(values[3])
+    # weights = values[4]
+
+    newCell = Cell(x, y, dna=DNA)
+    newCell.color = color
+    # newCell.weights = weights
+
+    return newCell
