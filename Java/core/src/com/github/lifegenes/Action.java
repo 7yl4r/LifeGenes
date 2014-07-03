@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public interface Action {
+interface Action {
     /**
      * Creates a new Action, which is used for socket communication for the client
      */
@@ -28,6 +28,7 @@ interface CellAction extends Action {
 
     /**
      * Gets Cell ID from parent class, CellAction
+     *
      * @return Returns Cell ID in question for manipulation
      */
     public int getCellID();
@@ -35,8 +36,8 @@ interface CellAction extends Action {
 
 class NewCell implements Action {
 
-    private Cell cell;
-    private int ID;
+    private final Cell cell;
+    private final int ID;
 
     public NewCell(Cell cell) {
         this.ID = ACTION_IDS.get(this.getClass().getName());
@@ -55,8 +56,8 @@ class NewCell implements Action {
 
 class RemoveCell implements CellAction {
 
-    private int cellID;
-    private int ID;
+    private final int cellID;
+    private final int ID;
 
     public RemoveCell(int cellID) {
         this.ID = ACTION_IDS.get(this.getClass().getName());
@@ -76,9 +77,9 @@ class RemoveCell implements CellAction {
 
 class MoveCell implements CellAction {
 
-    private int ID;
-    private int cellID;
-    private Vector2 pos;
+    private final int ID;
+    private final int cellID;
+    private final Vector2 pos;
 
     public MoveCell(Vector2 pos, int cellID) {
         this.ID = ACTION_IDS.get(this.getClass().getName());
@@ -103,14 +104,13 @@ class MoveCell implements CellAction {
 
 class ChangeCellColor implements CellAction {
 
-    private int ID;
-    private int cellID;
-    private int color;
+    private final int ID;
+    private final int cellID;
+    private final int color;
 
     /**
-     *
      * @param cellID The ID of the cell in question
-     * @param color The color of the cell expressed in 255-int RGB values
+     * @param color  The color of the cell expressed in 255-int RGB values
      */
     public ChangeCellColor(int cellID, int color) {
         this.ID = ACTION_IDS.get(this.getClass().getName());
@@ -135,11 +135,12 @@ class ChangeCellColor implements CellAction {
 
 class Message implements Action {
 
-    private int ID;
-    private String message;
+    private final int ID;
+    private final String message;
 
     /**
      * Creates a new Message, which is used to pass text strings to the server or possibly other players
+     *
      * @param msg The message you would like to send
      */
     public Message(String msg) {

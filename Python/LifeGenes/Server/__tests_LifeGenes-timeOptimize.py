@@ -12,10 +12,10 @@ setupLog('__test_LifeGenes.log')
 
 
 def wait():
-	try:
-		system('pause')  # windows, doesn't require enter
-	except:
-		system('read -p "Press any key to continue"')  # linux
+    try:
+        system('pause')  # windows, doesn't require enter
+    except:
+        system('read -p "Press any key to continue"')  # linux
 
 
 # MAIN

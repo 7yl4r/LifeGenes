@@ -9,17 +9,17 @@ from LifeGenes.Server.lifegenes_core.__util.appdirs import user_log_dir
 
 
 def setupLog(logName='noName.txt'):
-	logDir = user_log_dir('LifeGenes', '7yl4r-ware')
-	try:
-		makedirs(logDir)
-	except OSError:
-		pass  # probably the dir already exists...
+    logDir = user_log_dir('LifeGenes', '7yl4r-ware')
+    try:
+        makedirs(logDir)
+    except OSError:
+        pass  # probably the dir already exists...
 
-	logPath = join(logDir, logName)
-	logging.basicConfig(filename=logPath,
-	                    level=logging.DEBUG,
-	                    format='%(asctime)s %(levelname)s:%(message)s',
-	                    filemode='w')
+    logPath = join(logDir, logName)
+    logging.basicConfig(filename=logPath,
+                        level=logging.DEBUG,
+                        format='%(asctime)s %(levelname)s:%(message)s',
+                        filemode='w')
 
 
 # # assume that you want your logs in LifeGenes source which is in your home directory
@@ -32,8 +32,8 @@ def setupLog(logName='noName.txt'):
 # pass # probably the dir already exists...
 #
 # logPath = logDir+'/'+logName
-#		print str(logging.getLogger())
-#		logging.basicConfig(filename=logPath,\
+# print str(logging.getLogger())
+# logging.basicConfig(filename=logPath,\
 #							level=logging.DEBUG,\
 #							format='%(asctime)s %(levelname)s:%(message)s',\
 #							filemode='w')
