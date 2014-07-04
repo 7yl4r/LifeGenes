@@ -1,10 +1,11 @@
 from threading import Timer
 
+from gevent import spawn
 from gevent.server import StreamServer
 from gevent.pool import Pool
 
 from SocketHandler import Handler, parseInbound
-from environment import environment as env
+from environment import environment
 import ActionHandler
 
 DELTA_T = 0.1  # seconds between updates
@@ -17,7 +18,7 @@ class GameManager(object):
         :param userNum: Max number of users allowed to connect at any time
         :param ipAddress: (ipAddressString, portAsInt)
         """
-
+        self.env = environment(follyInstance)
         self.universe = follyInstance
         self.update_handle = Timer(DELTA_T, self.update)
         self.update_handle.start()
@@ -25,18 +26,21 @@ class GameManager(object):
         self.socketHandler = Handler()
         pool = Pool(userNum)  # Create a pool of greenlets
         self.server = StreamServer(ipAddress, handle=self.socketHandler, spawn=pool)
-        self.server.serve_forever()
+        # TODO: Restructure SocketHandler to not call outside code since the server needs to be in a subprocess
+        spawn(self.server.serve_forever())
 
     def update(self):
         # get actions requested from connected sockets
-        actions = self.readSockets()
+        # TODO: Moved readSockets to SocketHandler. Need to fix this line below
+        #actions = self.readSockets()
+        actions = None  # temp until above is fixed
         # commit actions to the universe
         if actions is not None:
             ActionHandler.handleActions(self.universe, actions)
 
         self.universe.update(self)
-        env.drawColor(self.universe)
-        env.cellMotions(self.universe)  # Position to place this in update not sure
+        self.env.drawColor()
+        self.env.cellMotions()  # Position to place this in update not sure
 
         # TODO: Send clients the changes
         for client in self.socketHandler.clients:
@@ -46,32 +50,6 @@ class GameManager(object):
         self.update_handle = Timer(DELTA_T + self.pauseTime, self.update)
         self.pauseTime = 0
         self.update_handle.start()
-
-    # TODO: This needs testing. It *might* work
-    def readSockets(self):
-        """
-        Reads server socket file to see if there's anything to be read.
-        If there is something to be read, parse into object and return actions,
-        then flush the file.
-        :return: Actions, or None if there isn't any
-        """
-        fileobj = self.server.socket.makefile()
-        self.server.socket.wait_read(fileobj, timeout=5)
-        line = fileobj.readline()
-        iter = 0
-        actions = []
-        while line is not '':
-            actions.append(parseInbound(line))
-            iter += 1
-
-        if iter is 0:
-            print("all clients disconnected")
-            fileobj.flush()
-            return None
-
-        fileobj.flush()
-
-        return actions
 
     def getServer(self):
         return self.server

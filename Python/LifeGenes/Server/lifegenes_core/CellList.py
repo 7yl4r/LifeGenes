@@ -18,10 +18,11 @@ class CellList:
     def __init__(self, pattern):
         self.cells = list()
         # add cell object to list for each pair in pattern
+        """
         for cellIndex in range(len(pattern) / 2):
             self.cells.append(Cell.Cell(pattern[cellIndex * 2], pattern[cellIndex * 2 + 1]))
             cellIndex += 1
-
+        """
     def setCell(self, x, y, dna=None, cell=None):
         if cell is not None:
             self.killCellAt(x, y)  # remove old cell if exists

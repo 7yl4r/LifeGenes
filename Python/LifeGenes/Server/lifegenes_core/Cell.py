@@ -387,7 +387,6 @@ def decompress(string, delim='&'):
     """
 
     values = string.strip().split(delim)
-    assert (len(values), 5)
 
     for i in range(4):
         values[i] = values[i].strip()

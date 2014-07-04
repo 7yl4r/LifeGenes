@@ -20,6 +20,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Main extends ApplicationAdapter {
 
@@ -29,6 +31,7 @@ public class Main extends ApplicationAdapter {
     private TextField messageField;
     private Stage stage;
     private SpriteBatch batch;
+    private ConcurrentLinkedQueue<String> messageQueue;
 
     @Override
     public void create() {
@@ -38,7 +41,9 @@ public class Main extends ApplicationAdapter {
         Client client = null;
         Thread cThread = null;
 
-        client = new Client(host, port);
+        messageQueue = new ConcurrentLinkedQueue<String>();
+
+        client = new Client(host, port, messageQueue);
         cThread = new Thread(client);
         cThread.start();
 
@@ -75,6 +80,7 @@ public class Main extends ApplicationAdapter {
             public void keyTyped (TextField textField, char key) {
                 if (key == '\r') {
                     // TODO: Send text as action
+                    messageQueue.add(messageField.getText());
                     messageField.setText("");
                 }
             }

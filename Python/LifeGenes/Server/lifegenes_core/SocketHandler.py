@@ -15,6 +15,32 @@ class Handler():
 
         # socket.sendto(parseOutbound(Action.Message('Connected to LifeGenes server\r\n')), address)
 
+    # TODO: This needs testing. It *might* work
+    def readSockets(self):
+        """
+        Reads server socket file to see if there's anything to be read.
+        If there is something to be read, parse into object and return actions,
+        then flush the file.
+        :return: Actions, or None if there isn't any
+        """
+
+        actions = []
+        for socket, address in self.clients:
+            fileobj = socket.makefile()
+            socket.wait_read(fileobj, timeout=5)
+            line = fileobj.readline()
+            iter = 0
+            while line is not '':
+                actions.append(parseInbound(line))
+                iter += 1
+
+            if iter is 0:
+                print("client %s disconnected" % address)
+                fileobj.flush()
+
+            fileobj.flush()
+
+        return actions
 
 def parseInbound(line, delim='~'):
     """

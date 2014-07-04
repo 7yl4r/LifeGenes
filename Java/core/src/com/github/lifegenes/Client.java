@@ -6,10 +6,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Iterator;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 class Client implements Runnable {
 
+    private final ConcurrentLinkedQueue<String> messageQueue;
     private Socket socket;
     private static String ID = UUID.randomUUID().toString();
     private BufferedReader buffIn;
@@ -17,10 +20,10 @@ class Client implements Runnable {
     private final String host;
     private final int port;
 
-    public Client(String host, int port) {
-
+    public Client(String host, int port, ConcurrentLinkedQueue<String> messageQueue) {
         this.host = host;
         this.port = port;
+        this.messageQueue = messageQueue;
     }
 
     @Override
@@ -42,6 +45,20 @@ class Client implements Runnable {
                 GameState gameState = this.receive();
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+
+            // Send messages, if any
+            if (!messageQueue.isEmpty()) {
+
+                try {
+
+                    Iterator<String> iter = messageQueue.iterator();
+                    while (iter.hasNext()) {
+                        outStream.write(messageQueue.poll().getBytes());
+                    }
+                    outStream.flush();
+
+                } catch (IOException e) {e.printStackTrace();}
             }
         }
     }
