@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-class Main extends ApplicationAdapter {
+public class Main extends ApplicationAdapter {
 
     private ShapeRenderer renderer;
     private OrthographicCamera camera;
@@ -27,15 +27,10 @@ class Main extends ApplicationAdapter {
         Client client = null;
         Thread cThread = null;
 
-        try {
-            client = new Client(host, port);
-            cThread = new Thread(client);
-            cThread.start();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        client = new Client(host, port);
+        cThread = new Thread(client);
+        cThread.start();
+
 
 
         renderer = new ShapeRenderer();
