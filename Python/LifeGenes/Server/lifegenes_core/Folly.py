@@ -34,6 +34,51 @@ class FollyInstance:
         print s
         return
 
+    def setCellColor(self, cellID, color):
+        """
+        Sets cell color by cell ID
+        :param cellID: the cell ID to change
+        :return: true if cell was found, false if not
+        """
+        chgCell = None
+        for cell in self.cell_list:
+            if cell.getID() is cellID:
+                chgCell = cell
+                break
+
+        if chgCell is not None:
+            chgCell.setColor(color)
+            return True
+        else:
+            return False
+
+
+    def addCell(self, cell):
+        """
+        Adds cell to cell_list
+        :param cell: cell to add
+        :return: None
+        """
+        self.cell_list.append(cell)
+
+    def removeCell(self, cellID):
+        """
+        Removes cell from cell_list
+        :param cellID: ID of cell to be removed
+        :return: true if successful, false if not
+        """
+        rmCell = None
+        for cell in self.cell_list:
+            if cell.getID() is cellID:
+                rmCell = cell
+                break
+
+        if rmCell is not None:
+            self.cell_list.remove(rmCell)
+            return True
+        else:
+            return False
+
     # golly behavior:
     # Add a new, empty layer immediately after the current layer and return the new layer's index,
     # an integer from 0 to numlayers() - 1.

@@ -5,6 +5,7 @@ from gevent.pool import Pool
 
 from SocketHandler import Handler, parseInbound
 from environment import environment as env
+import ActionHandler
 
 DELTA_T = 0.1  # seconds between updates
 
@@ -17,7 +18,6 @@ class GameManager(object):
         :param ipAddress: (ipAddressString, portAsInt)
         """
 
-        self.sockets = list()  # list of all websocket connections open
         self.universe = follyInstance
         self.update_handle = Timer(DELTA_T, self.update)
         self.update_handle.start()
@@ -30,7 +30,8 @@ class GameManager(object):
     def update(self):
         # get actions requested from connected sockets
         actions = self.readSockets()
-        # TODO: Parse actions into the universe
+        # commit actions to the universe
+        ActionHandler.handleActions(self.universe, actions)
 
         self.universe.update(self)
         env.drawColor(self.universe)
@@ -58,8 +59,8 @@ class GameManager(object):
 
         if iter is 0:
             print("all clients disconnected")
-
             fileobj.flush()
+            return None
 
         fileobj.flush()
 
@@ -67,3 +68,6 @@ class GameManager(object):
 
     def getServer(self):
         return self.server
+
+    def getUniverse(self):
+        return self.universe

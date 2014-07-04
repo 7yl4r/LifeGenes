@@ -9,8 +9,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class Main extends ApplicationAdapter {
@@ -30,8 +28,6 @@ public class Main extends ApplicationAdapter {
         client = new Client(host, port);
         cThread = new Thread(client);
         cThread.start();
-
-
 
         renderer = new ShapeRenderer();
         cells = new ArrayList<Cell>();

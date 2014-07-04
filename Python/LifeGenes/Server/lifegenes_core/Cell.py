@@ -185,6 +185,9 @@ class Cell:
             self.color = self.getGeneticValue(color, MAX_COLOR, MIN_COLOR, dc, DARK_CODON, LIGHT_CODON)
             return self.color
 
+    def setColor(self, color):
+        self.color = color
+
     # returns a numeric value determined from DNA; codons MUST be same length TODO: fix this codon length issue
     # NOTE: this is a depreciated function which I am keeping here b/c I don't quite trust the new one yet...
     def getGeneticValue_alt(self, startVal, maxVal, minVal, delta, upCodon, downCodon):
