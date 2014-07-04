@@ -31,7 +31,8 @@ class GameManager(object):
         # get actions requested from connected sockets
         actions = self.readSockets()
         # commit actions to the universe
-        ActionHandler.handleActions(self.universe, actions)
+        if actions is not None:
+            ActionHandler.handleActions(self.universe, actions)
 
         self.universe.update(self)
         env.drawColor(self.universe)
@@ -39,15 +40,21 @@ class GameManager(object):
 
         # TODO: Send clients the changes
         for client in self.socketHandler.clients:
-            data = None  # TODO: data = changes to client gamestate as a dict parsed as a string
+            data = None  # TODO: data = changes to client as a dict parsed as a string. Possibly using the action format
             client[0].send(data)
 
         self.update_handle = Timer(DELTA_T + self.pauseTime, self.update)
         self.pauseTime = 0
         self.update_handle.start()
 
-    # TODO: This needs fixing.. pull connected sockets from SocketHandler and read
+    # TODO: This needs testing. It *might* work
     def readSockets(self):
+        """
+        Reads server socket file to see if there's anything to be read.
+        If there is something to be read, parse into object and return actions,
+        then flush the file.
+        :return: Actions, or None if there isn't any
+        """
         fileobj = self.server.socket.makefile()
         self.server.socket.wait_read(fileobj, timeout=5)
         line = fileobj.readline()

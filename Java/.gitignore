@@ -6,9 +6,6 @@
 hs_err_pid*
 
 ## GWT
-war/
-html/war/gwt_bree/
-html/gwt-unitCache/
 .apt_generated/
 html/war/WEB-INF/deploy/
 html/war/WEB-INF/classes/
