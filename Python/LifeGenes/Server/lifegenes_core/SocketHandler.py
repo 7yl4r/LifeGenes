@@ -1,4 +1,6 @@
 from __future__ import print_function
+import errno
+import socket as sock
 
 import ClientAction
 from Cell import Cell
@@ -9,13 +11,13 @@ class Handler():
         self.clients = []
 
     def __call__(self, socket, address):
+        socket.setblocking(0)
         self.clients.append((socket, address))
 
-        print('New connection from %s' % address)
+        print('New connection from %s' % str(address))
 
         # socket.sendto(parseOutbound(Action.Message('Connected to LifeGenes server\r\n')), address)
 
-    # TODO: This needs testing. It *might* work
     def readSockets(self):
         """
         Reads server socket file to see if there's anything to be read.
@@ -23,22 +25,29 @@ class Handler():
         then flush the file.
         :return: Actions, or None if there isn't any
         """
-
         actions = []
         for socket, address in self.clients:
-            fileobj = socket.makefile()
-            socket.wait_read(fileobj, timeout=5)
-            line = fileobj.readline()
-            iter = 0
-            while line is not '':
-                actions.append(parseInbound(line))
-                iter += 1
-
-            if iter is 0:
-                print("client %s disconnected" % address)
-                fileobj.flush()
-
-            fileobj.flush()
+            while True:
+                fileobj = socket.makefile()
+                try:
+                    #print("blocked")
+                    # TODO: POS fileobj keeps blocking even though it should be in non-blocking mode
+                    line = fileobj.readline()
+                    print("unblocked")
+                    print(line)
+                    if line is not None:
+                        parsedLine = parseInbound(line)
+                        print(parsedLine)
+                        if parsedLine is not None:
+                            actions.append(parsedLine)
+                    else:
+                        print("client %s disconnected" % str(address))
+                        break
+                    fileobj.flush()
+                except sock.error, e:
+                    if e.args[0] is errno.EWOULDBLOCK:
+                        # stifle non-blocking errors
+                        continue
 
         return actions
 
@@ -66,7 +75,7 @@ def parseInbound(line, delim='~'):
     elif isinstance(action, ClientAction.ChangeCellColor):
         action(payload[1], payload[2])
     else:
-        raise Exception("Inbound parsing failed: Unknown action acquired")
+        return None
 
     return action
 

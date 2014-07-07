@@ -40,7 +40,7 @@ class NewCell implements Action {
     private final int ID;
 
     public NewCell(Cell cell) {
-        this.ID = ACTION_IDS.get(this.getClass().getName());
+        this.ID = ACTION_IDS.get("NewCell");
         this.cell = cell;
     }
 
@@ -60,7 +60,7 @@ class RemoveCell implements CellAction {
     private final int ID;
 
     public RemoveCell(int cellID) {
-        this.ID = ACTION_IDS.get(this.getClass().getName());
+        this.ID = ACTION_IDS.get("RemoveCell");
         this.cellID = cellID;
     }
 
@@ -82,7 +82,7 @@ class MoveCell implements CellAction {
     private final Vector2 pos;
 
     public MoveCell(Vector2 pos, int cellID) {
-        this.ID = ACTION_IDS.get(this.getClass().getName());
+        this.ID = ACTION_IDS.get("MoveCell");
         this.cellID = cellID;
         this.pos = pos;
     }
@@ -113,7 +113,7 @@ class ChangeCellColor implements CellAction {
      * @param color  The color of the cell expressed in 255-int RGB values
      */
     public ChangeCellColor(int cellID, int color) {
-        this.ID = ACTION_IDS.get(this.getClass().getName());
+        this.ID = ACTION_IDS.get("ChangeCellColor");
         this.cellID = cellID;
         this.color = color;
     }
@@ -135,8 +135,8 @@ class ChangeCellColor implements CellAction {
 
 class Message implements Action {
 
-    private final int ID;
-    private final String message;
+    private int ID;
+    private String message;
 
     /**
      * Creates a new Message, which is used to pass text strings to the server or possibly other players
@@ -144,7 +144,7 @@ class Message implements Action {
      * @param msg The message you would like to send
      */
     public Message(String msg) {
-        this.ID = ACTION_IDS.get(this.getClass().getName());
+        this.ID = ACTION_IDS.get("Message");
         this.message = msg;
     }
 

@@ -31,7 +31,7 @@ public class Main extends ApplicationAdapter {
     private TextField messageField;
     private Stage stage;
     private SpriteBatch batch;
-    private ConcurrentLinkedQueue<String> messageQueue;
+    private ConcurrentLinkedQueue<Message> messageQueue;
 
     @Override
     public void create() {
@@ -41,7 +41,7 @@ public class Main extends ApplicationAdapter {
         Client client = null;
         Thread cThread = null;
 
-        messageQueue = new ConcurrentLinkedQueue<String>();
+        messageQueue = new ConcurrentLinkedQueue<Message>();
 
         client = new Client(host, port, messageQueue);
         cThread = new Thread(client);
@@ -73,14 +73,13 @@ public class Main extends ApplicationAdapter {
         manager.load("html/war/Assets/uiskin.json", Skin.class);
         manager.finishLoading();
         Skin skin = manager.get("html/war/Assets/uiskin.json", Skin.class);
-        messageField = new TextField("...", skin);
+        messageField = new TextField("", skin);
         messageField.setWidth(Gdx.graphics.getWidth());
         messageField.setPosition(0,0);
         messageField.setTextFieldListener(new TextField.TextFieldListener() {
             public void keyTyped (TextField textField, char key) {
                 if (key == '\r') {
-                    // TODO: Send text as action
-                    messageQueue.add(messageField.getText());
+                    messageQueue.add(new Message(messageField.getText()));
                     messageField.setText("");
                 }
             }

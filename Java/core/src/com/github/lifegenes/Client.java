@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Iterator;
@@ -12,33 +13,55 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 class Client implements Runnable {
 
-    private final ConcurrentLinkedQueue<String> messageQueue;
+    private final ConcurrentLinkedQueue<Message> messageQueue;
     private Socket socket;
     private static String ID = UUID.randomUUID().toString();
     private BufferedReader buffIn;
-    private OutputStream outStream;
     private final String host;
     private final int port;
 
-    public Client(String host, int port, ConcurrentLinkedQueue<String> messageQueue) {
+    public Client(String host, int port, ConcurrentLinkedQueue<Message> messageQueue) {
         this.host = host;
         this.port = port;
         this.messageQueue = messageQueue;
     }
 
+    public boolean attemptConnection() {
+        boolean connected = false;
+        try {
+            socket = new Socket(host, port);
+        } catch (UnknownHostException e1) {
+            System.out.println("Unknown host");
+        } catch (ConnectException e1) {
+            System.out.println("Connection refused");
+        } catch (IOException e1) {
+            System.out.println("I/O Exception");
+        }
+        finally {
+            if (socket.isConnected()) {
+                connected = true;
+            }
+        }
+        return connected;
+    }
+
     @Override
     public void run() {
 
-        try {
-            socket = new Socket(host, port);
-            buffIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            outStream = socket.getOutputStream();
-        } catch (UnknownHostException e1) {
-            e1.printStackTrace();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
+        boolean connected = false;
+        while (!connected) {
+            connected = attemptConnection();
 
+            if (!connected) System.out.println("Connection refused. Trying again in two seconds...");
+            else {break;}
+
+            long wait = 2000000000;
+            try {
+                this.wait(wait);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+        }
         // TODO: Implement a safe shutdown procedure initiated by user
         while (true) {
             try {
@@ -51,12 +74,16 @@ class Client implements Runnable {
             if (!messageQueue.isEmpty()) {
 
                 try {
+                    while (!messageQueue.isEmpty()) {
+                        // TODO: Include userID when implemented
 
-                    Iterator<String> iter = messageQueue.iterator();
-                    while (iter.hasNext()) {
-                        outStream.write(messageQueue.poll().getBytes());
+                        System.out.println(messageQueue.peek().getMessage());
+                        socket.getOutputStream();
+                        socket.getOutputStream().write("SDKF".getBytes());
+                        socket.getOutputStream().write(messageQueue.poll().getMessage().getBytes());
                     }
-                    outStream.flush();
+                    System.out.println("Socket flushing");
+                    socket.getOutputStream().flush();
 
                 } catch (IOException e) {e.printStackTrace();}
             }
@@ -65,7 +92,7 @@ class Client implements Runnable {
 
     GameState receive() throws IOException {
         // TODO: return data in a thread-safe way
-        if (socket.isConnected()) {
+        if (socket.isConnected() && buffIn != null) {
             if (buffIn.ready()) {
                 String data = buffIn.readLine();
                 return parseInbound(data);
@@ -77,8 +104,8 @@ class Client implements Runnable {
     public void send(Action action) throws IOException, NativeException {
         if (socket.isConnected()) {
             byte[] data = this.parseOutbound(action, "&");
-            outStream.write(data);
-            outStream.flush(); // Flush is needed to send data immediately
+            socket.getOutputStream().write(data);
+            socket.getOutputStream().flush(); // Flush is needed to send data immediately
         }
     }
 

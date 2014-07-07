@@ -31,21 +31,20 @@ class GameManager(object):
 
     def update(self):
         # get actions requested from connected sockets
-        # TODO: Moved readSockets to SocketHandler. Need to fix this line below
-        #actions = self.readSockets()
-        actions = None  # temp until above is fixed
+        actions = self.socketHandler.readSockets()
         # commit actions to the universe
-        if actions is not None:
+        if actions.__len__() is not 0:
             ActionHandler.handleActions(self.universe, actions)
-
         self.universe.update(self)
         self.env.drawColor()
         self.env.cellMotions()  # Position to place this in update not sure
 
         # TODO: Send clients the changes
+        """
         for client in self.socketHandler.clients:
             data = None  # TODO: data = changes to client as a dict parsed as a string. Possibly using the action format
             client[0].send(data)
+        """
 
         self.update_handle = Timer(DELTA_T + self.pauseTime, self.update)
         self.pauseTime = 0
