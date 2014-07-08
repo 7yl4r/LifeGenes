@@ -31,7 +31,7 @@ public class Main extends ApplicationAdapter {
     private TextField messageField;
     private Stage stage;
     private SpriteBatch batch;
-    private ConcurrentLinkedQueue<Message> messageQueue;
+    private ConcurrentLinkedQueue<byte[]> messageQueue;
 
     @Override
     public void create() {
@@ -41,7 +41,7 @@ public class Main extends ApplicationAdapter {
         Client client = null;
         Thread cThread = null;
 
-        messageQueue = new ConcurrentLinkedQueue<Message>();
+        messageQueue = new ConcurrentLinkedQueue<byte[]>();
 
         client = new Client(host, port, messageQueue);
         cThread = new Thread(client);
@@ -79,7 +79,11 @@ public class Main extends ApplicationAdapter {
         messageField.setTextFieldListener(new TextField.TextFieldListener() {
             public void keyTyped (TextField textField, char key) {
                 if (key == '\r') {
-                    messageQueue.add(new Message(messageField.getText()));
+                    try {
+                        messageQueue.add(Client.parseOutbound(new Message(messageField.getText()), "&"));
+                    } catch (NativeException e) {
+                        e.printStackTrace();
+                    }
                     messageField.setText("");
                 }
             }

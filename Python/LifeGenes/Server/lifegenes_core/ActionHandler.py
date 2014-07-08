@@ -10,8 +10,10 @@ def handleActions(universe, *actions):
     """
 
     for action in actions:
+        print "getting action"
         if isinstance(action, ClientAction.Message):
             # TODO: Do something useful with this message
+            print "Printing message"
             print action.getMsg()
 
         elif isinstance(action, ClientAction.NewCell):

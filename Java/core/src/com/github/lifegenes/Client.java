@@ -2,25 +2,22 @@ package com.github.lifegenes;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Iterator;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 class Client implements Runnable {
 
-    private final ConcurrentLinkedQueue<Message> messageQueue;
+    private final ConcurrentLinkedQueue<byte[]> messageQueue;
     private Socket socket;
     private static String ID = UUID.randomUUID().toString();
     private BufferedReader buffIn;
     private final String host;
     private final int port;
 
-    public Client(String host, int port, ConcurrentLinkedQueue<Message> messageQueue) {
+    public Client(String host, int port, ConcurrentLinkedQueue<byte[]> messageQueue) {
         this.host = host;
         this.port = port;
         this.messageQueue = messageQueue;
@@ -30,6 +27,7 @@ class Client implements Runnable {
         boolean connected = false;
         try {
             socket = new Socket(host, port);
+            socket.setTcpNoDelay(false);
         } catch (UnknownHostException e1) {
             System.out.println("Unknown host");
         } catch (ConnectException e1) {
@@ -77,10 +75,8 @@ class Client implements Runnable {
                     while (!messageQueue.isEmpty()) {
                         // TODO: Include userID when implemented
 
-                        System.out.println(messageQueue.peek().getMessage());
                         socket.getOutputStream();
-                        socket.getOutputStream().write("SDKF".getBytes());
-                        socket.getOutputStream().write(messageQueue.poll().getMessage().getBytes());
+                        socket.getOutputStream().write(messageQueue.poll());
                     }
                     System.out.println("Socket flushing");
                     socket.getOutputStream().flush();
@@ -103,20 +99,20 @@ class Client implements Runnable {
 
     public void send(Action action) throws IOException, NativeException {
         if (socket.isConnected()) {
-            byte[] data = this.parseOutbound(action, "&");
+            byte[] data = parseOutbound(action, "&");
             socket.getOutputStream().write(data);
             socket.getOutputStream().flush(); // Flush is needed to send data immediately
         }
     }
 
 
-    private GameState parseInbound(String data) {
+    public GameState parseInbound(String data) {
         // TODO: Implement
 
         return null;
     }
 
-    private byte[] parseOutbound(Action action, String delim) throws NativeException {
+    public static byte[] parseOutbound(Action action, String delim) throws NativeException {
         // Parse Actions
         String payload = "";
 

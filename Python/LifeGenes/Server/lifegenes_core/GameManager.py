@@ -1,14 +1,15 @@
+
 from threading import Timer
-
 from gevent import spawn
-from gevent.server import StreamServer
+from gevent import queue
 from gevent.pool import Pool
-
-from SocketHandler import Handler, parseInbound
+from gevent.server import StreamServer
+from SocketHandler import Handler
 from environment import environment
 import ActionHandler
 
 DELTA_T = 0.1  # seconds between updates
+QUEUE = queue.Queue()  # Concurrent queue, used for socket subprocesses
 
 
 class GameManager(object):
@@ -23,16 +24,20 @@ class GameManager(object):
         self.update_handle = Timer(DELTA_T, self.update)
         self.update_handle.start()
         self.pauseTime = 0  # amount of time to stay paused
-        self.socketHandler = Handler()
         pool = Pool(userNum)  # Create a pool of greenlets
-        self.server = StreamServer(ipAddress, handle=self.socketHandler, spawn=pool)
+        self.server = StreamServer(ipAddress, handle=Handler, spawn=pool)
         # TODO: Restructure SocketHandler to not call outside code since the server needs to be in a subprocess
         spawn(self.server.serve_forever())
 
     def update(self):
-        # get actions requested from connected sockets
-        actions = self.socketHandler.readSockets()
-        # commit actions to the universe
+        #  get actions requested from connected sockets
+        actions = []
+        if QUEUE.empty() is not True:
+            print("QUEUE IS NOT EMTPY!!! YAY")
+            for item in QUEUE:
+                actions.extend(item)
+
+        #  commit actions to the universe
         if actions.__len__() is not 0:
             ActionHandler.handleActions(self.universe, actions)
         self.universe.update(self)

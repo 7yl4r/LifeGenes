@@ -1,22 +1,16 @@
 from __future__ import print_function
-import errno
-import socket as sock
 
 import ClientAction
-from Cell import Cell
+from Cell import Cell, decompress
+import GameManager
+
 
 # this handler will be run for each incoming connection in a dedicated greenlet
 class Handler():
-    def __init__(self):
+    def __init__(self, socket, address):
         self.clients = []
-
-    def __call__(self, socket, address):
-        socket.setblocking(0)
         self.clients.append((socket, address))
-
-        print('New connection from %s' % str(address))
-
-        # socket.sendto(parseOutbound(Action.Message('Connected to LifeGenes server\r\n')), address)
+        self.readSockets()
 
     def readSockets(self):
         """
@@ -29,27 +23,22 @@ class Handler():
         for socket, address in self.clients:
             while True:
                 fileobj = socket.makefile()
-                try:
-                    #print("blocked")
-                    # TODO: POS fileobj keeps blocking even though it should be in non-blocking mode
-                    line = fileobj.readline()
-                    print("unblocked")
-                    print(line)
-                    if line is not None:
-                        parsedLine = parseInbound(line)
-                        print(parsedLine)
-                        if parsedLine is not None:
-                            actions.append(parsedLine)
-                    else:
-                        print("client %s disconnected" % str(address))
-                        break
-                    fileobj.flush()
-                except sock.error, e:
-                    if e.args[0] is errno.EWOULDBLOCK:
-                        # stifle non-blocking errors
-                        continue
+                # TODO: fileobj blocks until client disconnects... But messages are getting sent
+                line = fileobj.readline()
+                if line is not None:
+                    # TODO: If line has data this repeats continuously... which should not happen
+                    parsedLine = parseInbound(line)
+                    # append to actions if valid
+                    if parsedLine is not None:
+                        actions.append(parsedLine)
+                else:
+                    print("client %s disconnected" % str(address))
+                    break
+                fileobj.flush()
+                if actions.__len__() > 0:
+                    GameManager.QUEUE.put(actions)
+                    actions = []
 
-        return actions
 
 def parseInbound(line, delim='~'):
     """
@@ -67,7 +56,7 @@ def parseInbound(line, delim='~'):
     if isinstance(action, ClientAction.Message):
         action(payload[1])
     elif isinstance(action, ClientAction.NewCell):
-        action(Cell.decompress(payload[1]))
+        action(decompress(payload[1]))
     elif isinstance(action, ClientAction.RemoveCell):
         action(payload[1])
     elif isinstance(action, ClientAction.MoveCell):

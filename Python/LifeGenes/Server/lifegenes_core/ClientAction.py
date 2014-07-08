@@ -2,6 +2,7 @@ ACTION_IDS = {'NewCell': 0, 'RemoveCell': 1, 'MoveCell': 2, 'ChangeCellColor': 3
 
 
 def getClientAction(ID):
+    print "Action Recieved! %s" % ID
     for action, actionID in ACTION_IDS.iteritems():
         if ID is actionID:
             if actionID is 'NewCell':
@@ -16,9 +17,6 @@ def getClientAction(ID):
                 return Message()
             else:
                 raise Exception("ClientAction received has an unknown ID somehow")
-        else:
-            raise Exception("ClientAction ID is unknown")
-
 
 class ClientAction(object):
     _ID = None
