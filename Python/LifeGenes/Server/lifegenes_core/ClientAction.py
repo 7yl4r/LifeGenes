@@ -2,21 +2,29 @@ ACTION_IDS = {'NewCell': 0, 'RemoveCell': 1, 'MoveCell': 2, 'ChangeCellColor': 3
 
 
 def getClientAction(ID):
-    print "Action Recieved! %s" % ID
+    print "Action Received: %s" % str(ID)
     for action, actionID in ACTION_IDS.iteritems():
-        if ID is actionID:
-            if actionID is 'NewCell':
+        if (ID == actionID):
+            print "ID is %s" % str(actionID)
+            if action is 'NewCell':
+                print "newCell"
                 return NewCell()
-            elif actionID is 'RemoveCell':
+            elif action is 'RemoveCell':
+                print "remCell"
                 return RemoveCell()
-            elif actionID is 'moveCell':
+            elif action is 'moveCell':
+                print "moveCell"
                 return MoveCell()
-            elif actionID is 'ChangeCellColor':
+            elif action is 'ChangeCellColor':
+                print "colorCell"
                 return ChangeCellColor()
-            elif actionID is 'Message':
+            elif action is 'Message':
+                print "message"
                 return Message()
             else:
-                raise Exception("ClientAction received has an unknown ID somehow")
+                print "ClientAction received has an unknown ID somehow"
+    print "done finding actions."
+    return None
 
 class ClientAction(object):
     _ID = None

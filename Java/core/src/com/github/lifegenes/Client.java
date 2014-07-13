@@ -16,6 +16,7 @@ class Client implements Runnable {
     private BufferedReader buffIn;
     private final String host;
     private final int port;
+    private static final String delim = "^&*";
 
     public Client(String host, int port, ConcurrentLinkedQueue<byte[]> messageQueue) {
         this.host = host;
@@ -99,7 +100,7 @@ class Client implements Runnable {
 
     public void send(Action action) throws IOException, NativeException {
         if (socket.isConnected()) {
-            byte[] data = parseOutbound(action, "&");
+            byte[] data = parseOutbound(action);
             socket.getOutputStream().write(data);
             socket.getOutputStream().flush(); // Flush is needed to send data immediately
         }
@@ -112,17 +113,17 @@ class Client implements Runnable {
         return null;
     }
 
-    public static byte[] parseOutbound(Action action, String delim) throws NativeException {
+    public static byte[] parseOutbound(Action action) throws NativeException {
         // Parse Actions
-        String payload = "";
+        int ID = action.getID();
+        String payload = "" + ID;
 
         if (action.getID() == -1) {
-            int ID = action.getID();
-            payload = payload + ID;
-            throw new NativeException("Sending abstract action to client");
+            throw new NativeException("Trying to send abstract action to client");
         } else if (action instanceof Message) {
             Message act = (Message) action;
             payload = payload + delim + act.getMessage();
+            System.out.println(payload);
         } else if (action instanceof NewCell) {
             NewCell act = (NewCell) action;
             // TODO: Create compress method in Cell class synonymous to Python's Cell compress
@@ -139,6 +140,8 @@ class Client implements Runnable {
         } else {
             throw new NativeException("Outbound parsing failed: unknown action passed to method");
         }
+
+        payload += "\n";
 
         return payload.getBytes();
     }

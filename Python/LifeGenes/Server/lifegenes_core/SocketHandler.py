@@ -4,6 +4,7 @@ import ClientAction
 from Cell import Cell, decompress
 import GameManager
 
+DELIM = "^&*"
 
 # this handler will be run for each incoming connection in a dedicated greenlet
 class Handler():
@@ -21,8 +22,8 @@ class Handler():
         """
         actions = []
         for socket, address in self.clients:
+            fileobj = socket.makefile()
             while True:
-                fileobj = socket.makefile()
                 # TODO: fileobj blocks until client disconnects... But messages are getting sent
                 line = fileobj.readline()
                 if line is not None:
@@ -36,32 +37,38 @@ class Handler():
                     break
                 fileobj.flush()
                 if actions.__len__() > 0:
+
                     GameManager.QUEUE.put(actions)
                     actions = []
 
 
-def parseInbound(line, delim='~'):
+def parseInbound(line):
     """
     Parse socket information
     :param line: readline coming from socket stream
     :param delim: delimiter to separate values in the string
     :return Action: returns action full of data for use
     """
-    payload = line.strip().split(delim)
+    payload = line.strip().split(DELIM)
 
-    ID = payload[0]
+    ID = int(payload[0])
     action = ClientAction.getClientAction(ID)
 
     # Compile actions
     if isinstance(action, ClientAction.Message):
+        print("m")
         action(payload[1])
     elif isinstance(action, ClientAction.NewCell):
+        print("m")
         action(decompress(payload[1]))
     elif isinstance(action, ClientAction.RemoveCell):
+        print("m")
         action(payload[1])
     elif isinstance(action, ClientAction.MoveCell):
+        print("m")
         action(payload[2], payload[3], payload[1])
     elif isinstance(action, ClientAction.ChangeCellColor):
+        print("m")
         action(payload[1], payload[2])
     else:
         return None
@@ -70,10 +77,9 @@ def parseInbound(line, delim='~'):
 
 
 # TODO
-def parseOutbound(action, delim='~', data=None):
+def parseOutbound(action, data=None):
     """
 
-    :param delim: delimiter to separate values in the string
     :param action: possible actions: ChangeCellColor, Message, MoveCell, RemoveCell, NewCell
     :param data: extra data as a dict, if any
     :return: payload as a string

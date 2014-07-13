@@ -32,10 +32,10 @@ class GameManager(object):
     def update(self):
         #  get actions requested from connected sockets
         actions = []
-        if QUEUE.empty() is not True:
+        while QUEUE.empty() is False:
             print("QUEUE IS NOT EMTPY!!! YAY")
-            for item in QUEUE:
-                actions.extend(item)
+            item = QUEUE.get_nowait()
+            actions += item
 
         #  commit actions to the universe
         if actions.__len__() is not 0:

@@ -1,7 +1,7 @@
 import ClientAction
 
 
-def handleActions(universe, *actions):
+def handleActions(universe, actions):
     """
     Pass actions to this function to commit them into the universe
     :param universe: The game manager that is calling this function
@@ -36,4 +36,4 @@ def handleActions(universe, *actions):
                                 action.getColor())
 
         else:
-            raise Exception("Inbound parsing failed: Unknown action ID '%s' acquired" % action.getID)
+            raise Exception("Inbound parsing failed: Unknown action ID '%s' acquired" % action.getID())

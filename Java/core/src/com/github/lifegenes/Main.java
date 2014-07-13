@@ -80,7 +80,7 @@ public class Main extends ApplicationAdapter {
             public void keyTyped (TextField textField, char key) {
                 if (key == '\r') {
                     try {
-                        messageQueue.add(Client.parseOutbound(new Message(messageField.getText()), "&"));
+                        messageQueue.add(Client.parseOutbound(new Message(messageField.getText())));
                     } catch (NativeException e) {
                         e.printStackTrace();
                     }
