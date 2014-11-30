@@ -11,12 +11,12 @@ try:
     from PIL import Image, ImageTk
 except ImportError:
     raise ImportError("this function requires the Python Imaging Library (PIL). "
-        +"See http://www.pythonware.com/products/pil/ "
-        +"or https://github.com/python-imaging/Pillow for more.")
+                      + "See http://www.pythonware.com/products/pil/ "
+                      + "or https://github.com/python-imaging/Pillow for more.")
 
-saveDir = user_data_dir('LifeGenes','7yl4r-ware')
-DNA_COLLECTION_FILE= join(saveDir,'dna_collection.pk')
-CELL_COLLECTION_DIR= join(saveDir,'cellCollection')
+saveDir = user_data_dir('LifeGenes', '7yl4r-ware')
+DNA_COLLECTION_FILE = join(saveDir, 'dna_collection.pk')
+CELL_COLLECTION_DIR = join(saveDir, 'cellCollection')
 
 class cellPallate:
 # defines a pallate of saved DNA sequences
@@ -85,26 +85,34 @@ class cellPallate:
 
     def getUserChoice(self):
     # creates a tkinter display which shows the pallate and allows for selection
+        logging.debug('cellPallate.getUserChoice()')
         root = tk.Tk()
+        logging.debug('tkinter root established')
+
         class selectorDisplay:
-            def __init__(self, master, cellPallate):
-                self.cellPallate = cellPallate
+            def __init__(self, master, cell_pallate):
+                logging.debug('cellPallate.getUserChoice.selectorDisplay.init()')
+                self.cell_pallate = cell_pallate
                 self.selected = None
                 self.frame = tk.Frame(master)
                 self.frame.pack()
 
                 self.imageButtons = list()
+                logging.debug('inserting buttons for each saved cell genome')
+                for img in self.cell_pallate.pallateImages:
+                    self.insertButton(img, str(img))
 
-                for img in self.cellPallate.pallateImages:
-                    self.insertButton(img,str(img))
-
+                logging.debug('inserting control buttons')
                 select_butt = tk.Button(self.frame, text="Clone this cell.", command=self.submit)
                 select_butt.pack()
+                logging.debug('selectorDisplay.init END')
 
             def insertButton(self,img,text):
             # insert cell button
+                logging.debug('cellPallate.getUserChoice.selectorDisplay.insertButton()')
                 image = Image.open(img)
                 cellImage = ImageTk.PhotoImage(image)
+                logging.debug('cell image loaded')
 
                 i = len(self.imageButtons) # i = index of new button
                 self.imageButtons.append(tk.Button(self.frame,
@@ -113,11 +121,11 @@ class cellPallate:
                     command=(lambda i=i:(self.raiseButtons(),
                         self.imageButtons[i].config(relief=tk.SUNKEN),
                         self.setSelection(i),
-                        tk.Label(self.frame, text='cell strain "'+self.cellPallate.cellNames[i]+'" selected').pack(),
+                        tk.Label(self.frame, text='cell strain "'+self.cell_pallate.cellNames[i]+'" selected').pack(),
                         #self.frame.mainloop()
                     ))
                 ))
-                self.imageButtons[i].image = cellImage # keep a reference
+                self.imageButtons[i].image = cellImage  # keep a reference
                 self.imageButtons[i].pack(side=tk.LEFT)
 
             def raiseButtons(self):
@@ -125,15 +133,16 @@ class cellPallate:
                 for but in self.imageButtons:
                     but.config(relief=tk.RAISED)
 
-            def setSelection(self,choice):
+            def setSelection(self, choice):
             # sets the pallate selection
                 self.selected = choice
 
             def submit(self):
-                self.frame.quit() # close dialog
-                self.cellPallate.select(self.selected)
+                self.frame.quit()  # close dialog
+                self.cell_pallate.select(self.selected)
 
-        app = selectorDisplay(root,self)
+        app = selectorDisplay(root, self)
+        logging.debug('tkinter app initialized')
         root.mainloop()
 
         import _tkinter
@@ -151,6 +160,7 @@ class cellPallate:
 
     def getSelectedCellName(self):
     # returns name of currently selected cell
+        logging.debug('cellPallate.getSelectedCellName()')
         return self.cellNames[self.selected]
 
     def getSelectedCellImg(self):

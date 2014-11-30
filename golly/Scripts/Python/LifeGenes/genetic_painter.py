@@ -12,11 +12,11 @@ setupLog('genetic_filler.log')
 from LifeGenes.lifegenes_core.cellPallate import cellPallate
 
 def draw_dna():
-    # === load DNA pallate
+    logging.debug('loading cell pallate')
     pallate = cellPallate()
     pallate.load()
 
-    # === let user select DNA
+    logging.debug('getting default pallate selection')
     chosenCell = pallate.getUserChoice()
     chosenName = pallate.getSelectedCellName()
     g.show('now drawing with DNA from '+chosenName)
@@ -24,7 +24,8 @@ def draw_dna():
 
     # prepare environment
     env = environment()
-    event = g.getevent(True) #turn on golly event script access
+    logging.debug('turning on golly even script access')
+    event = g.getevent(True)  # turn on golly event script access
     # === let user draw
     g.setcursor("Draw")
     try:    #this try statement is just to ensure the 'finally' block is run

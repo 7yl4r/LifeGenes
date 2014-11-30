@@ -17,6 +17,7 @@ class environment:
     # parameters:
     #    g        : GoL-like environment api handle
     def __init__(self, g=golly):
+        logging.debug('environment init')
         saveDir = user_data_dir('LifeGenes','7yl4r-ware')
         try:
             makedirs(saveDir)
