@@ -12,22 +12,22 @@ import logging
 setupLog('evolveCellsWithColor.log')
 
 class run():
-	def __init__(self):
-		logging.info('script started')
-		lg_envmt = lifegenes_environment()
-		lg_envmt.drawColor()
-		logging.info('setup complete; beginning evolution cycles')
-		try:
-			while(True):	#until stopped by golly
-				g.step()
-				#g.update()
-				lg_envmt.update()
-				lg_envmt.drawColor()
-				g.update()
-		finally:
-				logging.info('cycling halted from external source (probably golly)')
-				g.show('closing gracefully, hold on just a sec...')
-				lg_envmt.teardown()
+    def __init__(self):
+        logging.info('script started')
+        lg_envmt = lifegenes_environment()
+        lg_envmt.drawColor()
+        logging.info('setup complete; beginning evolution cycles')
+        try:
+            while(True):    #until stopped by golly
+                g.step()
+                #g.update()
+                lg_envmt.update()
+                lg_envmt.drawColor()
+                g.update()
+        finally:
+                logging.info('cycling halted from external source (probably golly)')
+                g.show('closing gracefully, hold on just a sec...')
+                lg_envmt.teardown()
 
 #MAIN
 run()
