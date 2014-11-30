@@ -1,0 +1,27 @@
+{
+    "name": "lifeGenes",
+    "version": "0.0.1",
+    "description": "This LifeGenes Project client-side web application allows users to play with digital cell cultures",
+    "homepage": "https://plus.google.com/communities/117413839180254151272",
+    "bugs": {
+        "url": "https://github.com/7yl4r/LifeGenes/issues",
+        "email": "murray.tylar@gmail.com"
+    },
+    "scripts": {
+        "test": "./node_modules/.bin/nodeunit ./js/tests"
+    },
+    "contributors": [
+        "Tylar Murray <murray.tylar@gmail.com>",
+        "Brian Erikson"
+    ],
+    "repository" : {
+        "type" : "git",
+        "url" : "https://github.com/7yl4r/LifeGenes.git"
+    },
+    "dependencies": {
+        "coffee-script": "~1.4.0",
+        "nodeunit": "~0.7.4",
+        "dusterjs": "~0.3.2",
+        "less": "~1.7.5"
+    }
+}
