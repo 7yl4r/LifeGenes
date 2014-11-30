@@ -2,7 +2,7 @@
 
 import logging
 
-from LifeGenes.lifegenes_core.cell import cell,DNA_MINLEN,DNA_MAXLEN,MAX_COLOR,MIN_COLOR,NN_MIN,NN_MAX,BASES
+from LifeGenes.lifegenes_core.cell import Cell,DNA_MINLEN,DNA_MAXLEN,MAX_COLOR,MIN_COLOR,NN_MIN,NN_MAX,BASES
 from random import randrange
 from math import floor
 

@@ -5,7 +5,7 @@ except ImportError:
 import logging
 
 from LifeGenes.lifegenes_core.cellList import cellList    #import LifeGenes cell definition
-from LifeGenes.lifegenes_core.cell     import cell as LGcell
+from LifeGenes.lifegenes_core.cell     import Cell as LGcell
 
 from LifeGenes.lifegenes_core.__util.appdirs import user_data_dir
 from os.path import join

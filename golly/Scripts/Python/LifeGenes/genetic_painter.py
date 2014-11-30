@@ -3,7 +3,7 @@
 import golly as g
 from LifeGenes.lifegenes_core.cellList import cellList
 from LifeGenes.lifegenes_core.environment import environment 
-from LifeGenes.lifegenes_core.cell import cell
+from LifeGenes.lifegenes_core.cell import Cell
 
 import logging
 from LifeGenes.lifegenes_core.setupLog import setupLog

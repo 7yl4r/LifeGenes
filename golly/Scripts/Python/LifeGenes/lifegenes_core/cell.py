@@ -62,7 +62,8 @@ ANN_UP_CODONS = [['CDCB', 'BABB', 'ACAC', 'ABCB'],\
 
 # TODO: genetically calculated values need only be calculated once and then stored for future reference. This will greatly improve efficiency.
 
-class cell:
+
+class Cell(object):
     def __init__(self,X,Y,dna=None):
         if dna == None:
             self.randomizeDNA()
@@ -120,8 +121,8 @@ class cell:
     # generates DNA string from given parent cells
     def inheritDNA(self,parents):
         while len(parents) < 3:
-            logging.warning("n_parents="+str(len(parents))+" less than 3, using random dna for missing parents")
-            parents.append(cell(0,0))
+            #logging.warning("n_parents="+str(len(parents))+" less than 3, using random dna for missing parents")
+            parents.append(Cell(0,0))
         #if len(parents) > 3:
             # no problem, just use the first 3
         genes = [parents[0].DNA,parents[1].DNA,parents[2].DNA] #total genetic material to choose from

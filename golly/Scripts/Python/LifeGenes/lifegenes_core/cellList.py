@@ -1,6 +1,6 @@
 # lifeGenes cell list object
 
-from .cell import cell
+from .cell import Cell
 import pickle
 import logging
 
@@ -18,7 +18,7 @@ class cellList:
         self.cells = list()
         # add cell object to list for each pair in pattern
         for cellIndex in range(len(pattern)/2):
-            self.cells.append(cell(pattern[cellIndex*2],pattern[cellIndex*2+1]))
+            self.cells.append(Cell(pattern[cellIndex*2],pattern[cellIndex*2+1]))
             cellIndex+=1
 
     def setCell(self,x,y,dna=None,cell=None):
@@ -58,9 +58,9 @@ class cellList:
             newList = pickle.load(f)
         try:
             check = newList.cells[0]
-        except AttributeError:
+        except (AttributeError, IndexError) as err:
             logging.error('loaded list seems to have no cells!')
-            raise
+            raise err
         #implied else
         self.set(newList)
         logging.info(str(len(self.cells))+' cells loaded from file')
