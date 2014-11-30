@@ -1,0 +1,84 @@
+<!--
+<link href="css/barebones.css" rel="stylesheet" type="text/css" />
+-->
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>LifeGenes Digital Cell Culture</title>
+
+        <!-- ================================== -->
+        <!--             bootstrap              -->
+        <!-- ================================== -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+    <body>
+        <div class="container">
+
+            <div class="row">
+                You have <span id="countDown">{{timeLeft}}</span>s until the next cell generation. <a href="#edit_req" id="edit_request">Request 10s pause to edit cells.</a>
+                <script type="text/javascript">
+
+                    var edit_button = document.getElementById('edit_request');
+
+                    edit_button.addEventListener('click', function (e)
+                    {
+                        e = e || window.event; //? what is this?
+
+                        //ws.send("pause None None 10");
+
+                        e.preventDefault(); //? what is that?
+                    }, false);
+
+                </script>
+
+            </div>
+            <div class="row">
+
+                <table id="cell-display" class="table">
+                    <tbody>
+                        <tr id="row_N" class="cell-row">
+                            <td id="cell_N" class="cell">#</td>
+                            <td id="cell_N" class="cell">#</td>
+                            <td id="cell_N" class="cell">#</td>
+                            <td id="cell_N" class="cell">#</td>
+                            <td id="cell_N" class="cell">#</td>
+                            <td id="cell_N" class="cell">#</td>
+                            <td id="cell_N" class="cell">#</td>
+                            <td id="cell_N" class="cell">#</td>
+                            <td id="cell_N" class="cell">#</td>
+                            <td id="cell_N" class="cell">#</td>
+                        </tr>
+                        <tr id="row_N" class="cell-row">
+                            <td id="cell_N" class="cell">#</td>
+                            <td id="cell_N" class="cell">#</td>
+                            <td id="cell_N" class="cell">#</td>
+                            <td id="cell_N" class="cell">#</td>
+                            <td id="cell_N" class="cell">#</td>
+                            <td id="cell_N" class="cell">#</td>
+                            <td id="cell_N" class="cell">#</td>
+                            <td id="cell_N" class="cell">#</td>
+                            <td id="cell_N" class="cell">#</td>
+                            <td id="cell_N" class="cell">#</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <!-- bootstrap js -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    </body>
+</html>
