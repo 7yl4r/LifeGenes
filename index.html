@@ -26,26 +26,10 @@
         <div class="container">
 
             <div class="row">
-                You have <span id="countDown">{{timeLeft}}</span>s until the next cell generation. <a href="#edit_req" id="edit_request">Request 10s pause to edit cells.</a>
-                <script type="text/javascript">
-
-                    var edit_button = document.getElementById('edit_request');
-
-                    edit_button.addEventListener('click', function (e)
-                    {
-                        e = e || window.event; //? what is this?
-
-                        //ws.send("pause None None 10");
-
-                        e.preventDefault(); //? what is that?
-                    }, false);
-
-                </script>
-
+                Welcome to your LifeGenes Digital Petri Dish. See a visualization of your digital cell culture below:
             </div>
-            <div class="row">
-
-                <table id="cell-display" class="table">
+            <div id="cell-display-div" class="row">
+                <table id="cell-display-table" class="table">
                     <tbody>
                         <tr id="row_N" class="cell-row">
                             <td id="cell_N" class="cell">#</td>
@@ -74,11 +58,27 @@
                     </tbody>
                 </table>
             </div>
+            <div id="stats" class="row">
+                Currently analyzing <span class="cell-count">0</span> cells in a <span class="row-count">0</span>x<span class="col-count">0</span> toroidal grid.
+            </div>
         </div>
+
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <!-- bootstrap js -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+        <script src="js/globals.js"></script>
+
+        <script type="text/javascript">
+            // init the html text spans
+            $('.cell-count').html(NUMBER_OF_CELLS);
+            $('.row-count').html(NUMBER_OF_ROWS);
+            $('.col-count').html(NUMBER_OF_COLS);
+
+            // init the table display
+
+        </script>
     </body>
 </html>
