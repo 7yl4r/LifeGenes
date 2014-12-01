@@ -3,7 +3,7 @@
     <span class="caret"></span>
 </button>
 <ul class="dropdown-menu" role="menu" aria-labelledby="{triggerName}-selector">
-    {#iter:enum}
-        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" onclick='$(document).trigger("{triggerName}", {value})'>{key}</a></li>
-    {/iter}
+    {#settingsObj.enum}
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" onclick="$(document).trigger('{triggerName}', '{.}')">{.}</a></li>
+    {/settingsObj.enum}
 </ul>

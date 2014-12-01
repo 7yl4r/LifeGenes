@@ -9,17 +9,14 @@ USAGE:
 
     # dust.js render call:
     dust.render('myTemplate',
-        {
-            iter: dustObjectIterator,
-            obj: myContextObject
-        },
+        {obj=myContextObject},
         myCallbackFunction
     );
 
     # myTemplate.dust:
-    {#iter:obj}
+    {@iterate:obj}
         {key}: {value}{~n}
-    {/iter}
+    {/iterate}
 
     # output:
     a: 2
@@ -27,10 +24,11 @@ USAGE:
     c: 6
  */
 
-dustObjectIterator = function(chk, ctx, bodies) {
-    var obj = ctx.current();
+dust.helpers.iterate = function(chunk, context, bodies, params) {
+    params = params || {};
+    var obj = params['on'] || context.current();
     for (var k in obj) {
-        chk = chk.render(bodies.block, ctx.push({key: k, value: obj[k]}));
+        chunk = chunk.render(bodies.block, context.push({key: k, value: obj[k]}));
     }
-    return chk;
+    return chunk;
 }

@@ -6,22 +6,24 @@
 
     function Dish(rows, cols) {
       this.generation = 0;
+      this.rowCount = rows;
+      this.colCount = cols;
+      this.cellCount = rows * cols;
       this.cell_states = (function() {
-        var _i, _results;
+        var _i, _ref, _results;
         _results = [];
-        for (_i = 1; 1 <= NUMBER_OF_ROWS ? _i <= NUMBER_OF_ROWS : _i >= NUMBER_OF_ROWS; 1 <= NUMBER_OF_ROWS ? _i++ : _i--) {
+        for (_i = 1, _ref = this.rowCount; 1 <= _ref ? _i <= _ref : _i >= _ref; 1 <= _ref ? _i++ : _i--) {
           _results.push((function() {
-            var _j, _results1;
+            var _j, _ref1, _results1;
             _results1 = [];
-            for (_j = 1; 1 <= NUMBER_OF_COLS ? _j <= NUMBER_OF_COLS : _j >= NUMBER_OF_COLS; 1 <= NUMBER_OF_COLS ? _j++ : _j--) {
+            for (_j = 1, _ref1 = this.colCount; 1 <= _ref1 ? _j <= _ref1 : _j >= _ref1; 1 <= _ref1 ? _j++ : _j--) {
               _results1.push(0);
             }
             return _results1;
-          })());
+          }).call(this));
         }
         return _results;
-      })();
-      console.log('number of cells =', this.cell_states.length, this.cell_states);
+      }).call(this);
     }
 
     Dish.prototype.step = function() {

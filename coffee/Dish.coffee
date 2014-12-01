@@ -4,8 +4,10 @@ class Dish
 
     constructor: (rows, cols)->
         @generation = 0
-        @cell_states = ((0 for [1..NUMBER_OF_COLS]) for [1..NUMBER_OF_ROWS])
-        console.log('number of cells =', @cell_states.length, @cell_states)
+        @rowCount = rows
+        @colCount = cols
+        @cellCount = rows*cols
+        @cell_states = ((0 for [1..@colCount]) for [1..@rowCount])
 
     step: () ->
         # steps through one interation
