@@ -1,0 +1,17 @@
+.cell-dish-display tr { line-height: 10px; }
+
+.cell-dish-display td {
+    position:relative;
+}
+
+.cell-dish-display td .dummy{
+    margin-top:100%;
+}
+
+.cell-dish-display td .content {
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+}

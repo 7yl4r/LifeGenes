@@ -1,4 +1,4 @@
-<table id="cell-display-table" class="table">
+<table id="cell-display-table" class="table cell-dish-display">
     <tbody>
         {#cell_states}
             {>cellRow row_states=. row_num="{$idx}" /}

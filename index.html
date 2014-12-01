@@ -23,6 +23,7 @@
 
         <!-- cell display css -->
         <link rel="stylesheet" href="css/cellStates.css">
+        <link rel="stylesheet" href="css/dishDisplay.css">
     </head>
     <body>
         <div class="container">
@@ -81,9 +82,7 @@
                     },
                     function(err, out){
                         // update the html
-                        var pre = '';
-                        var post = '';
-                        $('#cell-display-div').html(pre + out + post);
+                        $('#cell-display-div').html(out);
                         if (err){
                             console.log(err);
                         }

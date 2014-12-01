@@ -1,3 +1,6 @@
 <td id="cell_{col}" class="cell">
-    {value}
+    <div class="dummy"></div>
+    <div class="content">
+        {value}
+    </div>
 </td>
