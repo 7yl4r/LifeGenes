@@ -1,0 +1,3 @@
+<td id="cell_{col}" class="cell">
+    {value}
+</td>

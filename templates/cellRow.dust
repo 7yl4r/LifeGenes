@@ -1,0 +1,5 @@
+<tr id="row_{row_num}" class="cell-row">
+    {#row_states}
+        {>cell row=row_num col=$idx value=. /}
+    {/row_states}
+</tr>

@@ -26,50 +26,31 @@
         <div class="container">
 
             <div class="row">
-                Welcome to your LifeGenes Digital Petri Dish. See a visualization of your digital cell culture below:
+                Welcome to your LifeGenes Digital Petri Dish (v<span class="version-number">?</span>). <br>
+                See a visualization of your digital cell culture below:
             </div>
             <div id="cell-display-div" class="row">
-                <table id="cell-display-table" class="table">
-                    <tbody>
-                        <tr id="row_N" class="cell-row">
-                            <td id="cell_N" class="cell">#</td>
-                            <td id="cell_N" class="cell">#</td>
-                            <td id="cell_N" class="cell">#</td>
-                            <td id="cell_N" class="cell">#</td>
-                            <td id="cell_N" class="cell">#</td>
-                            <td id="cell_N" class="cell">#</td>
-                            <td id="cell_N" class="cell">#</td>
-                            <td id="cell_N" class="cell">#</td>
-                            <td id="cell_N" class="cell">#</td>
-                            <td id="cell_N" class="cell">#</td>
-                        </tr>
-                        <tr id="row_N" class="cell-row">
-                            <td id="cell_N" class="cell">#</td>
-                            <td id="cell_N" class="cell">#</td>
-                            <td id="cell_N" class="cell">#</td>
-                            <td id="cell_N" class="cell">#</td>
-                            <td id="cell_N" class="cell">#</td>
-                            <td id="cell_N" class="cell">#</td>
-                            <td id="cell_N" class="cell">#</td>
-                            <td id="cell_N" class="cell">#</td>
-                            <td id="cell_N" class="cell">#</td>
-                            <td id="cell_N" class="cell">#</td>
-                        </tr>
-                    </tbody>
-                </table>
+                this is the display
             </div>
             <div id="stats" class="row">
                 Currently analyzing <span class="cell-count">0</span> cells in a <span class="row-count">0</span>x<span class="col-count">0</span> toroidal grid.
             </div>
         </div>
 
-
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <!-- bootstrap js -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        <!-- dust.js templating -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/dustjs-linkedin/2.4.0/dust-core.min.js"></script>
+        <script src="templates/templates.js"></script>
+
+        <!-- classes -->
+        <script src="js/coffee/Dish.js"></script>
 
         <script src="js/globals.js"></script>
+
+        <script src="js/showVersionNumber.js"></script>
 
         <script type="text/javascript">
             // init the html text spans
@@ -78,7 +59,20 @@
             $('.col-count').html(NUMBER_OF_COLS);
 
             // init the table display
-
+            dust.render('cellDish',
+                    {
+                        cell_states: main_dish.cell_states
+                    },
+                    function(err, out){
+                        // update the html
+                        var pre = '';
+                        var post = '';
+                        $('#cell-display-div').html(pre + out + post);
+                        if (err){
+                            console.log(err);
+                        }
+                    }
+            );
         </script>
     </body>
 </html>

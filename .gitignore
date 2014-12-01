@@ -1,12 +1,8 @@
-# I use this as a convenience link to log file dir
-__logs
+# npm-managed dependencies
+node_modules/*
 
-# convenience link to cell collection
-__appData
-
-# PyCharm
-.idea/
-pycharm
+# webstorm
+.idea
 
 # Ubuntu backups
 *~
