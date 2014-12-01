@@ -1,0 +1,9 @@
+<button id="{triggerName}-selector" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+    <span class="{triggerName}-name">{triggerName}</span>
+    <span class="caret"></span>
+</button>
+<ul class="dropdown-menu" role="menu" aria-labelledby="{triggerName}-selector">
+    {#iter:enum}
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" onclick='$(document).trigger("{triggerName}", {value})'>{key}</a></li>
+    {/iter}
+</ul>
