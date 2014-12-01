@@ -24,6 +24,17 @@
         }
         return _results;
       }).call(this);
+      $(document).on("set-environment-type", function(evt, selection) {
+        switch (selection) {
+          case "Game_of_Life":
+            return $('.cell').click(function(evt) {
+              return main_dish.cellClick(this);
+            });
+          default:
+            console.log('unknown env type:', selection);
+            throw Error('unknown env type');
+        }
+      });
     }
 
     Dish.prototype.step = function() {
@@ -31,8 +42,16 @@
       this.generation += 1;
     };
 
-    Dish.prototype.cellClick = function(evt) {
-      console.log(evt);
+    Dish.prototype.cellClick = function(cellEl) {
+      this.toggleCell(cellEl);
+    };
+
+    Dish.prototype.toggleCell = function(cellEl) {
+      if (cellEl.classList.contains('live-cell')) {
+        cellEl.classList.remove('live-cell');
+      } else {
+        cellEl.classList.add('live-cell');
+      }
     };
 
     return Dish;
