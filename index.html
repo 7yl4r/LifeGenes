@@ -21,6 +21,8 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
 
+        <!-- cell display css -->
+        <link rel="stylesheet" href="css/cellStates.css">
     </head>
     <body>
         <div class="container">
@@ -29,8 +31,26 @@
                 Welcome to your LifeGenes Digital Petri Dish (v<span class="version-number">?</span>). <br>
                 See a visualization of your digital cell culture below:
             </div>
-            <div id="cell-display-div" class="row">
-                this is the display
+            <div class="row">
+                <div id="cell-display-div" class="col-xs-10">
+                    this is the display
+                </div>
+                <div id="controls" class="col-xs-2">
+                    <button id="startStop-btn" type="button" class="btn btn-default">start</button>
+                    <button id="step-btn" type="button" class="btn btn-default">step</button>
+                    <br> <br>
+                    <div class="dropdown">
+                        <button id="environment-type-selector" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+                            <span class="environment-type-name">environment type</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="environment-type-selector">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Game of Life (basic)</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Colorful Life</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Moving Life</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div id="stats" class="row">
                 Currently analyzing <span class="cell-count">0</span> cells in a <span class="row-count">0</span>x<span class="col-count">0</span> toroidal grid.

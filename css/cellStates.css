@@ -1,0 +1,9 @@
+.cell{
+    background-color: #eeeeff;
+    color: #dddddd;
+}
+
+.live-cell{
+    background-color: #084B8A;
+    color: #081B0A;
+}
