@@ -31,7 +31,7 @@
       $(document).on("set-environment-type", function(evt, selection) {
         switch (selection) {
           case "Game_of_Life":
-            return $('.cell').click(function(evt) {
+            return $(document).on('click', '.cell', function(evt) {
               return main_dish.cellClick(this);
             });
           default:

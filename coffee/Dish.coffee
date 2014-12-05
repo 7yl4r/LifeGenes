@@ -13,7 +13,7 @@ class Dish
         $(document).on("set-environment-type", (evt, selection) ->
             switch selection
                 when "Game_of_Life"
-                    $('.cell').click( ( evt ) ->
+                    $(document).on('click', '.cell', ( evt ) ->
                         main_dish.cellClick(@)
                     )
                 else
