@@ -3,7 +3,11 @@
     color: #dddddd;
 }
 
-.live-cell{
+[data-state="1"]{
     background-color: #084B8A;
     color: #081B0A;
+}
+[data-state="0"]{
+    background-color: #eeeeff;
+    color: #dddddd;
 }

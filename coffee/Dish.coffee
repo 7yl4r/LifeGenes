@@ -45,17 +45,13 @@ class Dish
 
     step: () ->
         # steps through one interation on the dish, computing for every cell and updating the state and generation
-        console.log(@cell_states)  # TODO: WHAT THE FUCK? Why does this not match data from logs below?
-        console.log(@cell_states[0])
-        console.log(@cell_states[0][0])
 
         console.log('generation ', @generation, '->', @generation+1)
         new_states = @cell_states.slice(0)
-        console.log(@cell_states)
         for rowN of @cell_states
             for colN of @cell_states[rowN]
                 new_states[rowN][colN] = @runCell(rowN, colN, @cell_states)  # TODO: isn't this REALLY inefficient?
-                console.log(@cell_states[rowN][colN], '->', new_states[rowN][colN])
+                #console.log(@cell_states[rowN][colN], '->', new_states[rowN][colN])
 
 
         @cell_states = new_states
@@ -79,8 +75,8 @@ class Dish
 
     getCell: (row, col, cells=@cell_states) ->
         # returns cell value for given cell row & column, works for negative & out-of-range values
-        maxRow = s.length-1
-        maxCol = s[0].length-1
+        maxRow = @rowCount-1
+        maxCol = @colCount-1
 
         # deal with huge indicies
         row %= maxRow
@@ -98,16 +94,20 @@ class Dish
 
     getNeighborCount: (R, C, S) ->
         # returns number of live neighbors for given cell @ (r,c) in state array s
+        R = parseInt(R)
+        C = parseInt(C)
         neighbors = 0
         i = -@NEIGHBORHOOD_SIZE
-        while i <= @NIEGHBORHOOD_SIZE
+        while i <= @NEIGHBORHOOD_SIZE
             j = -@NEIGHBORHOOD_SIZE
             while j <= @NEIGHBORHOOD_SIZE
-                if i + j != 0  # don't count yourself
+                if i == 0 and j == 0
+                    # don't count yourself
+                    j += 1
+                else
                     neighbors += @getCell(R+i, C+j, S)
-                j += 1
+                    j += 1
             i += 1
-
         return neighbors
 
     cellClick: (cellEl) ->
@@ -117,11 +117,11 @@ class Dish
 
     toggleCell: (cellEl) ->
         # turns a cell on/off
-        if cellEl.classList.contains('live-cell')
-            cellEl.classList.remove('live-cell')
+        if cellEl.getAttribute('data-state') == '1'
+            cellEl.setAttribute('data-state', 0)
             @cell_states[cellEl.getAttribute('data-cell-row')][cellEl.getAttribute('data-cell-col')] = 0
         else
-            cellEl.classList.add('live-cell')
+            cellEl.setAttribute('data-state', 1)
             @cell_states[cellEl.getAttribute('data-cell-row')][cellEl.getAttribute('data-cell-col')] = 1
         return
 
