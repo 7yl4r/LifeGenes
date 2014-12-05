@@ -44,12 +44,13 @@
     }
 
     Dish.prototype.start = function() {
-      var run;
+      var run,
+        _this = this;
       this.running = true;
       run = function() {
-        if (this.running) {
-          this.step();
-          setTimeout(this.step, this.TIMER_DELAY);
+        if (_this.running) {
+          _this.step();
+          setTimeout(run, _this.TIMER_DELAY);
           return true;
         } else {
           return false;

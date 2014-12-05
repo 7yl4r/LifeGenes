@@ -29,10 +29,10 @@ class Dish
         # starts running iterations of update() until stopped
         @running = true
 
-        run = () ->
+        run = () =>
             if @running
                 @step()
-                setTimeout(@step, @TIMER_DELAY)
+                setTimeout(run, @TIMER_DELAY)
                 return true
             else
                 return false
