@@ -1,4 +1,6 @@
-.cell-dish-display tr { line-height: 10px; }
+.cell-dish-display tr {
+    line-height: 10px;
+}
 
 .cell-dish-display td {
     position:relative;
@@ -14,4 +16,18 @@
     bottom:0;
     left:0;
     right:0;
+}
+
+.cell-dish-display {
+    cursor: default;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+}
+
+.cell-dish-display:focus {
+    outline: none;
 }
