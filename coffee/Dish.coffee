@@ -47,7 +47,7 @@ class Dish
         # steps through one interation on the dish, computing for every cell and updating the state and generation
 
         console.log('generation ', @generation, '->', @generation+1)
-        new_states = @cell_states.slice(0)
+        new_states = (@cell_states[i].slice(0) for i of @cell_states)
         for rowN of @cell_states
             for colN of @cell_states[rowN]
                 new_states[rowN][colN] = @runCell(rowN, colN, @cell_states)  # TODO: isn't this REALLY inefficient?
@@ -62,16 +62,21 @@ class Dish
 
     runCell: (row, col, cellStates) ->
         # computes for cell @ (row,col) in given cellStates array and returns the resulting array
-        newCells = cellStates.slice(0)
         neighbors = @getNeighborCount(row, col, cellStates)
+        #console.log(neighbors)
         if neighbors < 2  # underpopulation
+            #console.log('under')
             return 0
         else if neighbors > 3  # overpopulation
+            #console.log('over')
             return 0
         else if neighbors == 3
+            #console.log('reproduce')
             return 1  # reproduction
         # else 2 or 3 neighbors, no change
-        else return cellStates[row][col]
+        else
+            #console.log('stay')
+            return cellStates[row][col]
 
     getCell: (row, col, cells=@cell_states) ->
         # returns cell value for given cell row & column, works for negative & out-of-range values

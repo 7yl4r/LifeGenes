@@ -63,9 +63,16 @@
     };
 
     Dish.prototype.step = function() {
-      var colN, new_states, rowN;
+      var colN, i, new_states, rowN;
       console.log('generation ', this.generation, '->', this.generation + 1);
-      new_states = this.cell_states.slice(0);
+      new_states = (function() {
+        var _results;
+        _results = [];
+        for (i in this.cell_states) {
+          _results.push(this.cell_states[i].slice(0));
+        }
+        return _results;
+      }).call(this);
       for (rowN in this.cell_states) {
         for (colN in this.cell_states[rowN]) {
           new_states[rowN][colN] = this.runCell(rowN, colN, this.cell_states);
@@ -78,8 +85,7 @@
     };
 
     Dish.prototype.runCell = function(row, col, cellStates) {
-      var neighbors, newCells;
-      newCells = cellStates.slice(0);
+      var neighbors;
       neighbors = this.getNeighborCount(row, col, cellStates);
       if (neighbors < 2) {
         return 0;
@@ -113,7 +119,6 @@
       if (row > maxRow) {
         row -= maxRow;
       }
-      console.log('retrieved ', row, ',', col);
       return cells[row][col];
     };
 
