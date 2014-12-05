@@ -97,8 +97,8 @@
       if (cells == null) {
         cells = this.cell_states;
       }
-      maxRow = this.rowCount - 1;
-      maxCol = this.colCount - 1;
+      maxRow = this.rowCount;
+      maxCol = this.colCount;
       row %= maxRow;
       col %= maxCol;
       if (col < 0) {
@@ -113,11 +113,15 @@
       if (row > maxRow) {
         row -= maxRow;
       }
+      console.log('retrieved ', row, ',', col);
       return cells[row][col];
     };
 
     Dish.prototype.getNeighborCount = function(R, C, S) {
       var i, j, neighbors;
+      if (S == null) {
+        S = this.cell_states;
+      }
       R = parseInt(R);
       C = parseInt(C);
       neighbors = 0;

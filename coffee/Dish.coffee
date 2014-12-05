@@ -75,8 +75,8 @@ class Dish
 
     getCell: (row, col, cells=@cell_states) ->
         # returns cell value for given cell row & column, works for negative & out-of-range values
-        maxRow = @rowCount-1
-        maxCol = @colCount-1
+        maxRow = @rowCount
+        maxCol = @colCount
 
         # deal with huge indicies
         row %= maxRow
@@ -92,7 +92,7 @@ class Dish
         # use corrected indicies
         return cells[row][col]
 
-    getNeighborCount: (R, C, S) ->
+    getNeighborCount: (R, C, S=@cell_states) ->
         # returns number of live neighbors for given cell @ (r,c) in state array s
         R = parseInt(R)
         C = parseInt(C)
