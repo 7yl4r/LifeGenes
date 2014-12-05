@@ -7,4 +7,4 @@ NUMBER_OF_CELLS = NUMBER_OF_ROWS*NUMBER_OF_COLS;
 ENVIRONMENT_TYPE = Object.freeze({enum:["Game_of_Life", "Colorful_Life", "Moving_Life"]});
 
 // global variables
-main_dish = new Dish(NUMBER_OF_ROWS, NUMBER_OF_COLS);
+main_dish = new Dish(NUMBER_OF_ROWS, NUMBER_OF_COLS, '#cell-display-div');

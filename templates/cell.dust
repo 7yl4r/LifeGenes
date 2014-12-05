@@ -1,4 +1,4 @@
-<td id="cell_{col}" class="cell">
+<td id="cell_{row}_{col}" class="cell" data-cell-row={row} data-cell-col={col}>
     <div class="dummy"></div>
     <div class="content">
         {value}

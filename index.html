@@ -38,7 +38,7 @@
                 </div>
                 <div id="controls" class="col-xs-2">
                     <button id="startStop-btn" type="button" class="btn btn-default">start</button>
-                    <button id="step-btn" type="button" class="btn btn-default">step</button>
+                    <button id="step-btn" type="button" class="btn btn-default" onclick="main_dish.step()">step</button>
                     <br> <br>
                     <div class="dropdown enum-picker" data-settings-obj="ENVIRONMENT_TYPE" data-trigger-name="set-environment-type">
 
@@ -70,24 +70,24 @@
         <script src="js/coffee/textSpanUpdaters.js"></script>
 
         <script type="text/javascript">
+            // setup the start/stop button table display controls
+            $('#startStop-btn').click(function(evt) {
+                console.log(this);
+                if (this.innerHTML == 'start') {
+                    main_dish.start();
+                    this.innerHTML = 'stop';
+                } else if( this.innerHTML == 'stop') {
+                    main_dish.stop();
+                    this.innerHTML = 'start';
+                }
+            })
+
             // init the html text spans
             $('.cell-count').html(NUMBER_OF_CELLS);
             $('.row-count').html(NUMBER_OF_ROWS);
             $('.col-count').html(NUMBER_OF_COLS);
 
-            // init the table display
-            dust.render('cellDish',
-                    {
-                        cell_states: main_dish.cell_states
-                    },
-                    function(err, out){
-                        // update the html
-                        $('#cell-display-div').html(out);
-                        if (err){
-                            console.log(err);
-                        }
-                    }
-            );
+            main_dish.render();
         </script>
 
         <!-- debug helpers -->
