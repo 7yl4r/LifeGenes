@@ -15,7 +15,7 @@ class Dish
         @renderDivSelector = displayDiv
 
         @cells = ((new Cell() for [1..@colCount]) for [1..@rowCount])
-        @cell_states = new BoolArray(@rowCount, @colCount)  # convenience listing of states
+        @_cell_states = new BoolArray(@rowCount, @colCount)  # convenience listing of states
 
         if document?
             $(document).on("set-environment-type", (evt, selection) ->
@@ -60,7 +60,7 @@ class Dish
             for colN of @cells[rowN]
                 new_states[rowN][colN] = @runCell(rowN, colN)  # TODO: isn't this REALLY inefficient?
 
-        @cell_states = new_states
+        @_cell_states = new_states
         for rowN of @cells
             for colN of @cells[rowN]
                 @setCellState(rowN, colN, new_states[rowN][colN])
@@ -152,7 +152,7 @@ class Dish
         if renderDivSelector?
             dust.render('cellDish',
                 {
-                    cell_states: main_dish.cell_states
+                    cell_states: main_dish._cell_states
                 },
                 (err, out) ->
                     # update the html

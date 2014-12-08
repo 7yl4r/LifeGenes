@@ -52,7 +52,7 @@
         }
         return _results;
       }).call(this);
-      this.cell_states = new BoolArray(this.rowCount, this.colCount);
+      this._cell_states = new BoolArray(this.rowCount, this.colCount);
       if (typeof document !== "undefined" && document !== null) {
         $(document).on("set-environment-type", function(evt, selection) {
           switch (selection) {
@@ -99,7 +99,7 @@
           new_states[rowN][colN] = this.runCell(rowN, colN);
         }
       }
-      this.cell_states = new_states;
+      this._cell_states = new_states;
       for (rowN in this.cells) {
         for (colN in this.cells[rowN]) {
           this.setCellState(rowN, colN, new_states[rowN][colN]);
@@ -194,7 +194,7 @@
       }
       if (renderDivSelector != null) {
         return dust.render('cellDish', {
-          cell_states: main_dish.cell_states
+          cell_states: main_dish._cell_states
         }, function(err, out) {
           $(renderDivSelector).html(out);
           if (err) {
