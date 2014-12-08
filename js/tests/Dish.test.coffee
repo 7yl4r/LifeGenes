@@ -1,6 +1,6 @@
 Dish = require '../coffee/Dish'
 
-exports.basicCellTest =
+exports.basicDishTest =
 
     'test run without exception': (test) ->
         dish = new Dish(3,3)

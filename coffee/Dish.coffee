@@ -1,3 +1,5 @@
+Cell = require '../coffee/Cell'
+
 class BoolArray
     # 2d array of booleans useful for storing cell states temporarily
     constructor: (rows, cols)->
