@@ -1,3 +1,8 @@
+class BoolArray
+    # 2d array of booleans useful for storing cell states temporarily
+    constructor: (rows, cols)->
+        return ((0 for [1..cols]) for [1..rows])
+
 class Dish
     # a digital petri dish full of cells
     # assumes space is toroidal
@@ -7,19 +12,22 @@ class Dish
         @rowCount = rows
         @colCount = cols
         @cellCount = rows*cols
-        @cell_states = ((0 for [1..@colCount]) for [1..@rowCount])
         @renderDivSelector = displayDiv
 
-        $(document).on("set-environment-type", (evt, selection) ->
-            switch selection
-                when "Game_of_Life"
-                    $(document).on('click', '.cell', ( evt ) ->
-                        main_dish.cellClick(@)
-                    )
-                else
-                    console.log('unknown env type:', selection)
-                    throw Error('unknown env type')
-        )
+        @cells = ((new Cell() for [1..@colCount]) for [1..@rowCount])
+        @cell_states = new BoolArray(@rowCount, @colCount)  # convenience listing of states
+
+        if document?
+            $(document).on("set-environment-type", (evt, selection) ->
+                switch selection
+                    when "Game_of_Life"
+                        $(document).on('click', '.cell', ( evt ) ->
+                            main_dish.cellClick(@)
+                        )
+                    else
+                        console.log('unknown env type:', selection)
+                        throw Error('unknown env type')
+            )
 
         # constants:
         @TIMER_DELAY = 10  # ms delay between updates while running
@@ -47,22 +55,23 @@ class Dish
         # steps through one interation on the dish, computing for every cell and updating the state and generation
 
         console.log('generation ', @generation, '->', @generation+1)
-        new_states = (@cell_states[i].slice(0) for i of @cell_states)
-        for rowN of @cell_states
-            for colN of @cell_states[rowN]
-                new_states[rowN][colN] = @runCell(rowN, colN, @cell_states)  # TODO: isn't this REALLY inefficient?
-                #console.log(@cell_states[rowN][colN], '->', new_states[rowN][colN])
-
+        new_states = new BoolArray(@rowCount, @colCount)
+        for rowN of @cells
+            for colN of @cells[rowN]
+                new_states[rowN][colN] = @runCell(rowN, colN)  # TODO: isn't this REALLY inefficient?
 
         @cell_states = new_states
+        for rowN of @cells
+            for colN of @cells[rowN]
+                @setCellState(rowN, colN, new_states[rowN][colN])
 
         @generation += 1
         @render()
         return @generation
 
-    runCell: (row, col, cellStates) ->
-        # computes for cell @ (row,col) in given cellStates array and returns the resulting array
-        neighbors = @getNeighborCount(row, col, cellStates)
+    runCell: (row, col) ->
+        # computes for cell @ (row,col) in given array and returns the resulting array
+        neighbors = @getNeighborCount(row, col)
         #console.log(neighbors)
         if neighbors < 2  # underpopulation
             #console.log('under')
@@ -76,10 +85,14 @@ class Dish
         # else 2 or 3 neighbors, no change
         else
             #console.log('stay')
-            return cellStates[row][col]
+            return @getCellState(row, col)
 
-    getCell: (row, col, cells=@cell_states) ->
-        # returns cell value for given cell row & column, works for negative & out-of-range values
+    getCellState: (row, col) ->
+        # returns the state of the cell
+        return @getCell(row, col).getState()
+
+    getCell: (row, col) ->
+        # returns cell object value for given cell row & column, works for negative & out-of-range values
         maxRow = @rowCount
         maxCol = @colCount
 
@@ -95,9 +108,9 @@ class Dish
         if row > maxRow then row -= maxRow
 
         # use corrected indicies
-        return cells[row][col]
+        return @cells[row][col]
 
-    getNeighborCount: (R, C, S=@cell_states) ->
+    getNeighborCount: (R, C) ->
         # returns number of live neighbors for given cell @ (r,c) in state array s
         R = parseInt(R)
         C = parseInt(C)
@@ -110,7 +123,7 @@ class Dish
                     # don't count yourself
                     j += 1
                 else
-                    neighbors += @getCell(R+i, C+j, S)
+                    neighbors += @getCellState(R+i, C+j)
                     j += 1
             i += 1
         return neighbors
@@ -124,14 +137,18 @@ class Dish
         # turns a cell on/off
         if cellEl.getAttribute('data-state') == '1'
             cellEl.setAttribute('data-state', 0)
-            @cell_states[cellEl.getAttribute('data-cell-row')][cellEl.getAttribute('data-cell-col')] = 0
+            @setCellState(cellEl.getAttribute('data-cell-row'), cellEl.getAttribute('data-cell-col'), 0)
         else
             cellEl.setAttribute('data-state', 1)
-            @cell_states[cellEl.getAttribute('data-cell-row')][cellEl.getAttribute('data-cell-col')] = 1
+            @setCellState(cellEl.getAttribute('data-cell-row'), cellEl.getAttribute('data-cell-col'), 1)
         return
 
+    setCellState: (row, col, newState) ->
+        #
+        @getCell(row, col).setState(newState)
+
     render: (renderDivSelector=@renderDivSelector) ->
-        #renders the dish if renderDiv is set
+        # renders the dish if renderDiv is set
         if renderDivSelector?
             dust.render('cellDish',
                 {
