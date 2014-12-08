@@ -3,13 +3,7 @@
   var Cell, DNA, PROTEINS,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-  try {
-    DNA = require('./DNA');
-  } catch (error) {
-    if (error.name !== 'ReferenceError') {
-      throw error;
-    }
-  }
+  DNA = require('./DNA');
 
   PROTEINS = {
     alwaysOn: 'awysOn',
@@ -61,10 +55,6 @@
 
   })();
 
-  try {
-    window.Cell = Cell;
-  } catch (error) {
-    module.exports = Cell;
-  }
+  module.exports = Cell;
 
 }).call(this);

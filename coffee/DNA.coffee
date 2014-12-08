@@ -41,7 +41,4 @@ class DNA
         # returns true if any proteins in the proteinList silence the inProtein->outProtein link
         return false
 
-try
-    window.DNA = DNA
-catch error
-    module.exports = DNA
+module.exports = DNA

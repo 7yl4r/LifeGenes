@@ -1,8 +1,4 @@
-try
-    DNA = require './DNA'
-catch error
-    if error.name != 'ReferenceError'
-        throw error
+DNA = require './DNA'
 
 PROTEINS = {
                 alwaysOn:'awysOn',
@@ -41,9 +37,4 @@ class Cell
         # TODO
         return 0
 
-
-
-try
-    window.Cell = Cell
-catch error
-    module.exports = Cell
+module.exports = Cell

@@ -1,4 +1,4 @@
-Cell = require '../coffee/Cell'
+Cell = require './Cell'
 
 class BoolArray
     # 2d array of booleans useful for storing cell states temporarily
@@ -165,7 +165,4 @@ class Dish
         else
             console.log('dish unrendered: no render div set')
 
-try
-    window.Dish = Dish
-catch error
-    module.exports = Dish
+module.exports = Dish

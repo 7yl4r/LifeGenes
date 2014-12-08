@@ -1,6 +1,6 @@
 {
     "name": "lifeGenes",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "This LifeGenes Project client-side web application allows users to play with digital cell cultures",
     "homepage": "https://plus.google.com/communities/117413839180254151272",
     "bugs": {
@@ -22,6 +22,7 @@
         "coffee-script": "~1.4.0",
         "nodeunit": "~0.7.4",
         "dusterjs": "~0.3.2",
-        "less": "~1.7.5"
+        "less": "~1.7.5",
+        "browserify": "~7.0.0"
     }
 }

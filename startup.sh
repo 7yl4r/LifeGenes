@@ -8,5 +8,8 @@ echo 'compiling less css...'
 echo 'transpiling .coffee into .js...'
 ./node_modules/.bin/coffee --output js/coffee --compile coffee
 
+echo 'browserify-ing module dependencies...'
+./node_modules/.bin/browserify js/main.js -o js/bundle.js
+
 echo 'starting server for testing...'
 python -m SimpleHTTPServer

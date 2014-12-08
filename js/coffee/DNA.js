@@ -56,10 +56,6 @@
 
   })();
 
-  try {
-    window.DNA = DNA;
-  } catch (error) {
-    module.exports = DNA;
-  }
+  module.exports = DNA;
 
 }).call(this);

@@ -24,6 +24,17 @@
         <!-- cell display css -->
         <link rel="stylesheet" href="css/cellStates.css">
         <link rel="stylesheet" href="css/dishDisplay.css">
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <!-- bootstrap js -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        <!-- dust.js templating -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/dustjs-linkedin/2.4.0/dust-core.min.js"></script>
+        <script src="templates/templates.js"></script>
+
+        <!-- load modules bundled by browserify -->
+        <script src="js/bundle.js"></script>
     </head>
     <body>
         <div class="container">
@@ -49,21 +60,6 @@
                 Currently analyzing <span class="cell-count">0</span> cells in a <span class="row-count">0</span>x<span class="col-count">0</span> toroidal grid.
             </div>
         </div>
-
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <!-- bootstrap js -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-        <!-- dust.js templating -->
-        <script src="//cdnjs.cloudflare.com/ajax/libs/dustjs-linkedin/2.4.0/dust-core.min.js"></script>
-        <script src="templates/templates.js"></script>
-
-        <!-- classes -->
-        <script src="js/coffee/DNA.js"></script>
-        <script src="js/coffee/Cell.js"></script>
-        <script src="js/coffee/Dish.js"></script>
-
-        <script src="js/globals.js"></script>
 
         <script src="js/showVersionNumber.js"></script>
 
