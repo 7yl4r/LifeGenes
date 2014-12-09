@@ -26,18 +26,6 @@ class Dish
 
         @_cell_states = new BoolArray(@rowCount, @colCount)  # convenience listing of states
 
-        if document?
-            $(document).on("set-environment-type", (evt, selection) ->
-                switch selection
-                    when "Game_of_Life"
-                        $(document).on('click', '.cell', ( evt ) ->
-                            main_dish.cellClick(@)
-                        )
-                    else
-                        console.log('unknown env type:', selection)
-                        throw Error('unknown env type')
-            )
-
         # constants:
         @TIMER_DELAY = 10  # ms delay between updates while running
         @NEIGHBORHOOD_SIZE = 1  # size of cell neighborhood (i.e. how far the cell can "see") 1 = 8 neighbors [[aa,ab,ac][ba,ME,bc],[ca,cb,cc]]
@@ -118,21 +106,6 @@ class Dish
                     j += 1
             i += 1
         return neighbors
-
-    cellClick: (cellEl) ->
-        # what to do when a cell is clicked
-        @toggleCell(cellEl)
-        return
-
-    toggleCell: (cellEl) ->
-        # turns a cell on/off
-        if cellEl.getAttribute('data-state') == '1'
-            cellEl.setAttribute('data-state', 0)
-            @setCellState(cellEl.getAttribute('data-cell-row'), cellEl.getAttribute('data-cell-col'), 0)
-        else
-            cellEl.setAttribute('data-state', 1)
-            @setCellState(cellEl.getAttribute('data-cell-row'), cellEl.getAttribute('data-cell-col'), 1)
-        return
 
     setCellState: (row, col, newState) ->
         #

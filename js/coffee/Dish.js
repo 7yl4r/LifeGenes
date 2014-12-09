@@ -53,19 +53,6 @@
         this.cells.push(cellRow);
       }
       this._cell_states = new BoolArray(this.rowCount, this.colCount);
-      if (typeof document !== "undefined" && document !== null) {
-        $(document).on("set-environment-type", function(evt, selection) {
-          switch (selection) {
-            case "Game_of_Life":
-              return $(document).on('click', '.cell', function(evt) {
-                return main_dish.cellClick(this);
-              });
-            default:
-              console.log('unknown env type:', selection);
-              throw Error('unknown env type');
-          }
-        });
-      }
       this.TIMER_DELAY = 10;
       this.NEIGHBORHOOD_SIZE = 1;
     }
@@ -154,20 +141,6 @@
         i += 1;
       }
       return neighbors;
-    };
-
-    Dish.prototype.cellClick = function(cellEl) {
-      this.toggleCell(cellEl);
-    };
-
-    Dish.prototype.toggleCell = function(cellEl) {
-      if (cellEl.getAttribute('data-state') === '1') {
-        cellEl.setAttribute('data-state', 0);
-        this.setCellState(cellEl.getAttribute('data-cell-row'), cellEl.getAttribute('data-cell-col'), 0);
-      } else {
-        cellEl.setAttribute('data-state', 1);
-        this.setCellState(cellEl.getAttribute('data-cell-row'), cellEl.getAttribute('data-cell-col'), 1);
-      }
     };
 
     Dish.prototype.setCellState = function(row, col, newState) {
