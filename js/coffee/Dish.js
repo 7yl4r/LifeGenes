@@ -30,16 +30,20 @@
 
   Dish = (function() {
 
-    function Dish(rows, cols, displayDiv) {
+    function Dish(rows, cols, displayDiv, computeType) {
       var cellRow, col, row, _i, _j, _ref, _ref1;
       if (displayDiv == null) {
         displayDiv = '';
+      }
+      if (computeType == null) {
+        computeType = Cell.COMPUTE.GoL;
       }
       this.generation = 0;
       this.rowCount = rows;
       this.colCount = cols;
       this.cellCount = rows * cols;
       this.renderDivSelector = displayDiv;
+      this.computeType = computeType;
       this.cells = [];
       for (row = _i = 0, _ref = this.rowCount - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; row = 0 <= _ref ? ++_i : --_i) {
         cellRow = [];

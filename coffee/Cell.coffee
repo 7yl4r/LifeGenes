@@ -1,24 +1,26 @@
 DNA = require './DNA'
 
-# protein id strings
-PROTEINS = {
-                alwaysOn:'awysOn',
-                newCell:'newCel'
-            }
-
-# methods of computing the "run" function
-COMPUTE = {
-                GoL: 0,
-                proteins: 1
-            }
-
 class Cell
     constructor: (row, col, parent1, parent2) ->
         @state = 0
         @row = row
         @col = col
-        @proteins = [PROTEINS.alwaysOn, PROTEINS.newCell]
+        @proteins = [Cell.PROTEINS.alwaysOn, Cell.PROTEINS.newCell]
         @DNA = new DNA(parent1, parent2)
+
+    # === static properties: ===
+    # protein id strings
+    @PROTEINS: {
+                    alwaysOn:'awysOn',
+                    newCell:'newCel'
+                }
+
+    # methods of computing the "run" function
+    @COMPUTE: {
+                    GoL: 0,
+                    proteins: 1
+                }
+    # === === === === === === ===
 
     setState: (newState) ->
         @state = newState
@@ -26,14 +28,15 @@ class Cell
     getState: () ->
         return @state
 
-    run: (dish, computeType=COMPUTE.GoL) ->
+    run: (dish, computeType=Cell.COMPUTE.GoL) ->
         switch computeType
-            when COMPUTE.GoL
+            when Cell.COMPUTE.GoL
                 return @runGoL(dish)
-            when COMPUTE.proteins
+            when Cell.COMPUTE.proteins
                 return @runProteins(dish)
             else
                 throw Error('computeType not recognized')
+
     runProteins: (dish) ->
         # responds to proteins which are present, and produces new proteins
         for inProtein in @proteins

@@ -9,12 +9,13 @@ class Dish
     # a digital petri dish full of cells
     # assumes space is toroidal
 
-    constructor: (rows, cols, displayDiv='')->
+    constructor: (rows, cols, displayDiv='', computeType=Cell.COMPUTE.GoL)->
         @generation = 0
         @rowCount = rows
         @colCount = cols
         @cellCount = rows*cols
         @renderDivSelector = displayDiv
+        @computeType = computeType
 
         @cells = []
         for row in [0..(@rowCount-1)]
