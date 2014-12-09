@@ -31,6 +31,7 @@
   Dish = (function() {
 
     function Dish(rows, cols, displayDiv) {
+      var cellRow, col, row, _i, _j, _ref, _ref1;
       if (displayDiv == null) {
         displayDiv = '';
       }
@@ -39,21 +40,14 @@
       this.colCount = cols;
       this.cellCount = rows * cols;
       this.renderDivSelector = displayDiv;
-      this.cells = (function() {
-        var _i, _ref, _results;
-        _results = [];
-        for (_i = 1, _ref = this.rowCount; 1 <= _ref ? _i <= _ref : _i >= _ref; 1 <= _ref ? _i++ : _i--) {
-          _results.push((function() {
-            var _j, _ref1, _results1;
-            _results1 = [];
-            for (_j = 1, _ref1 = this.colCount; 1 <= _ref1 ? _j <= _ref1 : _j >= _ref1; 1 <= _ref1 ? _j++ : _j--) {
-              _results1.push(new Cell());
-            }
-            return _results1;
-          }).call(this));
+      this.cells = [];
+      for (row = _i = 0, _ref = this.rowCount - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; row = 0 <= _ref ? ++_i : --_i) {
+        cellRow = [];
+        for (col = _j = 0, _ref1 = this.colCount - 1; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; col = 0 <= _ref1 ? ++_j : --_j) {
+          cellRow.push(new Cell(row, col));
         }
-        return _results;
-      }).call(this);
+        this.cells.push(cellRow);
+      }
       this._cell_states = new BoolArray(this.rowCount, this.colCount);
       if (typeof document !== "undefined" && document !== null) {
         $(document).on("set-environment-type", function(evt, selection) {
@@ -98,7 +92,7 @@
       new_states = new BoolArray(this.rowCount, this.colCount);
       for (rowN in this.cells) {
         for (colN in this.cells[rowN]) {
-          new_states[rowN][colN] = this.runCell(rowN, colN);
+          new_states[rowN][colN] = this.getCell(rowN, colN).run(this);
         }
       }
       this._cell_states = new_states;
@@ -110,20 +104,6 @@
       this.generation += 1;
       this.render();
       return this.generation;
-    };
-
-    Dish.prototype.runCell = function(row, col) {
-      var neighbors;
-      neighbors = this.getNeighborCount(row, col);
-      if (neighbors < 2) {
-        return 0;
-      } else if (neighbors > 3) {
-        return 0;
-      } else if (neighbors === 3) {
-        return 1;
-      } else {
-        return this.getCellState(row, col);
-      }
     };
 
     Dish.prototype.getCellState = function(row, col) {

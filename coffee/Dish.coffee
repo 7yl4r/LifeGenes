@@ -16,7 +16,13 @@ class Dish
         @cellCount = rows*cols
         @renderDivSelector = displayDiv
 
-        @cells = ((new Cell() for [1..@colCount]) for [1..@rowCount])
+        @cells = []
+        for row in [0..(@rowCount-1)]
+            cellRow = []
+            for col in [0..(@colCount-1)]
+                cellRow.push(new Cell(row,col))
+            @cells.push(cellRow)
+
         @_cell_states = new BoolArray(@rowCount, @colCount)  # convenience listing of states
 
         if document?
@@ -60,7 +66,7 @@ class Dish
         new_states = new BoolArray(@rowCount, @colCount)
         for rowN of @cells
             for colN of @cells[rowN]
-                new_states[rowN][colN] = @runCell(rowN, colN)  # TODO: isn't this REALLY inefficient?
+                new_states[rowN][colN] = @getCell(rowN,colN).run(@)  # TODO: isn't this REALLY inefficient?
 
         @_cell_states = new_states
         for rowN of @cells
@@ -70,24 +76,6 @@ class Dish
         @generation += 1
         @render()
         return @generation
-
-    runCell: (row, col) ->
-        # computes for cell @ (row,col) in given array and returns the resulting array
-        neighbors = @getNeighborCount(row, col)
-        #console.log(neighbors)
-        if neighbors < 2  # underpopulation
-            #console.log('under')
-            return 0
-        else if neighbors > 3  # overpopulation
-            #console.log('over')
-            return 0
-        else if neighbors == 3
-            #console.log('reproduce')
-            return 1  # reproduction
-        # else 2 or 3 neighbors, no change
-        else
-            #console.log('stay')
-            return @getCellState(row, col)
 
     getCellState: (row, col) ->
         # returns the state of the cell
