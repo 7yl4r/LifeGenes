@@ -35,14 +35,30 @@
 
   DNA = (function() {
 
-    function DNA(parent1, parent2) {
+    function DNA(parents, doNotGenerate) {
+      if (doNotGenerate == null) {
+        doNotGenerate = false;
+      }
       this._nodes = [];
-      if ((parent1 != null) && (parent2 != null)) {
+      if (doNotGenerate) {
+        return;
+      } else if (parents != null) {
         console.log('inheriting...');
       } else {
         console.log('randomness');
       }
     }
+
+    DNA.prototype.clone = function() {
+      var newDNA, node, _i, _len, _ref;
+      newDNA = new DNA([], true);
+      _ref = dna.nodes;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        node = _ref[_i];
+        newDNA.nodes.push(node.clone());
+      }
+      return newDNA;
+    };
 
     DNA.prototype.getProteinResponse = function(inputProtein) {
       return ['NotImp'];

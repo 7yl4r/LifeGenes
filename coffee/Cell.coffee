@@ -1,16 +1,25 @@
 DNA = require './DNA'
 
 class Cell
-    constructor: (row, col, parent1, parent2) ->
+    constructor: (row, col, parents) ->
         @state = 0
         @row = row
         @col = col
-        @proteins = [Cell.PROTEINS.alwaysOn, Cell.PROTEINS.newCell]
-        @DNA = new DNA(parent1, parent2)
+        @proteins = {}
+        @proteins[Cell.PROTEIN_CODE.alwaysOn] =  {
+            name: Cell.PROTEIN_CODE.alwaysOn,
+            amount: 1
+        }
+        @proteins[Cell.PROTEIN_CODE.newCell] = {
+            name: Cell.PROTEIN_CODE.newCell,
+            amount: 1
+        }
+
+        @DNA = new DNA(parents)
 
     # === static properties: ===
     # protein id strings
-    @PROTEINS: {
+    @PROTEIN_CODE: {
                     alwaysOn:'awysOn',
                     newCell:'newCel'
                 }
@@ -39,15 +48,15 @@ class Cell
 
     runProteins: (dish) ->
         # responds to proteins which are present, and produces new proteins
-        for inProtein in @proteins
-            outputProteins = @DNA.getProteinResponse(inProtein)
+        for inProtein of @proteins
+            outputProteins = @DNA.getProteinResponse(@proteins[inProtein])
             for outProtein in outputProteins
-                if not @DNA.connectionSilencedBy(inProtein, outProtein, @proteins)
-                    console.log(inProtein, ' yields ', outProtein)
+                if not @DNA.connectionSilencedBy(@proteins[inProtein], outProtein, @proteins)
+                    console.log(@proteins[inProtein], ' yields ', outProtein)
                     if outProtein not in @proteins
                         @proteins.push(outProtein)
                     else
-                        console.log('protein already here')
+                        @proteins[outProtein.name].amount += outProtein.amount
                 # else connection is silenced, move along
         return true
 

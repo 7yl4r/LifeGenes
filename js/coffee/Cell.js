@@ -7,15 +7,23 @@
 
   Cell = (function() {
 
-    function Cell(row, col, parent1, parent2) {
+    function Cell(row, col, parents) {
       this.state = 0;
       this.row = row;
       this.col = col;
-      this.proteins = [Cell.PROTEINS.alwaysOn, Cell.PROTEINS.newCell];
-      this.DNA = new DNA(parent1, parent2);
+      this.proteins = {};
+      this.proteins[Cell.PROTEIN_CODE.alwaysOn] = {
+        name: Cell.PROTEIN_CODE.alwaysOn,
+        amount: 1
+      };
+      this.proteins[Cell.PROTEIN_CODE.newCell] = {
+        name: Cell.PROTEIN_CODE.newCell,
+        amount: 1
+      };
+      this.DNA = new DNA(parents);
     }
 
-    Cell.PROTEINS = {
+    Cell.PROTEIN_CODE = {
       alwaysOn: 'awysOn',
       newCell: 'newCel'
     };
@@ -48,19 +56,17 @@
     };
 
     Cell.prototype.runProteins = function(dish) {
-      var inProtein, outProtein, outputProteins, _i, _j, _len, _len1, _ref;
-      _ref = this.proteins;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        inProtein = _ref[_i];
-        outputProteins = this.DNA.getProteinResponse(inProtein);
-        for (_j = 0, _len1 = outputProteins.length; _j < _len1; _j++) {
-          outProtein = outputProteins[_j];
-          if (!this.DNA.connectionSilencedBy(inProtein, outProtein, this.proteins)) {
-            console.log(inProtein, ' yields ', outProtein);
+      var inProtein, outProtein, outputProteins, _i, _len;
+      for (inProtein in this.proteins) {
+        outputProteins = this.DNA.getProteinResponse(this.proteins[inProtein]);
+        for (_i = 0, _len = outputProteins.length; _i < _len; _i++) {
+          outProtein = outputProteins[_i];
+          if (!this.DNA.connectionSilencedBy(this.proteins[inProtein], outProtein, this.proteins)) {
+            console.log(this.proteins[inProtein], ' yields ', outProtein);
             if (__indexOf.call(this.proteins, outProtein) < 0) {
               this.proteins.push(outProtein);
             } else {
-              console.log('protein already here');
+              this.proteins[outProtein.name].amount += outProtein.amount;
             }
           }
         }

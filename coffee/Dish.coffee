@@ -67,7 +67,7 @@ class Dish
         new_states = new BoolArray(@rowCount, @colCount)
         for rowN of @cells
             for colN of @cells[rowN]
-                new_states[rowN][colN] = @getCell(rowN,colN).run(@)  # TODO: isn't this REALLY inefficient?
+                new_states[rowN][colN] = @getCell(rowN,colN).run(@, @computeType)  # TODO: isn't this REALLY inefficient?
 
         @_cell_states = new_states
         for rowN of @cells

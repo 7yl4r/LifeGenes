@@ -23,14 +23,24 @@ class ProteinNode
 
 class DNA
     # a representation of the gene regulatory network typically encoded as DNA
-    constructor: (parent1, parent2) ->
+    constructor: (parents, doNotGenerate=false) ->
         @_nodes = []  # aka proteins
-        if parent1? and parent2?
+        if doNotGenerate
+            return
+        else if parents?
             # TODO: inherit
             console.log('inheriting...')
         else
             # TODO: make random DNA
             console.log('randomness')
+
+    clone: () ->
+        # returns a perfect clone of the DNA object
+        newDNA = new DNA([], true)
+        for node in dna.nodes
+            newDNA.nodes.push(node.clone())
+
+        return newDNA
 
     getProteinResponse: (inputProtein) ->
         # returns a list of genes which are activated in response to the given inputProtein

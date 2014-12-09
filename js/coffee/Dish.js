@@ -96,7 +96,7 @@
       new_states = new BoolArray(this.rowCount, this.colCount);
       for (rowN in this.cells) {
         for (colN in this.cells[rowN]) {
-          new_states[rowN][colN] = this.getCell(rowN, colN).run(this);
+          new_states[rowN][colN] = this.getCell(rowN, colN).run(this, this.computeType);
         }
       }
       this._cell_states = new_states;
