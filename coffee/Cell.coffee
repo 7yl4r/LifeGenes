@@ -47,7 +47,7 @@ class Cell
     getState: () ->
         return @state
 
-    run: (dish, computeType=Cell.COMPUTE.GoL) ->
+    run: (dish, computeType) ->
         switch computeType
             when Cell.COMPUTE.GoL
                 return @runGoL(dish)

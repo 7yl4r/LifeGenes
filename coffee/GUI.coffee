@@ -1,9 +1,20 @@
-
+Cell = require './Cell'
 class GUI
     constructor: (dish, type=GUI.TYPE.master) ->
         @type = type
         @dish = dish
         @proteinsShowing = true
+
+        $( document ).on(
+            "set-environment-type",
+            (event, newEnvType) ->
+                console.log("switching environment type to ", newEnvType)
+                switch newEnvType
+                    when ENVIRONMENT_TYPE.enum[0]  # GoL (yes this is ugly)
+                        main_dish.computeType = Cell.COMPUTE.GoL
+                    when ENVIRONMENT_TYPE.enum[1]  # Protein_life
+                        main_dish.computeType = Cell.COMPUTE.proteins
+        )
 
     # type of interface, allows for different views of the same thing
     # TODO: add beginner, painter interface, statistics, artistic, etc...

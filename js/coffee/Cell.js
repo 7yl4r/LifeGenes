@@ -52,9 +52,6 @@
     };
 
     Cell.prototype.run = function(dish, computeType) {
-      if (computeType == null) {
-        computeType = Cell.COMPUTE.GoL;
-      }
       switch (computeType) {
         case Cell.COMPUTE.GoL:
           return this.runGoL(dish);
