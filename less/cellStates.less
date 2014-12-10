@@ -1,0 +1,28 @@
+@import "bootstrap/variables.less";
+
+.cell{
+    text-align: center;
+    background-color: @body-bg;
+    color: lighten(@body-bg, 10%);
+}
+
+[data-state="1"]{
+    background-color: @brand-primary;
+    color: lighten(@brand-primary, 10%);
+}
+[data-state="0"]{
+    background-color: @body-bg;
+    color: lighten(@body-bg, 10%);
+}
+
+/* center diamond */
+.cell-center{
+    width:30%;
+    height:30%;
+    transform:rotate(45deg);
+    border:1px solid blue;
+    position:absolute;
+    left:35%;
+    top:35%;
+    z-index:5;
+}

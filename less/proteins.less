@@ -1,6 +1,8 @@
+@import "bootstrap/variables.less";
+
 .protein {
     position: absolute;
-    opacity: .2;
+    opacity: .5;
 }
 
 /* diamond rings */
@@ -8,7 +10,7 @@
     width:40%;
     min-height:40%;
     transform:rotate(45deg);
-    border:1px solid red;
+    border:1px solid @brand-success;
     position:absolute;
     left:30%;
     top:30%;
@@ -18,7 +20,7 @@
     width:50%;
     min-height:50%;
     transform:rotate(45deg);
-    border:1px solid green;
+    border:1px solid @brand-warning;
     position:absolute;
     left:25%;
     top:25%;
@@ -28,7 +30,7 @@
     width:60%;
     min-height:60%;
     transform:rotate(45deg);
-    border:1px solid yellow;
+    border:1px solid @brand-danger;
     position:absolute;
     left:20%;
     top:20%;
@@ -38,7 +40,7 @@
     width:70%;
     min-height:70%;
     transform:rotate(45deg);
-    border:1px solid magenta;
+    border:1px solid @brand-info;
     position:absolute;
     left:15%;
     top:15%;
@@ -47,28 +49,28 @@
 
 /* edge boxes */
 .protein-top {
-    background: #2e9e6a;
+    background: @brand-success;
     top: 2%;
     left: 10%;
     height: 15%;
     width: 80%;
 }
 .protein-right {
-    background: #9e2e62;
+    background: @brand-warning;
     bottom: 10%;
     right: 2%;
     height: 80%;
     width: 20%;
 }
 .protein-bottom {
-    background: #9e6a2e;
+    background: @brand-danger;
     bottom: 2%;
     left: 10%;
     height: 20%;
     width: 80%;
 }
 .protein-left {
-    background: #9a9e2e;
+    background: @brand-info;
     bottom: 10%;
     left: 2%;
     height: 80%;
@@ -81,7 +83,7 @@
     left:1%;
     width: 40%;
     height: 40%;
-    background: linear-gradient(to left top, transparent 50%, #2e9e6a 50%);
+    background: linear-gradient(to left top, transparent 50%, @brand-success 50%);
 
 }
 
@@ -90,7 +92,7 @@
     right:1%;
     width: 40%;
     height: 40%;
-    background: linear-gradient(to right top, transparent 50%, #9a9e2e 50%);
+    background: linear-gradient(to right top, transparent 50%, @brand-warning 50%);
 }
 
 .protein-bottom-left {
@@ -98,7 +100,7 @@
     left:1%;
     width: 40%;
     height: 40%;
-    background: linear-gradient(to left bottom, transparent 50%, #9e6a2e 50%);
+    background: linear-gradient(to left bottom, transparent 50%, @brand-danger 50%);
 }
 
 .protein-bottom-right {
@@ -106,5 +108,5 @@
     right:1%;
     width: 40%;
     height: 40%;
-    background: linear-gradient(to right bottom, transparent 50%, #9e2e62 50%);
+    background: linear-gradient(to right bottom, transparent 50%, @brand-info 50%);
 }
