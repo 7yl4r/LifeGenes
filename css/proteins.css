@@ -1,0 +1,60 @@
+.protein {
+    background: #9E322E;
+    position: absolute;
+    opacity: .2;
+}
+
+// edge boxes
+.protein-top {
+    top: 2%;
+    left: 10%;
+    height: 15%;
+    width: 80%;
+}
+.protein-right {
+    bottom: 10%;
+    right: 2%;
+    height: 80%;
+    width: 15%;
+}
+.protein-bottom {
+    bottom: 2%;
+    left: 10%;
+    height: 15%;
+    width: 80%;
+}
+.protein-left {
+    bottom: 10%;
+    left: 2%;
+    height: 80%;
+    width: 15%;
+}
+
+// corner boxes (triangles would be even better)...
+.protein-top-left {
+    top:1%;
+    left:1%;
+    height: 30%;
+    width: 30%;
+}
+
+.protein-top-right {
+    top:1%;
+    right:1%;
+    height: 30%;
+    width: 30%;
+}
+
+.protein-bottom-left {
+    bottom:1%;
+    left:1%;
+    height: 30%;
+    width: 30%;
+}
+
+.protein-bottom-right {
+    bottom:1%;
+    right:1%;
+    height: 30%;
+    width: 30%;
+}
