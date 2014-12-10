@@ -1,8 +1,8 @@
 <table id="cell-display-table" class="table cell-dish-display">
     <tbody>
-        {#cell_states}
-            {>cellRow row_states=. row_num=$idx /}
-        {/cell_states}
+        {#cells}
+            {>cellRow row_cells=. row_num=$idx /}
+        {/cells}
     </tbody>
 </table>
 

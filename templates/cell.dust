@@ -1,7 +1,7 @@
-<td id="cell_{row}_{col}" class="cell" data-cell-row={row} data-cell-col={col} data-state={value}>
+<td id="cell_{row}_{col}" class="cell" data-cell-row={row} data-cell-col={col} data-state={cell.state}>
     <div class="dummy"></div>
     <div class="content">
-        {value}
+        {cell.state}
     </div>
     <div class='protein-top-left'></div>
     <div class='protein-top-right'></div>

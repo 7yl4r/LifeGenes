@@ -72,7 +72,6 @@
           }
         }
       }
-      $('#cell_' + this.row + '_' + this.col + ' .cell-protein-top-left');
       return true;
     };
 
@@ -337,8 +336,17 @@
       }
       if (renderDivSelector != null) {
         return dust.render('cellDish', {
-          cell_states: main_dish._cell_states
+          cells: main_dish.cells
         }, function(err, out) {
+          var row, _i, _len, _ref;
+          delete main_dish.cells.$len;
+          delete main_dish.cells.$idx;
+          _ref = main_dish.cells;
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            row = _ref[_i];
+            delete row.$len;
+            delete row.$idx;
+          }
           $(renderDivSelector).html(out);
           if (err) {
             return console.log(err);

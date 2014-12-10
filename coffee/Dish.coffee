@@ -116,9 +116,15 @@ class Dish
         if renderDivSelector?
             dust.render('cellDish',
                 {
-                    cell_states: main_dish._cell_states
+                    cells: main_dish.cells
                 },
                 (err, out) ->
+                    # remove dust.js helper variables
+                    delete main_dish.cells.$len
+                    delete main_dish.cells.$idx
+                    for row in main_dish.cells
+                        delete row.$len
+                        delete row.$idx
                     # update the html
                     $(renderDivSelector).html(out)
                     if err
