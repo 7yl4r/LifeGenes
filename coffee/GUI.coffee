@@ -3,6 +3,7 @@ class GUI
     constructor: (dish, type=GUI.TYPE.master) ->
         @type = type
         @dish = dish
+        @proteinsShowing = true
 
     # type of interface, allows for different views of the same thing
     # TODO: add beginner, painter interface, statistics, artistic, etc...
@@ -37,5 +38,16 @@ class GUI
             @dish.setCellState(cellEl.getAttribute('data-cell-row'), cellEl.getAttribute('data-cell-col'), 1)
         return
 
+    proteinDisplayToggle: () ->
+        # turns on/off protein display
+        switch @proteinsShowing
+            when true
+                $('.protein').hide()
+                @proteinsShowing = false
+            when false
+                $('.protein').show()
+                @proteinsShowing = true
+            else
+                throw Error('@proteinsShowing flag is non-boolean')
 
 module.exports = GUI

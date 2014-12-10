@@ -11,6 +11,7 @@
       }
       this.type = type;
       this.dish = dish;
+      this.proteinsShowing = true;
     }
 
     GUI.TYPE = {
@@ -39,6 +40,19 @@
       } else {
         cellEl.setAttribute('data-state', 1);
         this.dish.setCellState(cellEl.getAttribute('data-cell-row'), cellEl.getAttribute('data-cell-col'), 1);
+      }
+    };
+
+    GUI.prototype.proteinDisplayToggle = function() {
+      switch (this.proteinsShowing) {
+        case true:
+          $('.protein').hide();
+          return this.proteinsShowing = false;
+        case false:
+          $('.protein').show();
+          return this.proteinsShowing = true;
+        default:
+          throw Error('@proteinsShowing flag is non-boolean');
       }
     };
 
