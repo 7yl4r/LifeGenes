@@ -27,7 +27,9 @@
 
     Cell.PROTEIN_CODE = {
       alwaysOn: 'awysOn',
-      newCell: 'newCel'
+      newCell: 'newCel',
+      cellDeath: 'deathh',
+      cellEther: 'etherr'
     };
 
     Cell.COMPUTE = {
@@ -38,10 +40,26 @@
     Cell.prototype.setWatchedValues = function() {
       var oneHundredPercent;
       oneHundredPercent = 4;
-      this.p1 = this.proteins['newCel'].amount / oneHundredPercent;
-      this.p2 = this.proteins['awysOn'].amount / oneHundredPercent;
-      this.p3 = .5;
-      return this.p4 = .7;
+      if (this.proteins[Cell.PROTEIN_CODE.alwaysOn] != null) {
+        this.p1 = this.proteins[Cell.PROTEIN_CODE.alwaysOn].amount / oneHundredPercent;
+      } else {
+        this.p1 = 0;
+      }
+      if (this.proteins[Cell.PROTEIN_CODE.newCell] != null) {
+        this.p2 = this.proteins[Cell.PROTEIN_CODE.newCell].amount / oneHundredPercent;
+      } else {
+        this.p2 = 0;
+      }
+      if (this.proteins[Cell.PROTEIN_CODE.cellDeath] != null) {
+        this.p3 = this.proteins[Cell.PROTEIN_CODE.cellDeath].amount / oneHundredPercent;
+      } else {
+        this.p3 = 0;
+      }
+      if (this.proteins[Cell.PROTEIN_CODE.cellEther] != null) {
+        this.p4 = this.proteins[Cell.PROTEIN_CODE.cellEther].amount / oneHundredPercent;
+      } else {
+        this.p4 = 0;
+      }
     };
 
     Cell.prototype.setState = function(newState) {
@@ -64,23 +82,28 @@
     };
 
     Cell.prototype.runProteins = function(dish) {
-      var inProtein, outProtein, outputProteins, _i, _len;
-      for (inProtein in this.proteins) {
-        outputProteins = this.DNA.getProteinResponse(this.proteins[inProtein]);
-        for (_i = 0, _len = outputProteins.length; _i < _len; _i++) {
-          outProtein = outputProteins[_i];
-          if (!this.DNA.connectionSilencedBy(this.proteins[inProtein], outProtein, this.proteins)) {
-            console.log(this.proteins[inProtein], ' yields ', outProtein);
-            if (__indexOf.call(this.proteins, outProtein) < 0) {
-              this.proteins.push(outProtein);
-            } else {
-              this.proteins[outProtein.name].amount += outProtein.amount;
+      var inProtein, outProtein, outputProteins, _i, _len, _ref;
+      if (this.state > 0) {
+        for (inProtein in this.proteins) {
+          outputProteins = this.DNA.getProteinResponse(this.proteins[inProtein]);
+          for (_i = 0, _len = outputProteins.length; _i < _len; _i++) {
+            outProtein = outputProteins[_i];
+            if (!this.DNA.connectionSilencedBy(this.proteins[inProtein], outProtein, this.proteins)) {
+              if (__indexOf.call(this.proteins, outProtein) < 0) {
+                this.proteins[outProtein.name] = outProtein;
+              } else {
+                this.proteins[outProtein.name].amount += outProtein.amount;
+              }
             }
           }
         }
+        this.setWatchedValues();
+        if (_ref = Cell.PROTEIN_CODE.cellDeath, __indexOf.call(this.proteins, _ref) >= 0) {
+          return 0;
+        } else {
+          return 1;
+        }
       }
-      setWatchedValues();
-      return true;
     };
 
     Cell.prototype.runGoL = function(dish) {
