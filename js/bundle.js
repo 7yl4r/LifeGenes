@@ -22,6 +22,7 @@
         amount: 1
       };
       this.DNA = new DNA(parents);
+      this.setWatchedValues();
     }
 
     Cell.PROTEIN_CODE = {
@@ -32,6 +33,15 @@
     Cell.COMPUTE = {
       GoL: 0,
       proteins: 1
+    };
+
+    Cell.prototype.setWatchedValues = function() {
+      var oneHundredPercent;
+      oneHundredPercent = 4;
+      this.p1 = this.proteins['newCel'].amount / oneHundredPercent;
+      this.p2 = this.proteins['awysOn'].amount / oneHundredPercent;
+      this.p3 = .5;
+      return this.p4 = .7;
     };
 
     Cell.prototype.setState = function(newState) {
@@ -72,6 +82,7 @@
           }
         }
       }
+      setWatchedValues();
       return true;
     };
 

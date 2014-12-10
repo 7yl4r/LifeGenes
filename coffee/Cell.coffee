@@ -16,6 +16,7 @@ class Cell
         }
 
         @DNA = new DNA(parents)
+        @setWatchedValues()
 
     # === static properties: ===
     # protein id strings
@@ -30,6 +31,15 @@ class Cell
                     proteins: 1
                 }
     # === === === === === === ===
+
+    setWatchedValues: () ->
+        # updates watched values p1, p2, p3, p4 with protein values
+        # TODO: all values here should be editable via the GUI
+        oneHundredPercent = 4  # what amount of protein = 100% opacity
+        @p1 = @proteins['newCel'].amount/oneHundredPercent
+        @p2 = @proteins['awysOn'].amount/oneHundredPercent
+        @p3 = .5
+        @p4 = .7
 
     setState: (newState) ->
         @state = newState
@@ -58,6 +68,7 @@ class Cell
                     else
                         @proteins[outProtein.name].amount += outProtein.amount
                 # else connection is silenced, move along
+        setWatchedValues()
         return true
 
     runGoL: (dish) ->
