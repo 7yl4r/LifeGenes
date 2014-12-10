@@ -52,8 +52,21 @@
                     <button id="step-btn" type="button" class="btn btn-default" onclick="main_dish.step()">step</button>
                     <br> <br>
                     <div class="dropdown enum-picker" data-settings-obj="ENVIRONMENT_TYPE" data-trigger-name="set-environment-type">
-
                     </div>
+                    <br><br>
+                    <div class="btn-group-vertical" data-toggle="buttons">
+                        <label class="btn btn-primary active">
+                            <input type="radio" name="options" id="paint-btn" autocomplete="off" checked>
+                            <span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                            paint
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type="radio" name="options" id="inspect-btn" autocomplete="off">
+                            <span class="glyphicon glyphicon glyphicon glyphicon-search" aria-hidden="true"></span>
+                            inspect
+                        </label>
+                    </div>
+
                 </div>
             </div>
             <div id="stats" class="row">
