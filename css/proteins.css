@@ -1,10 +1,52 @@
 .protein {
-    background: #9E322E;
+    /* background: #9E322E; */
     position: absolute;
     opacity: .2;
 }
 
-// edge boxes
+/* diamond rings */
+.protein-ring-1{
+    width:40%;
+    min-height:40%;
+    transform:rotate(45deg);
+    border:1px solid red;
+    position:absolute;
+    left:30%;
+    top:30%;
+    z-index:4;
+}
+.protein-ring-2{
+    width:50%;
+    min-height:50%;
+    transform:rotate(45deg);
+    border:1px solid green;
+    position:absolute;
+    left:25%;
+    top:25%;
+    z-index:2;
+}
+.protein-ring-3{
+    width:60%;
+    min-height:60%;
+    transform:rotate(45deg);
+    border:1px solid yellow;
+    position:absolute;
+    left:20%;
+    top:20%;
+    z-index:2;
+}
+.protein-ring-4{
+    width:70%;
+    min-height:70%;
+    transform:rotate(45deg);
+    border:1px solid magenta;
+    position:absolute;
+    left:15%;
+    top:15%;
+    z-index:1;
+}
+
+/* edge boxes */
 .protein-top {
     top: 2%;
     left: 10%;
@@ -15,22 +57,22 @@
     bottom: 10%;
     right: 2%;
     height: 80%;
-    width: 15%;
+    width: 20%;
 }
 .protein-bottom {
     bottom: 2%;
     left: 10%;
-    height: 15%;
+    height: 20%;
     width: 80%;
 }
 .protein-left {
     bottom: 10%;
     left: 2%;
     height: 80%;
-    width: 15%;
+    width: 20%;
 }
 
-// corner boxes (triangles would be even better)...
+/* corner boxes (triangles would be even better)... */
 .protein-top-left {
     top:1%;
     left:1%;

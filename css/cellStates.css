@@ -11,3 +11,15 @@
     background-color: #eeeeff;
     color: #dddddd;
 }
+
+/* center diamond */
+.cell-center{
+    width:30%;
+    height:30%;
+    transform:rotate(45deg);
+    border:1px solid blue;
+    position:absolute;
+    left:35%;
+    top:35%;
+    z-index:5;
+}

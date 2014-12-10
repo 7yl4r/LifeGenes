@@ -1,10 +1,11 @@
 <td id="cell_{row}_{col}" class="cell" data-cell-row={row} data-cell-col={col} data-state={cell.state}>
     <div class="dummy"></div>
     <div class="content">
-        <div class='protein protein-top' style="opacity:{cell.p1};"></div>
-        <div class='protein protein-right' style="opacity:{cell.p2};"></div>
-        <div class='protein protein-bottom' style="opacity:{cell.p3};"></div>
-        <div class='protein protein-left' style="opacity:{cell.p4};"></div>
+        <span class='protein protein-ring-1' style="opacity:{cell.p1};"></span>
+        <span class='protein protein-ring-2' style="opacity:{cell.p2};"></span>
+        <span class='protein protein-ring-3' style="opacity:{cell.p3};"></span>
+        <span class='protein protein-ring-4' style="opacity:{cell.p4};"></span>
+        <span class='cell-center' data-state={cell.state}></span>
         {cell.state}
     </div>
 </td>
