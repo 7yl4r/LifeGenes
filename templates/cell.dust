@@ -3,4 +3,8 @@
     <div class="content">
         {value}
     </div>
+    <div class='protein-top-left'></div>
+    <div class='protein-top-right'></div>
+    <div class='protein-bottom-left'></div>
+    <div class='protein-bottom-right'></div>
 </td>

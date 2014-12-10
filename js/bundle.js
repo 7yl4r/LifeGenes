@@ -72,6 +72,7 @@
           }
         }
       }
+      $('#cell_' + this.row + '_' + this.col + ' .cell-protein-top-left');
       return true;
     };
 
