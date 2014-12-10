@@ -1,5 +1,4 @@
 .protein {
-    /* background: #9E322E; */
     position: absolute;
     opacity: .2;
 }
@@ -48,55 +47,64 @@
 
 /* edge boxes */
 .protein-top {
+    background: #2e9e6a;
     top: 2%;
     left: 10%;
     height: 15%;
     width: 80%;
 }
 .protein-right {
+    background: #9e2e62;
     bottom: 10%;
     right: 2%;
     height: 80%;
     width: 20%;
 }
 .protein-bottom {
+    background: #9e6a2e;
     bottom: 2%;
     left: 10%;
     height: 20%;
     width: 80%;
 }
 .protein-left {
+    background: #9a9e2e;
     bottom: 10%;
     left: 2%;
     height: 80%;
     width: 20%;
 }
 
-/* corner boxes (triangles would be even better)... */
+/* corner triangles */
 .protein-top-left {
     top:1%;
     left:1%;
-    height: 30%;
-    width: 30%;
+    width: 40%;
+    height: 40%;
+    background: linear-gradient(to left top, transparent 50%, #2e9e6a 50%);
+
 }
 
 .protein-top-right {
     top:1%;
     right:1%;
-    height: 30%;
-    width: 30%;
+    width: 40%;
+    height: 40%;
+    background: linear-gradient(to right top, transparent 50%, #9a9e2e 50%);
 }
 
 .protein-bottom-left {
     bottom:1%;
     left:1%;
-    height: 30%;
-    width: 30%;
+    width: 40%;
+    height: 40%;
+    background: linear-gradient(to left bottom, transparent 50%, #9e6a2e 50%);
 }
 
 .protein-bottom-right {
     bottom:1%;
     right:1%;
-    height: 30%;
-    width: 30%;
+    width: 40%;
+    height: 40%;
+    background: linear-gradient(to right bottom, transparent 50%, #9e2e62 50%);
 }
