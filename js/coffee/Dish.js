@@ -52,7 +52,6 @@
         }
         this.cells.push(cellRow);
       }
-      this._cell_states = new BoolArray(this.rowCount, this.colCount);
       this.TIMER_DELAY = 10;
       this.NEIGHBORHOOD_SIZE = 1;
     }
@@ -86,7 +85,6 @@
           new_states[rowN][colN] = this.getCell(rowN, colN).run(this, this.computeType);
         }
       }
-      this._cell_states = new_states;
       for (rowN in this.cells) {
         for (colN in this.cells[rowN]) {
           this.setCellState(rowN, colN, new_states[rowN][colN]);

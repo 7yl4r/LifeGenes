@@ -24,8 +24,6 @@ class Dish
                 cellRow.push(new Cell(row,col))
             @cells.push(cellRow)
 
-        @_cell_states = new BoolArray(@rowCount, @colCount)  # convenience listing of states
-
         # constants:
         @TIMER_DELAY = 10  # ms delay between updates while running
         @NEIGHBORHOOD_SIZE = 1  # size of cell neighborhood (i.e. how far the cell can "see") 1 = 8 neighbors [[aa,ab,ac][ba,ME,bc],[ca,cb,cc]]
@@ -57,7 +55,6 @@ class Dish
             for colN of @cells[rowN]
                 new_states[rowN][colN] = @getCell(rowN,colN).run(@, @computeType)  # TODO: isn't this REALLY inefficient?
 
-        @_cell_states = new_states
         for rowN of @cells
             for colN of @cells[rowN]
                 @setCellState(rowN, colN, new_states[rowN][colN])
