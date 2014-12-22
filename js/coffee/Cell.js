@@ -16,10 +16,6 @@
         name: Cell.PROTEIN_CODE.alwaysOn,
         amount: 1
       };
-      this.proteins[Cell.PROTEIN_CODE.newCell] = {
-        name: Cell.PROTEIN_CODE.newCell,
-        amount: 1
-      };
       this.DNA = new DNA(parents);
       this.setWatchedValues();
     }
@@ -76,10 +72,25 @@
 
     Cell.prototype.birth = function(parents) {
       throw Error('notImpErr');
+      return this.proteins[Cell.PROTEIN_CODE.newCell] = {
+        name: Cell.PROTEIN_CODE.newCell,
+        amount: 1
+      };
     };
 
     Cell.prototype.birthCondition = function() {
       return false;
+    };
+
+    Cell.prototype.addProtein = function(name, amount) {
+      if (__indexOf.call(this.proteins, name) < 0) {
+        return this.proteins[name] = {
+          name: name,
+          amount: amount
+        };
+      } else {
+        return this.proteins[name].amount += amount;
+      }
     };
 
     Cell.prototype.deathCondition = function() {

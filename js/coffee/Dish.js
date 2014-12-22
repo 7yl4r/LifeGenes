@@ -173,8 +173,27 @@
       return this.generation;
     };
 
-    Dish.prototype.spreadProteins = function(proteinList) {
-      throw Error('NotYetImpl');
+    Dish.prototype.spreadProteins = function(proteinList, row, col) {
+      var i, j, prot, _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = proteinList.length; _i < _len; _i++) {
+        prot = proteinList[_i];
+        i = -(prot.amount - 1);
+        _results.push((function() {
+          var _results1;
+          _results1 = [];
+          while (i <= this.NEIGHBORHOOD_SIZE) {
+            j = -(prot.amount(-1));
+            while (j <= this.NEIGHBORHOOD_SIZE) {
+              this.getCell(R + i, C + j).addProtein(prot.name, 1);
+              j += 1;
+            }
+            _results1.push(i += 1);
+          }
+          return _results1;
+        }).call(this));
+      }
+      return _results;
     };
 
     Dish.prototype.getCellState = function(row, col) {

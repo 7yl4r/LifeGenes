@@ -95,13 +95,13 @@ class Dish
                 # perform hard-coded cell responses for each cell
                 for rowN of @cells
                     for colN of @cells[rowN]
-                        @getCell(rowN,colN).respond(@)
+                        @getCell(rowN, colN).respond(@)
 
                 # compute protein outputs for each cell
                 proteinOuts = new ProteinArray(@rowCount, @colCount)
                 for rowN of @cells
                     for colN of @cells[rowN]
-                        proteinOuts.addProteinsAt(rowN, colN, @getCell(rowN,colN).getProteinOutputs())
+                        proteinOuts.addProteinsAt(rowN, colN, @getCell(rowN, colN).getProteinOutputs())
 
                 # diffuse protein outputs for each cell
                 for rowN of @cells
@@ -115,9 +115,16 @@ class Dish
         @render()
         return @generation
 
-    spreadProteins: (proteinList) ->
-        # spreads proteins based on radius specifed in given object of form {{name:'p1', amount:1}, ...}
-        throw Error('NotYetImpl')
+    spreadProteins: (proteinList, row, col) ->
+        # spreads proteins at (row, col) based on radius specifed in given object of form {{name:'p1', amount:1}, ...}
+        for prot in proteinList
+            i = -(prot.amount - 1)
+            while i <= @NEIGHBORHOOD_SIZE
+                j = -(prot.amount -1)
+                while j <= @NEIGHBORHOOD_SIZE
+                    @getCell(R+i, C+j).addProtein(prot.name, 1)
+                    j += 1
+                i += 1
 
     getCellState: (row, col) ->
         # returns the state of the cell

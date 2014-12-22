@@ -14,10 +14,6 @@ class Cell
             name: Cell.PROTEIN_CODE.alwaysOn,
             amount: 1
         }
-        @proteins[Cell.PROTEIN_CODE.newCell] = {
-            name: Cell.PROTEIN_CODE.newCell,
-            amount: 1
-        }
 
         @DNA = new DNA(parents)
         @setWatchedValues()
@@ -72,10 +68,21 @@ class Cell
     birth: (parents) ->
         # cell is suddenly alive. inherits from parents if given
         throw Error('notImpErr')
+        @proteins[Cell.PROTEIN_CODE.newCell] = {
+            name: Cell.PROTEIN_CODE.newCell,
+            amount: 1
+        }
 
     birthCondition: () ->
         # returns true if spontaneous birth condition met
         return false
+
+    addProtein: (name, amount) ->
+        # adds an amount of a protein to this cell
+        if name not in @proteins
+            @proteins[name] = {name:name, amount:amount}
+        else
+            @proteins[name].amount += amount
 
     deathCondition: () ->
         #returns true if death condition is met
