@@ -95,7 +95,7 @@ class Cell
                 for outProtein in outputProteins
                     if not @DNA.connectionSilencedBy(@proteins[inProtein], outProtein, @proteins)
                         #console.log(@proteins[inProtein], ' yields ', outProtein)
-                        if outProtein not in theOutput
+                        if outProtein not in theOutputs
                             theOutputs[outProtein.name] = outProtein
                         else
                             theOutputs[outProtein.name].amount += outProtein.amount

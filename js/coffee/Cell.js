@@ -87,32 +87,28 @@
     };
 
     Cell.prototype.getProteinOutputs = function() {
-      var inProtein, outProtein, outputProteins, theOutputs, _results;
+      var inProtein, outProtein, outputProteins, theOutputs, _i, _len;
+      theOutputs = {};
+      theOutputs[Cell.PROTEIN_CODE.alwaysOn] = {
+        name: Cell.PROTEIN_CODE.alwaysOn,
+        amount: 1
+      };
       if (this.state > 0) {
-        theOutputs = {};
-        _results = [];
         for (inProtein in this.proteins) {
           outputProteins = this.DNA.getProteinResponse(this.proteins[inProtein]);
-          _results.push((function() {
-            var _i, _len, _results1;
-            _results1 = [];
-            for (_i = 0, _len = outputProteins.length; _i < _len; _i++) {
-              outProtein = outputProteins[_i];
-              if (!this.DNA.connectionSilencedBy(this.proteins[inProtein], outProtein, this.proteins)) {
-                if (__indexOf.call(theOutput, outProtein) < 0) {
-                  _results1.push(theOutputs[outProtein.name] = outProtein);
-                } else {
-                  _results1.push(theOutputs[outProtein.name].amount += outProtein.amount);
-                }
+          for (_i = 0, _len = outputProteins.length; _i < _len; _i++) {
+            outProtein = outputProteins[_i];
+            if (!this.DNA.connectionSilencedBy(this.proteins[inProtein], outProtein, this.proteins)) {
+              if (__indexOf.call(theOutputs, outProtein) < 0) {
+                theOutputs[outProtein.name] = outProtein;
               } else {
-                _results1.push(void 0);
+                theOutputs[outProtein.name].amount += outProtein.amount;
               }
             }
-            return _results1;
-          }).call(this));
+          }
         }
-        return _results;
       }
+      return theOutputs;
     };
 
     Cell.prototype.runGoL = function(dish) {

@@ -161,7 +161,7 @@
           }
           for (rowN in this.cells) {
             for (colN in this.cells[rowN]) {
-              this.spreadProteins(proteinOuts[rowN][colN]);
+              this.spreadProteins(proteinOuts.getProteinsAt(rowN, colN));
             }
           }
           break;

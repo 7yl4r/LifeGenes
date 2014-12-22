@@ -106,7 +106,7 @@ class Dish
                 # diffuse protein outputs for each cell
                 for rowN of @cells
                     for colN of @cells[rowN]
-                        @spreadProteins(proteinOuts[rowN][colN])
+                        @spreadProteins(proteinOuts.getProteinsAt(rowN,colN))
 
             else
               throw Error('computeType not recognized')
