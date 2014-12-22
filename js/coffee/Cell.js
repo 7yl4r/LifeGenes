@@ -64,28 +64,54 @@
       return this.state;
     };
 
-    Cell.prototype.runProteins = function(dish) {
-      var inProtein, outProtein, outputProteins, _i, _len, _ref;
+    Cell.prototype.respond = function() {
+      this.setWatchedValues();
+      if (this.birthCondition()) {
+        this.makeAlive();
+      }
+      if (this.deathCondition()) {
+        return this.die();
+      }
+    };
+
+    Cell.prototype.birth = function(parents) {
+      throw Error('notImpErr');
+    };
+
+    Cell.prototype.birthCondition = function() {
+      return false;
+    };
+
+    Cell.prototype.deathCondition = function() {
+      return false;
+    };
+
+    Cell.prototype.getProteinOutputs = function() {
+      var inProtein, outProtein, outputProteins, theOutputs, _results;
       if (this.state > 0) {
+        theOutputs = {};
+        _results = [];
         for (inProtein in this.proteins) {
           outputProteins = this.DNA.getProteinResponse(this.proteins[inProtein]);
-          for (_i = 0, _len = outputProteins.length; _i < _len; _i++) {
-            outProtein = outputProteins[_i];
-            if (!this.DNA.connectionSilencedBy(this.proteins[inProtein], outProtein, this.proteins)) {
-              if (__indexOf.call(this.proteins, outProtein) < 0) {
-                this.proteins[outProtein.name] = outProtein;
+          _results.push((function() {
+            var _i, _len, _results1;
+            _results1 = [];
+            for (_i = 0, _len = outputProteins.length; _i < _len; _i++) {
+              outProtein = outputProteins[_i];
+              if (!this.DNA.connectionSilencedBy(this.proteins[inProtein], outProtein, this.proteins)) {
+                if (__indexOf.call(theOutput, outProtein) < 0) {
+                  _results1.push(theOutputs[outProtein.name] = outProtein);
+                } else {
+                  _results1.push(theOutputs[outProtein.name].amount += outProtein.amount);
+                }
               } else {
-                this.proteins[outProtein.name].amount += outProtein.amount;
+                _results1.push(void 0);
               }
             }
-          }
+            return _results1;
+          }).call(this));
         }
-        this.setWatchedValues();
-        if (_ref = Cell.PROTEIN_CODE.cellDeath, __indexOf.call(this.proteins, _ref) >= 0) {
-          return 0;
-        } else {
-          return 1;
-        }
+        return _results;
       }
     };
 

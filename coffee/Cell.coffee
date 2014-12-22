@@ -63,7 +63,31 @@ class Cell
     getState: () ->
         return @state
 
-    runProteins: (dish) ->
+    respond: () ->
+        # perform hard-coded responses to proteins
+        @setWatchedValues()
+        @makeAlive() if @birthCondition()
+        @die() if @deathCondition()
+
+    birth: (parents) ->
+        # cell is suddenly alive. inherits from parents if given
+        throw Error('notImpErr')
+
+    birthCondition: () ->
+        # returns true if spontaneous birth condition met
+        return false
+
+    deathCondition: () ->
+        #returns true if death condition is met
+        return false
+
+    getProteinOutputs: () ->
+        # returns a list {{name:'p1', amount:2},...} of protiens output by this cell
+        theOutputs = {}
+        theOutputs[Cell.PROTEIN_CODE.alwaysOn] = {
+            name: Cell.PROTEIN_CODE.alwaysOn,
+            amount: 1
+        }
         if @state > 0  # if cell is alive
             # responds to proteins which are present, and produces new proteins
             for inProtein of @proteins
@@ -71,17 +95,13 @@ class Cell
                 for outProtein in outputProteins
                     if not @DNA.connectionSilencedBy(@proteins[inProtein], outProtein, @proteins)
                         #console.log(@proteins[inProtein], ' yields ', outProtein)
-                        if outProtein not in @proteins
-                            @proteins[outProtein.name] = outProtein
+                        if outProtein not in theOutput
+                            theOutputs[outProtein.name] = outProtein
                         else
-                            @proteins[outProtein.name].amount += outProtein.amount
+                            theOutputs[outProtein.name].amount += outProtein.amount
                     # else connection is silenced, move along
-            @setWatchedValues()
-            if Cell.PROTEIN_CODE.cellDeath in @proteins
-                return 0
-            else
-                return 1
         # else state is 0
+        return theOutputs
 
     runGoL: (dish) ->
         neighbors = dish.getNeighborCount(@row, @col)

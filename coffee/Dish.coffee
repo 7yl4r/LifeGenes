@@ -5,6 +5,28 @@ class BoolArray
     constructor: (rows, cols)->
         return ((0 for [1..cols]) for [1..rows])
 
+class ProteinArray
+    # 2d array of protein names and an associated value
+    constructor: (rows, cols)->
+        @arry = (({} for [1..cols]) for [1..rows])
+
+    addProtein: (row, col, name, amount) ->
+        # adds protein amount to given location
+        try
+            @arry[row][col][name].amount += amount
+        catch err
+            @arry[row][col][name] = {name:name, amount:amount}
+
+    addProteinsAt: (row, col, proteinList) ->
+        # adds a list of proteins to list at given location
+        for prot in proteinList
+            addProtein(row, col, prot.name, prot.amount)
+
+    getProteinsAt: (row, col) ->
+        # returns list of proteins at given location
+        return @arry[row][col]
+
+
 class Dish
     # a digital petri dish full of cells
     # assumes space is toroidal
@@ -74,12 +96,17 @@ class Dish
                 for rowN of @cells
                     for colN of @cells[rowN]
                         @getCell(rowN,colN).respond(@)
+
                 # compute protein outputs for each cell
-                # TODO
-                # proteinOuts = new proteinArray(@rowCount, @colCount)
-                        #proteinOuts[rowN][colN] = @getCell(rowN,colN).getProteinOutputs()
+                proteinOuts = new ProteinArray(@rowCount, @colCount)
+                for rowN of @cells
+                    for colN of @cells[rowN]
+                        proteinOuts.addProteinsAt(rowN, colN, @getCell(rowN,colN).getProteinOutputs())
+
                 # diffuse protein outputs for each cell
-                # TODO
+                for rowN of @cells
+                    for colN of @cells[rowN]
+                        @spreadProteins(proteinOuts[rowN][colN])
 
             else
               throw Error('computeType not recognized')
@@ -87,6 +114,10 @@ class Dish
         @generation += 1
         @render()
         return @generation
+
+    spreadProteins: (proteinList) ->
+        # spreads proteins based on radius specifed in given object of form {{name:'p1', amount:1}, ...}
+        throw Error('NotYetImpl')
 
     getCellState: (row, col) ->
         # returns the state of the cell
