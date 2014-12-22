@@ -36,7 +36,7 @@
         displayDiv = '';
       }
       if (computeType == null) {
-        computeType = Cell.COMPUTE.GoL;
+        computeType = Dish.COMPUTE.GoL;
       }
       this.generation = 0;
       this.rowCount = rows;
@@ -55,6 +55,11 @@
       this.TIMER_DELAY = 10;
       this.NEIGHBORHOOD_SIZE = 1;
     }
+
+    Dish.COMPUTE = {
+      GoL: 0,
+      cumulativeProteins: 1
+    };
 
     Dish.prototype.start = function() {
       var run,
@@ -79,16 +84,29 @@
     Dish.prototype.step = function() {
       var colN, new_states, rowN;
       console.log('generation ', this.generation, '->', this.generation + 1);
-      new_states = new BoolArray(this.rowCount, this.colCount);
-      for (rowN in this.cells) {
-        for (colN in this.cells[rowN]) {
-          new_states[rowN][colN] = this.getCell(rowN, colN).run(this, this.computeType);
-        }
-      }
-      for (rowN in this.cells) {
-        for (colN in this.cells[rowN]) {
-          this.setCellState(rowN, colN, new_states[rowN][colN]);
-        }
+      switch (this.computeType) {
+        case Dish.COMPUTE.GoL:
+          new_states = new BoolArray(this.rowCount, this.colCount);
+          for (rowN in this.cells) {
+            for (colN in this.cells[rowN]) {
+              new_states[rowN][colN] = this.getCell(rowN, colN).runGoL(this);
+            }
+          }
+          for (rowN in this.cells) {
+            for (colN in this.cells[rowN]) {
+              this.setCellState(rowN, colN, new_states[rowN][colN]);
+            }
+          }
+          break;
+        case Dish.COMPUTE.cumulativeProteins:
+          for (rowN in this.cells) {
+            for (colN in this.cells[rowN]) {
+              this.getCell(rowN, colN).respond(this);
+            }
+          }
+          break;
+        default:
+          throw Error('computeType not recognized');
       }
       this.generation += 1;
       this.render();

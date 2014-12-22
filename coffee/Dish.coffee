@@ -9,7 +9,7 @@ class Dish
     # a digital petri dish full of cells
     # assumes space is toroidal
 
-    constructor: (rows, cols, displayDiv='', computeType=Cell.COMPUTE.GoL)->
+    constructor: (rows, cols, displayDiv='', computeType=Dish.COMPUTE.GoL)->
         @generation = 0
         @rowCount = rows
         @colCount = cols
@@ -27,6 +27,14 @@ class Dish
         # constants:
         @TIMER_DELAY = 10  # ms delay between updates while running
         @NEIGHBORHOOD_SIZE = 1  # size of cell neighborhood (i.e. how far the cell can "see") 1 = 8 neighbors [[aa,ab,ac][ba,ME,bc],[ca,cb,cc]]
+
+    # === static properties: ===
+    # methods of computing the "run" function
+    @COMPUTE: {
+                    GoL: 0,
+                    cumulativeProteins: 1
+                }
+    # ===========================
 
     start: () ->
         # starts running iterations of update() until stopped
@@ -48,16 +56,33 @@ class Dish
 
     step: () ->
         # steps through one interation on the dish, computing for every cell and updating the state and generation
-
         console.log('generation ', @generation, '->', @generation+1)
-        new_states = new BoolArray(@rowCount, @colCount)
-        for rowN of @cells
-            for colN of @cells[rowN]
-                new_states[rowN][colN] = @getCell(rowN,colN).run(@, @computeType)  # TODO: isn't this REALLY inefficient?
 
-        for rowN of @cells
-            for colN of @cells[rowN]
-                @setCellState(rowN, colN, new_states[rowN][colN])
+        switch @computeType
+            when Dish.COMPUTE.GoL
+                new_states = new BoolArray(@rowCount, @colCount)
+                for rowN of @cells
+                    for colN of @cells[rowN]
+                        new_states[rowN][colN] = @getCell(rowN,colN).runGoL(@)  # TODO: isn't this REALLY inefficient?
+
+                for rowN of @cells
+                    for colN of @cells[rowN]
+                        @setCellState(rowN, colN, new_states[rowN][colN])
+
+            when Dish.COMPUTE.cumulativeProteins
+                # perform hard-coded cell responses for each cell
+                for rowN of @cells
+                    for colN of @cells[rowN]
+                        @getCell(rowN,colN).respond(@)
+                # compute protein outputs for each cell
+                # TODO
+                # proteinOuts = new proteinArray(@rowCount, @colCount)
+                        #proteinOuts[rowN][colN] = @getCell(rowN,colN).getProteinOutputs()
+                # diffuse protein outputs for each cell
+                # TODO
+
+            else
+              throw Error('computeType not recognized')
 
         @generation += 1
         @render()

@@ -18,9 +18,9 @@
         console.log("switching environment type to ", newEnvType);
         switch (newEnvType) {
           case ENVIRONMENT_TYPE["enum"][0]:
-            return main_dish.computeType = Cell.COMPUTE.GoL;
+            return main_dish.computeType = Dish.COMPUTE.GoL;
           case ENVIRONMENT_TYPE["enum"][1]:
-            return main_dish.computeType = Cell.COMPUTE.proteins;
+            return main_dish.computeType = Dish.COMPUTE.cumulativeProteins;
         }
       });
     }

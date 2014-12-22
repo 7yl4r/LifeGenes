@@ -11,9 +11,9 @@ class GUI
                 console.log("switching environment type to ", newEnvType)
                 switch newEnvType
                     when ENVIRONMENT_TYPE.enum[0]  # GoL (yes this is ugly)
-                        main_dish.computeType = Cell.COMPUTE.GoL
+                        main_dish.computeType = Dish.COMPUTE.GoL
                     when ENVIRONMENT_TYPE.enum[1]  # Protein_life
-                        main_dish.computeType = Cell.COMPUTE.proteins
+                        main_dish.computeType = Dish.COMPUTE.cumulativeProteins
         )
 
     # type of interface, allows for different views of the same thing

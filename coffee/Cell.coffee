@@ -30,12 +30,6 @@ class Cell
                     cellDeath: 'deathh',
                     cellEther: 'etherr'
                 }
-
-    # methods of computing the "run" function
-    @COMPUTE: {
-                    GoL: 0,
-                    proteins: 1
-                }
     # === === === === === === ===
 
     setWatchedValues: () ->
@@ -69,17 +63,8 @@ class Cell
     getState: () ->
         return @state
 
-    run: (dish, computeType) ->
-        switch computeType
-            when Cell.COMPUTE.GoL
-                return @runGoL(dish)
-            when Cell.COMPUTE.proteins
-                return @runProteins(dish)
-            else
-                throw Error('computeType not recognized')
-
     runProteins: (dish) ->
-        if @state > 0
+        if @state > 0  # if cell is alive
             # responds to proteins which are present, and produces new proteins
             for inProtein of @proteins
                 outputProteins = @DNA.getProteinResponse(@proteins[inProtein])

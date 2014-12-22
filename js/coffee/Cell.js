@@ -31,11 +31,6 @@
       cellEther: 'etherr'
     };
 
-    Cell.COMPUTE = {
-      GoL: 0,
-      proteins: 1
-    };
-
     Cell.prototype.setWatchedValues = function() {
       var oneHundredPercent;
       oneHundredPercent = 4;
@@ -67,17 +62,6 @@
 
     Cell.prototype.getState = function() {
       return this.state;
-    };
-
-    Cell.prototype.run = function(dish, computeType) {
-      switch (computeType) {
-        case Cell.COMPUTE.GoL:
-          return this.runGoL(dish);
-        case Cell.COMPUTE.proteins:
-          return this.runProteins(dish);
-        default:
-          throw Error('computeType not recognized');
-      }
     };
 
     Cell.prototype.runProteins = function(dish) {
