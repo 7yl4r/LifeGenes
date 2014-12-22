@@ -74,22 +74,7 @@ class Cell
             when Cell.COMPUTE.GoL
                 return @runGoL(dish)
             when Cell.COMPUTE.proteins
-                # 1. compute protein outputs for each cell
                 return @runProteins(dish)
-                # 2. diffuse proteins to neighboring cells, perform hard-coded responses (death/birth)
-
-
-                # 3. reset proteins
-                # ITERATION 1
-                # 0 1 1 1 0     before (live/dead 1/0)
-                # step 1: compute protein outs
-                # 0 2 2 2 0     p outputs (cellEther amount before diffusing)
-                # step 2: diffuse
-                # 1 2 3 2 1     diffuse (cellEther concentration after diffusing)
-                # step 3: perform hard-coded protein responses
-                # 0 0 1 0 0     new state (kill/birth criterion applied: 2 < cellEther < 4 to stay alive)
-                # step 4: reset proteins
-
             else
                 throw Error('computeType not recognized')
 
